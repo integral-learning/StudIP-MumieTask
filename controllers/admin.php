@@ -28,7 +28,7 @@ class AdminController extends StudipController {
     }
 
     public function index_action() {
-        $this->servers = DBManager::get()->query("SELECT * FROM mumie_server ORDER BY name ASC")->fetchAll();
+        $this->servers = MumieServer::findBySQL("server_id > 0");
     }
 
     public function privacy_action() {
@@ -38,8 +38,6 @@ class AdminController extends StudipController {
             $config->store(MUMIE_SHARE_LASTNAME, Request::get('share_lastname'));
             $config->store(MUMIE_SHARE_EMAIL, Request::get('share_email'));
             PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Änderungen gespeichert') . '!'));
-
-            //$this->redirect(PluginEngine::getURL("MumieTask", array(), 'admin/index'));
         }
 
     }
@@ -57,11 +55,26 @@ class AdminController extends StudipController {
         }
     }
 
+    public function editServer_action() {
+        if(Request::isPost()) {
+            $server = MumieServer::find(Request::option('server_id'));
+            $server->name = Request::get('name');
+            $server->url_prefix = Request::get('url_prefix');
+            $server->store();
+            PageLayout::postMessage(
+                MessageBox::success(dgettext('MumieTask', 'Server erfolgreich geändert') . '!')
+            );
+    
+            $this->redirect('admin/index');
+        }
+    }
+
     public function delete_action() {
-        $phrase = new MumieServer(Request::option('server_id'));
-        $phrase->delete();
+        $server = MumieServer::find(Request::option('server_id'));
+        $server->delete();
         PageLayout::postMessage(
-        MessageBox::success(dgettext('MumieServer', 'Server wurde gelöscht') . '!'));
+            MessageBox::success(dgettext('MumieServer', 'Server wurde gelöscht') . '!')
+        );
         $this->redirect(PluginEngine::getURL("MumieTask", array(), 'admin/index'));
     }
 
@@ -73,5 +86,9 @@ class AdminController extends StudipController {
             PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Änderungen gespeichert') . '!'));
             $this->redirect(PluginEngine::getURL("MumieTask", array(), 'admin/index'));
         }
+    }
+
+    private function validateServer() {
+        
     }
 }

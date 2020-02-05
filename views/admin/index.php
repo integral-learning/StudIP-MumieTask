@@ -11,7 +11,12 @@
                 <?= htmlReady($server['url_prefix']); ?>
             </td>
             <td>
-                <a href="<?= PluginEngine::getLink("MumieTask", array('server_id' => $name["server_id"]),'admin/delete'); ?>">
+                <a href="<?= PluginEngine::getLink("MumieTask", array('server_id' => $server["server_id"]),'admin/editServer'); ?>">
+                        <?= Icon::create('edit', 'clickable')->asImg('20px'); ?>
+                </a>
+            </td>
+            <td>
+                <a href="<?= PluginEngine::getLink("MumieTask", array('server_id' => $server["server_id"]),'admin/delete'); ?>">
                     <?= Icon::create('trash', 'clickable')->asImg('20px'); ?>
                 </a>
             </td>
