@@ -11,6 +11,36 @@ class Initial extends Migration {
             );"
         );
 
+        /*
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_task (
+            task_id integer NOT NULL AUTO_INCREMENT,
+            name text NOT NULL,
+            course integer NOT NULL,
+            task_url text NOT NULL,
+            launch_container integer NOT NULL,
+            mumie_course text NOT NULL,
+            language text NOT NULL,
+            server text NOT NULL,
+            mumie_coursefile text NOT NULL,
+            points integer NOT NULL,
+            duedate integer,
+            privategradepool integer NOT NULL,
+            PRIMARY KEY (task_id)
+            );"
+        );*/
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_task (
+            task_id integer NOT NULL AUTO_INCREMENT,
+            name text NOT NULL,
+            course integer NOT NULL,
+            task_url text NOT NULL,
+            launch_container integer NOT NULL,
+            mumie_course text NOT NULL,
+            language text NOT NULL,
+            server text NOT NULL,
+            PRIMARY KEY (task_id)
+            );"
+        );
+
         $db->exec("INSERT INTO mumie_server (name, url_prefix)
             VALUES
             ('OMB+', 'https://www.ombplus.de/ombplus/')
@@ -59,6 +89,7 @@ class Initial extends Migration {
     public function down() {
         $db = DBManager::get();
         $db->exec("DROP TABLE mumie_server;");
+        $db->exec("DROP TABLE mumie_task");
 
         Config::get()->delete("MUMIE_SHARE_FIRSTNAME");
         Config::get()->delete("MUMIE_SHARE_LASTNAME");
