@@ -1,15 +1,24 @@
 <?php
 
 class MumieServer extends SimpleORMap {
+
     protected static function configure($config = array()) {
         $config['db_table'] = 'mumie_server';
         parent::configure($config);
     }
 
-    public static function loadById($id) {
-        $record = MumieServer::find($id);
-        $record->server_id = $id;
-        return MumieServer::buildExisting($record);
+    public static function getByUrl($url) {
+        return self::findOneBySQL("url_prefix = ?", [$url]);
+    }
+
+    public static function getByName($name) {
+        return self::findOneBySQL("name = ?", [$name]);
+    }
+
+    public static function getStandardizedUrl($url) {
+        $url = trim($url);
+        $url = (substr($url, -1) == '/' ? $url : $url . '/');
+        return $url;
     }
 
 }

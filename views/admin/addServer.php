@@ -1,4 +1,5 @@
 <?php 
+
     $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTask')->getPluginPath() . '/templates');
     $template = $factory->open('ServerForm.php');
     /* The PluginEngine must be used here. 

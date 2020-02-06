@@ -1,5 +1,6 @@
 <?php 
 require_once('app/controllers/plugin_controller.php');
+require_once('public/plugins_packages/integral-learning/MumieTask/models/serverStructure/MumieServerInstance.php');
 
 class AdminController extends StudipController {
 
@@ -39,18 +40,22 @@ class AdminController extends StudipController {
             $config->store(MUMIE_SHARE_EMAIL, Request::get('share_email'));
             PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Änderungen gespeichert') . '!'));
         }
-
     }
     
     public function addServer_action() {
         if(Request::isPost()) {
             $server = new MumieServer();
-            $server['name'] = Request::get('name');
-            $server['url_prefix'] = Request::get('url_prefix');
-            $server->store();
-            PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Server erfolgreich hinzugefügt') . '!'));
-     
-            $this->redirect('admin/index');
+            $server->name = trim(Request::get('name'));
+            $server->url_prefix = MumieServer::getStandardizedUrl(Request::get('url_prefix'));
+            $errors = $this->getFormValidationErrors($server);
+        
+            if(count($errors)>0) {
+                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+            } else {
+                $server->store();
+                PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Server erfolgreich hinzugefügt') . '!'));
+                $this->redirect('admin/index');
+            }
             
         }
     }
@@ -58,14 +63,20 @@ class AdminController extends StudipController {
     public function editServer_action() {
         if(Request::isPost()) {
             $server = MumieServer::find(Request::option('server_id'));
-            $server->name = Request::get('name');
-            $server->url_prefix = Request::get('url_prefix');
-            $server->store();
-            PageLayout::postMessage(
-                MessageBox::success(dgettext('MumieTask', 'Server erfolgreich geändert') . '!')
-            );
-    
-            $this->redirect('admin/index');
+            $server->name = trim(Request::get('name'));
+            $server->url_prefix = MumieServer::getStandardizedUrl(Request::get('url_prefix'));
+            $errors = $this->getFormValidationErrors($server, true);
+        
+            if(count($errors)>0) {
+                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+            } else {
+                $server->store();
+                PageLayout::postMessage(
+                    MessageBox::success(dgettext('MumieTask', 'Server erfolgreich geändert') . '!')
+                );
+         
+                $this->redirect('admin/index');
+            }    
         }
     }
 
@@ -88,7 +99,32 @@ class AdminController extends StudipController {
         }
     }
 
-    private function validateServer() {
+    private function getFormValidationErrors($server, $isEdit = false) {
+        $serverInstance = new MumieServerInstance($server);
+        $errors = array();
+
+        $serverByPrefix = MumieServer::getByUrl($server->url_prefix);
+        $serverByName = MumieServer::getByName($server->name);
+
+        if(!$serverInstance->isValidMumieServer()) {
+            $errors[] = dgettext('MumieTask', 'Für folgende URL existiert kein MUMIE-Server') . ': <br>' . $server->url_prefix;
+        }
         
+        if($isEdit) {
+            if($serverByPrefix != null && $serverByPrefix->id !=$server->id) {
+                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix') . ':<br><br>' . $server->url_prefix;
+            }
+            if($serverByName != null && $serverByName->id != $server->id) {
+                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen Namen') . '!';
+            }
+        } else {
+            if($serverByPrefix != null) {
+                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix') . ':<br><br>' . $server->url_prefix;
+            }
+            if($serverByName != null) {
+                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen Namen') . '!';
+            }
+        }
+        return $errors;
     }
 }
