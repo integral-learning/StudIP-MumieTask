@@ -10,6 +10,7 @@ class TaskController extends StudipController {
         Navigation::activateItem('/course/mumietask');
     }
     public function index_action() {
+        $this->tasks = MumieTask::findBySQL("task_id>0");
         $actions = new ActionsWidget();
         $actions->addLink(
             dgettext('Mumietask','Neue MUMIE-Task anlegen'),
@@ -31,6 +32,34 @@ class TaskController extends StudipController {
             $task->language = Request::get('language');
             $task->course = 1;
             $task->store();
+
+            PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+            $this->redirect('task/index');
+
         }
     }
+
+    public function deleteTask_action() {
+        $task = MumieTask::find(Request::option("task_id"));
+        $task->delete();
+        PageLayout::postMessage(
+            MessageBox::success(dgettext('MumieServer', 'MUMIE-Task wurde gelöscht') . '!')
+        );
+        $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'task/index'));
+    }
+
+    public function editTask_action() {
+
+    }
+
+    public function displayTask_action() {
+        $this->task = MumieTask::find(Request::option("task_id"));
+
+    }
+
+    public function launch_action() {
+        $this->task = MumieTask::find(Request::option("task_id"));
+
+    }
+
 }

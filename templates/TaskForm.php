@@ -31,8 +31,8 @@
     <label>
         <?= dgettext('MumieTask', 'MUMIE-Aufgabe'); ?>
         <select name="task_url">
-            <option value="problem1">problem1</option>
-            <option value="problem2">problem2</option>
+            <option value="https://www.google.de">problem1</option>
+            <option value="https://www.ombplus.de/ombplus/link/ElemenRechneMengenZahlen/Schlus">OMB+</option>
         </select>
     </label>
     <label>

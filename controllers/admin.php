@@ -88,7 +88,7 @@ class AdminController extends StudipController {
         PageLayout::postMessage(
             MessageBox::success(dgettext('MumieServer', 'Server wurde gelöscht') . '!')
         );
-        $this->redirect(PluginEngine::getURL("MumieTask", array(), 'admin/index'));
+        $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/index'));
     }
 
     public function authentication_action() {

@@ -11,16 +11,16 @@
                 <?= htmlReady($server['url_prefix']); ?>
             </td>
             <td>
-                <a href="<?= PluginEngine::getLink("MumieTask", array('server_id' => $server["server_id"]),'admin/editServer'); ?>">
+                <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('server_id' => $server["server_id"]),'admin/editServer'); ?>">
                         <?= Icon::create('edit', 'clickable')->asImg('20px'); ?>
                 </a>
             </td>
             <td>
-                <a href="<?= PluginEngine::getLink("MumieTask", array('server_id' => $server["server_id"]),'admin/delete'); ?>">
+                <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('server_id' => $server["server_id"]),'admin/delete'); ?>">
                     <?= Icon::create('trash', 'clickable')->asImg('20px'); ?>
                 </a>
             </td>
         </tr>
     <? endforeach ?>
 </table>
-<a href=<?= PluginEngine::getLink("MumieTask", array(), 'admin/addServer'); ?> data-dialog class="button">Add Server</a>
+<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/addServer'); ?> data-dialog class="button">Add Server</a>
