@@ -21,4 +21,8 @@ class MumieServer extends SimpleORMap {
         return $url;
     }
 
+    public static function getAll() {
+        return self::findBySQL("server_id > 0");
+    }
+
 }
