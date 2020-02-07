@@ -75,8 +75,6 @@ class MumieServerInstance implements \JsonSerializable{
      * Get and set the latest tasks and courses from the MUMIE server
      */
     public function loadStructure() {
-        PageLayout::postMessage(MessageBox::success("serverinstance: loading structure"));
-
         $coursesandtasks = $this->getCoursesAndTasks();
         $this->courses = [];
         if ($coursesandtasks) {
@@ -106,5 +104,41 @@ class MumieServerInstance implements \JsonSerializable{
         $vars = get_object_vars($this);
 
         return $vars;
+    }
+
+    public static function getAllWithStructure() {
+        return array_map(function($server) {
+            $instance = new MumieServerInstance($server);
+            $instance->loadStructure();
+            return $instance;
+        }, MumieServer::getAll());
+    }  
+
+    public function getUrlprefix(){
+        return $this->url_prefix;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Get all courses that are available on the server
+     *
+     * @return  mumie_course[]
+     */ 
+    public function getCourses()
+    {
+        return $this->courses;
+    }
+
+    /**
+     * Get all languages that are available on the server
+     *
+     * @return  string[]
+     */ 
+    public function getLanguages()
+    {
+        return $this->languages;
     }
 }

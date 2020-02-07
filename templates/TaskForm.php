@@ -1,3 +1,4 @@
+
 <form class="default" action="<?= $action; ?>" method="post">
     <label>
         <span class="required">
@@ -10,29 +11,57 @@
             <?= dgettext('MumieTask', 'MUMIE-Server'); ?>
         </span> 
         <select name="server">
-            <option value="asd">asd</option>
-            <option value="qwe">qwe</option>
+            <? 
+                $options = $collector->getServerOptions();
+                foreach (array_keys($options) as $key): 
+            ?>
+                <option value= <?= $key; ?> >
+                    <?= $options[$key]; ?>
+                </option>
+ 
+            <? endforeach ?>
         </select>
     </label>
     <label>
         <?= dgettext('MumieTask', 'MUMIE-Kurs'); ?>
         <select name="course">
-            <option value="course1">course1</option>
-            <option value="course2">course2</option>
+            <? 
+                $options = $collector->getCourseOptions();
+                foreach (array_keys($options) as $key): 
+            ?>
+                <option value= <?= $key; ?> >
+                    <?= $options[$key]; ?>
+                </option>
+ 
+            <? endforeach ?>
         </select>
     </label>
     <label>
         <?= dgettext('MumieTask', 'Sprache'); ?>
         <select name="language">
-            <option value="sprache1">sprache1</option>
-            <option value="sprache2">sprache2</option>
+            <? 
+                $options = $collector->getLangOptions();
+                foreach (array_keys($options) as $key): 
+            ?>
+                <option value= <?= $key; ?> >
+                    <?= $options[$key]; ?>
+                </option>
+ 
+            <? endforeach ?>
         </select>
     </label>
     <label>
         <?= dgettext('MumieTask', 'MUMIE-Aufgabe'); ?>
         <select name="task_url">
-            <option value="https://www.google.de">problem1</option>
-            <option value="https://www.ombplus.de/ombplus/link/ElemenRechneMengenZahlen/Schlus">OMB+</option>
+            <? 
+                $options = $collector->getTaskOptions();
+                foreach (array_keys($options) as $key): 
+            ?>
+                <option value= <?= $key; ?> >
+                    <?= $options[$key]; ?>
+                </option>
+ 
+            <? endforeach ?>
         </select>
     </label>
     <label>

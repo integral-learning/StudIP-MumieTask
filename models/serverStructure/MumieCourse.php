@@ -8,7 +8,7 @@ class MumieCourse implements \JsonSerializable{
     private $name;
     /**
      * All tasks available on the server
-     * @var mumie_problem[]
+     * @var MumieProblem[]
      */
     private $tasks;
     /**
@@ -23,7 +23,7 @@ class MumieCourse implements \JsonSerializable{
     private $languages = array();
     /**
      * All tags set for tasks in this course
-     * @var mumie_tag[]
+     * @var MumieTag[]
      */
     private $tags = array();
 
@@ -90,5 +90,19 @@ class MumieCourse implements \JsonSerializable{
 
     public function getLanguages() {
         return $this->languages;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Get all tasks available on the server
+     *
+     * @return  MumieProblem[]
+     */ 
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }
