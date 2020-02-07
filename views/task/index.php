@@ -21,4 +21,4 @@
         </tr>
     <? endforeach ?>
 </table>
-<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'task/addTask'); ?> data-dialog class="button">Neue MUMIE-Task hinzufügen</a>
+<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'task/addTask'); ?> class="button">Neue MUMIE-Task hinzufügen</a>
