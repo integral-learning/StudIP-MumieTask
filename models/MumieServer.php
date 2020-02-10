@@ -3,7 +3,7 @@
 class MumieServer extends SimpleORMap {
 
     protected static function configure($config = array()) {
-        $config['db_table'] = 'mumie_server';
+        $config['db_table'] = 'mumie_servers';
         parent::configure($config);
     }
 

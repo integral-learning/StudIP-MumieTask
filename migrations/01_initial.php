@@ -3,7 +3,7 @@ class Initial extends Migration {
     public function up() {
         $db = DBManager::get();
 
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_server (
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_servers (
             server_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
             url_prefix text NOT NULL,
@@ -28,7 +28,7 @@ class Initial extends Migration {
             PRIMARY KEY (task_id)
             );"
         );*/
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_task (
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_tasks (
             task_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
             course integer NOT NULL,
@@ -40,6 +40,20 @@ class Initial extends Migration {
             PRIMARY KEY (task_id)
             );"
         );
+
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_sso_tokens (
+            token_id integer NOT NULL AUTO_INCREMENT,
+            token text NOT NULL,
+            the_user text NOT NULL,
+            timecreated integer NOT NULL AUTO_INCREMENT,
+            PRIMARY KEY (task_id)
+        )");
+
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_id_hashes (
+            hash_id integer NOT NULL AUTO_INCREMENT,
+            the_user text NOT NULL,
+            hash text NOT NULL,
+        )");
 
         $db->exec("INSERT INTO mumie_server (name, url_prefix)
             VALUES
@@ -88,8 +102,10 @@ class Initial extends Migration {
 
     public function down() {
         $db = DBManager::get();
-        $db->exec("DROP TABLE mumie_server;");
-        $db->exec("DROP TABLE mumie_task");
+        $db->exec("DROP TABLE mumie_servers;");
+        $db->exec("DROP TABLE mumie_tasks");
+        $db->exec("DROP TABLE mumie_sso_tokens");
+        $db->exec("DROP TABLE mumie_id_hashes");
 
         Config::get()->delete("MUMIE_SHARE_FIRSTNAME");
         Config::get()->delete("MUMIE_SHARE_LASTNAME");

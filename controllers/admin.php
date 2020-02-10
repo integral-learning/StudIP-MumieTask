@@ -17,15 +17,15 @@ class AdminController extends StudipController {
         $links->setTitle("Einstellungen");
         $links->addLink(
             dgettext('MumieTask', 'MUMIE-Server'),
-            PluginEngine::getURL("MumieTask", array(), 'admin/index'),
+            PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/index'),
             null);
         $links->addLink(
             dgettext('MumieTask', 'Datenschutz'),
-            PluginEngine::getURL("MumieTask", array(), 'admin/privacy'),
+            PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/privacy'),
             null);
         $links->addLink(
             dgettext('MumieTask', 'Authentification'),
-            PluginEngine::getURL("MumieTask", array(), 'admin/authentication'),
+            PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/authentication'),
             null);
         Sidebar::Get()->addWidget($links);
     }
