@@ -42,6 +42,20 @@ class Initial extends Migration {
             );"
         );
 
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_sso_tokens (
+            token_id integer NOT NULL AUTO_INCREMENT,
+            token text NOT NULL,
+            the_user text NOT NULL,
+            timecreated integer NOT NULL AUTO_INCREMENT,
+            PRIMARY KEY (task_id)
+        )");
+
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_id_hashes (
+            hash_id integer NOT NULL AUTO_INCREMENT,
+            the_user text NOT NULL,
+            hash text NOT NULL,
+        )");
+
         $db->exec("INSERT INTO mumie_servers (name, url_prefix)
             VALUES
             ('OMB+', 'https://www.ombplus.de/ombplus/')
@@ -91,6 +105,8 @@ class Initial extends Migration {
         $db = DBManager::get();
         $db->exec("DROP TABLE mumie_servers;");
         $db->exec("DROP TABLE mumie_tasks");
+        $db->exec("DROP TABLE mumie_sso_tokens");
+        $db->exec("DROP TABLE mumie_id_hashes");
 
         Config::get()->delete("MUMIE_SHARE_FIRSTNAME");
         Config::get()->delete("MUMIE_SHARE_LASTNAME");

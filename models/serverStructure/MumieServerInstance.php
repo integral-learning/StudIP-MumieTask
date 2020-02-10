@@ -96,6 +96,10 @@ class MumieServerInstance implements \JsonSerializable{
         $this->languages = array_values(array_unique($langs));
     }
 
+    public function getLoginUrl() {
+        return $this->url_prefix . 'public/xapi/auth/sso/login';
+    }
+
     /**
      * Necessary to encode this object as json.
      * @return mixed
