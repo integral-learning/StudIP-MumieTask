@@ -80,6 +80,7 @@ class MumieCourse implements \JsonSerializable{
 
     public function getTaskByLink($link)
     {
+        $link = MumieProblem::removeParamsFromUrl($link);
         foreach ($this->tasks as $task) {
             if ($task->getLink() == $link) {
                 return $task;

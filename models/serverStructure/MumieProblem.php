@@ -73,6 +73,10 @@ class MumieProblem implements \JsonSerializable{
         return $this->link;
     }
 
+    public static function removeParamsFromUrl($url) {
+        return substr($url, 0, strpos($url, '?'));
+    }
+
     /**
      * Set the value of link
      * @param string $link

@@ -58,7 +58,28 @@ class TaskController extends StudipController {
     }
 
     public function editTask_action() {
-
+        $this->task = MumieTask::find(Request::option("task_id"));
+        $this->structuredServers = MumieServerInstance::getAllWithStructure();
+        if(Request::isPost()) {
+            $task = MumieTask::find(Request::option("task_id"));
+            $task->name = Request::get('name');
+            $task->server = Request::get('server');
+            $task->task_url = Request::get('task_url');
+            $task->launch_container = Request::get('launch_container');
+            $task->mumie_course = Request::get('course');
+            $task->language = Request::get('language');
+            $task->mumie_coursefile = Request::get('coursefile');
+            $task->course = 1;
+            
+            $errors = $this->getFormValidationErrors($task);
+            if(count($errors)>0) {
+                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+            } else {
+                $task->store();
+                PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+                $this->redirect('task/index');
+            }
+        }
     }
 
     public function displayTask_action() {
@@ -93,8 +114,7 @@ class TaskController extends StudipController {
             return $errors;
         }
 
-        $linkWithoutLang = str_replace("?lang=" . $task->language, "", $task->task_url);
-        $problem = $course->getTaskByLink($linkWithoutLang);
+        $problem = $course->getTaskByLink($task->task_url);
         if($problem == null) {
             $errors[] = dgettext('MumieTask', 'Das gewählte MUMIE-Problem konnte nicht gefunden werden.');
             return $errors;

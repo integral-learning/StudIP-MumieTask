@@ -15,7 +15,7 @@
                 $options = $collector->getServerOptions();
                 foreach (array_keys($options) as $key): 
             ?>
-                <option value= <?= $key; ?> >
+                <option value= <?= $key; ?> <?= $key == $server ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
  
@@ -29,14 +29,14 @@
                 $options = $collector->getCourseOptions();
                 foreach (array_keys($options) as $key): 
             ?>
-                <option value= <?= $key; ?> >
+                <option value= <?= $key; ?> <?= $key == $mumie_course ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
  
             <? endforeach ?>
         </select>
     </label>
-    <input type="hidden" id="mumie_coursefile" name = "coursefile">
+    <input type="hidden" id="mumie_coursefile" name = "coursefile" value=<?= $mumie_coursefile;?>>
     <label>
         <?= dgettext('MumieTask', 'Sprache'); ?>
         <select id="mumie_language" name="language">
@@ -44,7 +44,7 @@
                 $options = $collector->getLangOptions();
                 foreach (array_keys($options) as $key): 
             ?>
-                <option value= <?= $key; ?> >
+                <option value= <?= $key; ?> <?= $key == $language ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
  
@@ -58,7 +58,7 @@
                 $options = $collector->getTaskOptions();
                 foreach (array_keys($options) as $key): 
             ?>
-                <option value= <?= $key; ?> >
+                <option value= <?= $key; ?> <?= $key == $task_url ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
  
@@ -68,8 +68,8 @@
     <label>
         <?= dgettext('MumieTask', 'Startcontainer'); ?>
         <select name="launch_container">
-            <option value="1">Eingebunden</option>
-            <option value="0">Neuer Browser-Tab</option>
+            <option value="1" <?= $launch_container == 1 ? "selected = 'selected'" :"";?>>Eingebunden</option>
+            <option value="0" <?= $launch_container == 0 ? "selected = 'selected'" :"";?>>Neuer Browser-Tab</option>
         </select>
     </label>
         <?= \Studip\Button::create(dgettext('MumieTask', 'Einfügen')); ?>
@@ -278,8 +278,8 @@
                     taskDropDown.onchange = function() {
                         updateName();
                     };
-                    taskController.updateOptions(isEdit ?
-                        taskDropDown.options[taskDropDown.selectedIndex].getAttribute('value') : undefined
+                    taskController.updateOptions(isEdit ? 
+                    taskDropDown.options[taskDropDown.selectedIndex].getAttribute('value') + "?lang=" + langController.getSelectedLanguage() : undefined
                     );
                 },
                 getSelectedTask: function() {
@@ -535,14 +535,11 @@
             langController.disable();
             taskController.disable();
         } else {
-            console.log("hallo");
-            
             serverController.init(JSON.parse('<?=json_encode($serverStructure);?>'));
             courseController.init(isEdit);
             taskController.init(isEdit);
             langController.init();
             filterController.init();
-            
         }
                 /*
                 if (addServerButton) {
