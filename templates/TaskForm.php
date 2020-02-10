@@ -1,4 +1,10 @@
 
+<style type="text/css">
+<?php include 'public/plugins_packages/integral-learning/MumieTaskPlugin/mumieStyle.css'; ?>
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <form class="default" action="<?= $action; ?>" method="post">
     <label>
         <span class="required">
@@ -65,6 +71,13 @@
             <? endforeach ?>
         </select>
     </label>
+    <div id ="mumie_filter_section">
+        <div id="mumie_filter_header" class="mumie-collapsable">
+        Filter MumieTasks
+        </div>
+        <div id = "mumie_filter_wrapper">
+        </div>
+    </div>
     <label>
         <?= dgettext('MumieTask', 'Startcontainer'); ?>
         <select name="launch_container">
@@ -333,7 +346,7 @@
 
                 var label = document.createElement('label');
                 label.innerHTML = '<i class="fa fa-caret-down mumie-icon"></i>' + tag.name;
-                label.classList.add('col-md-3', 'mumie-collapsable');
+                label.classList.add('col-md-3', 'mumie-collapsable', 'mumie_label');
                 label.onclick = function() {
                     toggleVisibility(selectionBox);
                 };
@@ -362,6 +375,7 @@
                     setCheckboxListener(tag, checkbox);
 
                     var label = document.createElement('label');
+                    label.classList.add('mumie_label');
                     label.innerText = value;
                     label.style = "padding-left: 5px";
                     inputWrapper.appendChild(checkbox);
