@@ -3,7 +3,7 @@ class Initial extends Migration {
     public function up() {
         $db = DBManager::get();
 
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_server (
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_servers (
             server_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
             url_prefix text NOT NULL,
@@ -28,7 +28,7 @@ class Initial extends Migration {
             PRIMARY KEY (task_id)
             );"
         );*/
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_task (
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_tasks (
             task_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
             course integer NOT NULL,
@@ -37,11 +37,12 @@ class Initial extends Migration {
             mumie_course text NOT NULL,
             language text NOT NULL,
             server text NOT NULL,
+            mumie_coursefile text NOT NULL,
             PRIMARY KEY (task_id)
             );"
         );
 
-        $db->exec("INSERT INTO mumie_server (name, url_prefix)
+        $db->exec("INSERT INTO mumie_servers (name, url_prefix)
             VALUES
             ('OMB+', 'https://www.ombplus.de/ombplus/')
             ;");
@@ -88,8 +89,8 @@ class Initial extends Migration {
 
     public function down() {
         $db = DBManager::get();
-        $db->exec("DROP TABLE mumie_server;");
-        $db->exec("DROP TABLE mumie_task");
+        $db->exec("DROP TABLE mumie_servers;");
+        $db->exec("DROP TABLE mumie_tasks");
 
         Config::get()->delete("MUMIE_SHARE_FIRSTNAME");
         Config::get()->delete("MUMIE_SHARE_LASTNAME");

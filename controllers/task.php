@@ -32,11 +32,18 @@ class TaskController extends StudipController {
             $task->launch_container = Request::get('launch_container');
             $task->mumie_course = Request::get('course');
             $task->language = Request::get('language');
+            $task->mumie_coursefile = Request::get('coursefile');
             $task->course = 1;
-            $task->store();
+            
+            $errors = $this->getFormValidationErrors($task);
+            if(count($errors)>0) {
+                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+            } else {
+                $task->store();
+                PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+                $this->redirect('task/index');
+            }
 
-            PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
-            $this->redirect('task/index');
 
         }
     }
@@ -62,6 +69,42 @@ class TaskController extends StudipController {
     public function launch_action() {
         $this->task = MumieTask::find(Request::option("task_id"));
 
+    }
+
+    private function getFormValidationErrors($task) {
+        $server = MumieServer::getByUrl($task->server);
+        
+        if($server == null || !(new MumieServerInstance($server))->isValidMumieServer()) {
+            $errors[] = dgettext('MumieTask', 'Der gewählte MUMIE-Server konnte nicht gefunden werden.');
+            return $errors;
+        }
+
+        $serverInstance = new MumieServerInstance($server);
+        $serverInstance->loadStructure();
+        $course = $serverInstance->getCoursebyName($task->mumie_course);
+
+        if($course == null) {
+            $errors[] = dgettext('MumieTask', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.1');
+            return $errors;
+        }
+
+        if($course == null || $task->mumie_coursefile == null) {
+            $errors[] = dgettext('MumieTask', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.2222');
+            return $errors;
+        }
+
+        $linkWithoutLang = str_replace("?lang=" . $task->language, "", $task->task_url);
+        $problem = $course->getTaskByLink($linkWithoutLang);
+        if($problem == null) {
+            $errors[] = dgettext('MumieTask', 'Das gewählte MUMIE-Problem konnte nicht gefunden werden.');
+            return $errors;
+        }
+        
+        if(!in_array($task->language, $problem->getLanguages())) {
+            $errors[] =  dgettext('MumieTask', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem');
+            return $errors;
+        }
+        
     }
 
 }

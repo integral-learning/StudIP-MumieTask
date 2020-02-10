@@ -78,6 +78,15 @@ class MumieCourse implements \JsonSerializable{
         $this->tags = array_values($tags);
     }
 
+    public function getTaskByLink($link)
+    {
+        foreach ($this->tasks as $task) {
+            if ($task->getLink() == $link) {
+                return $task;
+            }
+        }
+    }
+
     /**
      * Necessary to encode this object as json.
      * @return mixed

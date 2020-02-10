@@ -141,4 +141,13 @@ class MumieServerInstance implements \JsonSerializable{
     {
         return $this->languages;
     }
+
+    public function getCourseByName($name)
+    {
+        foreach ($this->courses as $course) {
+            if ($course->getName() == $name) {
+                return $course;
+            }
+        }
+    }
 }

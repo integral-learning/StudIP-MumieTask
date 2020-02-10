@@ -36,7 +36,7 @@
             <? endforeach ?>
         </select>
     </label>
-    <input type="hidden" id="mumie_coursefile">
+    <input type="hidden" id="mumie_coursefile" name = "coursefile">
     <label>
         <?= dgettext('MumieTask', 'Sprache'); ?>
         <select id="mumie_language" name="language">
