@@ -6,4 +6,8 @@ class MumieTask extends SimpleORMap {
         $config['db_table'] = 'mumie_tasks';
         parent::configure($config);
     }
+
+    public static function findAllInCourse($courseId) {
+        return self::findBySQL("course = ?", array($courseId));
+    }
 }

@@ -11,7 +11,7 @@ class TaskController extends StudipController {
         Navigation::activateItem('/course/mumietask');
     }
     public function index_action() {
-        $this->tasks = MumieTask::findBySQL("task_id>0");
+        $this->tasks = MumieTask::findAllInCourse(\Context::getId());
         $actions = new ActionsWidget();
         $actions->addLink(
             dgettext('Mumietask','Neue MUMIE-Task anlegen'),
@@ -33,7 +33,7 @@ class TaskController extends StudipController {
             $task->mumie_course = Request::get('course');
             $task->language = Request::get('language');
             $task->mumie_coursefile = Request::get('coursefile');
-            $task->course = 1;
+            $task->course = \Context::getId();
             
             $errors = $this->getFormValidationErrors($task);
             if(count($errors)>0) {
