@@ -69,7 +69,7 @@ class TaskController extends StudipController {
             $task->mumie_course = Request::get('course');
             $task->language = Request::get('language');
             $task->mumie_coursefile = Request::get('coursefile');
-            $task->course = 1;
+            $task->course = \Context::getId();
             
             $errors = $this->getFormValidationErrors($task);
             if(count($errors)>0) {
