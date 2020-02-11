@@ -73,7 +73,8 @@
     </label>
     <div id ="mumie_filter_section">
         <div id="mumie_filter_header" class="mumie-collapsable">
-        Filter MumieTasks
+            <i class="fa fa-caret-down mumie-icon"></i>
+            Filter MumieTasks
         </div>
         <div id = "mumie_filter_wrapper">
         </div>
@@ -413,7 +414,7 @@
              * @param {Object} elem
              */
             function toggleVisibility(elem) {
-                elem.toggleAttribute('hidden');
+                elem.classList.toggle('hidden');
             }
 
             /**

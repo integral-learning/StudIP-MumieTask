@@ -3,7 +3,7 @@
     box-sizing: border-box;
     padding-top: 10px;
     overflow: auto;
-    max-height: 150px;
+    max-height: 350px;
 }
 
 .mumie-filter {
@@ -11,7 +11,7 @@
     padding-left: 15px;
     border-top: 1px solid #ced4da;
     margin-bottom: 5px;
-
+    display: flex;
 }
 
 .mumie-icon {
@@ -26,6 +26,7 @@
 
 .mumie-collapsable:hover {
     color: #0b4f8a;
+    font-weight: bold;
     text-decoration: underline;
 }
 
@@ -38,5 +39,19 @@
 }
 
 .mumie_label {
-    display: inline-block !important;
+    width: 10em;
+}
+
+.mumie_input_wrapper {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.mumie_input_wrapper:hover {
+    font-weight: bold;
+    min-height: 15px;
+}
+
+.hidden {
+    display: none;
 }
