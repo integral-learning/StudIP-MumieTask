@@ -46,14 +46,15 @@ class Initial extends Migration {
             token_id integer NOT NULL AUTO_INCREMENT,
             token text NOT NULL,
             the_user text NOT NULL,
-            timecreated integer NOT NULL AUTO_INCREMENT,
-            PRIMARY KEY (task_id)
+            timecreated int(20) NOT NULL,
+            PRIMARY KEY (token_id)
         )");
 
         $db->exec("CREATE TABLE IF NOT EXISTS mumie_id_hashes (
             hash_id integer NOT NULL AUTO_INCREMENT,
             the_user text NOT NULL,
             hash text NOT NULL,
+            PRIMARY KEY (hash_id)
         )");
 
         $db->exec("INSERT INTO mumie_servers (name, url_prefix)

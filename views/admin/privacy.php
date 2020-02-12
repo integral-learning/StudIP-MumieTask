@@ -1,6 +1,6 @@
 <h1>Admininstrator-Einstellungen für MUMIE-Task</h1>
 <h2>Datenschutz</h2>
-<form class="default" action="<?= PluginEngine::getLink("MumieTask", array(), 'admin/privacy'); ?>" method="post">
+<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/privacy'); ?>" method="post">
 <table>
     <tr>
         <td>

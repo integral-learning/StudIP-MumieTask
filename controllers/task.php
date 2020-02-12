@@ -1,8 +1,10 @@
 <?php 
 require_once('app/controllers/plugin_controller.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieServerInstance.php');
-
-// TODO: Make sure that only admins have access
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieHash.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieSSOToken.php');
+// TODO: Check how can access this
 
 class TaskController extends StudipController {
     function before_filter(&$action, &$args)
@@ -89,6 +91,7 @@ class TaskController extends StudipController {
 
     public function launch_action() {
         $this->task = MumieTask::find(Request::option("task_id"));
+        SSOService::generateTokenForUser($GLOBALS['user']->id);
 
     }
 

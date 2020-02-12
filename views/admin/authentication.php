@@ -1,6 +1,6 @@
 <h1>Admininstrator-Einstellungen für MUMIE-Task</h1>
 <h2>Authentifizierung</h2>
-<form class="default" action="<?= PluginEngine::getLink("MumieTask", array(), 'admin/authentication'); ?>" method="post">
+<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>" method="post">
 <table>
     <tr>
         <td>

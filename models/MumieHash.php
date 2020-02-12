@@ -8,4 +8,8 @@ class MumieHash extends SimpleORMap {
     public static function findByHash($hash) {
         return MumieHash::findOneBySQL("hash = ?", array($hash));
     }
+
+    public static function findByUser($userId) {
+        return MumieHash::findOneBySQL("the_user = ?", array($userId));
+    }
 }

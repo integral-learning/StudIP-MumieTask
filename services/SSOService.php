@@ -1,9 +1,11 @@
 <?php 
+require_once('HashingService.php');
 class SSOService {
-    public static function generateTokenForUser($userId) {
-        $hashedUserID = HashingService::getHash($userId);
-        if($ssoToken = MumieSSOToken::findByUser($userId)) {
+    const TOKEN_LENGTH = 30;
 
+    public static function generateTokenForUser($userId) {
+        $hashedUserID = HashingService::getHash($userId)->hash;
+        if($ssoToken = MumieSSOToken::findByUser($hashedUserID)) {
         } else {
             $ssoToken = new MumieSSOToken();
             $ssoToken->the_user = $hashedUserID;
