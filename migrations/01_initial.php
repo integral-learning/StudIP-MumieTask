@@ -57,13 +57,15 @@ class Initial extends Migration {
             PRIMARY KEY (hash_id)
         )");
 
+/*
         $db->exec("INSERT INTO mumie_servers (name, url_prefix)
             VALUES
             ('OMB+', 'https://www.ombplus.de/ombplus/')
             ;");
+            */
 
         Config::get()->create("MUMIE_SHARE_FIRSTNAME", array(
-            'value'       => "asdasd",
+            'value' => 0,
             'is_default'  => 0,
             'type'        => 'boolean',
             'range'       => 'global',
@@ -71,7 +73,7 @@ class Initial extends Migration {
             'description' => 'Vornamen der User mit MUMIE-Servern teilen'
         ));
         Config::get()->create("MUMIE_SHARE_LASTNAME", array(
-            'value'       => "asdasd",
+            'value' => 0,
             'is_default'  => 0,
             'type'        => 'boolean',
             'range'       => 'global',
@@ -79,7 +81,7 @@ class Initial extends Migration {
             'description' => 'Nachnamen der User mit MUMIE-Servern teilen'
         ));
         Config::get()->create("MUMIE_SHARE_EMAIL", array(
-            'value'       => "asdasd",
+            'value' => 0,
             'is_default'  => 0,
             'type'        => 'boolean',
             'range'       => 'global',
@@ -87,14 +89,14 @@ class Initial extends Migration {
             'description' => 'E-Mail der User mit MUMIE-Servern teilen'
         ));
         Config::get()->create("MUMIE_ORG", array(
-            'value'       => "asdasd",
+            'value' => "org",
             'type'        => 'string',
             'range'       => 'global',
             'section'     => 'global',
             'description' => 'Geben Sie ihr Org-Merkmal an'
         ));
         Config::get()->create("MUMIE_API_KEY", array(
-            'value'       => "asdasd",
+            'value' => "api-key",
             'type'        => 'string',
             'range'       => 'global',
             'section'     => 'global',

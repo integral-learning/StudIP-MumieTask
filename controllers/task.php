@@ -91,7 +91,9 @@ class TaskController extends StudipController {
 
     public function launch_action() {
         $this->task = MumieTask::find(Request::option("task_id"));
-        SSOService::generateTokenForUser($GLOBALS['user']->id);
+        $this->mumieToken = SSOService::generateTokenForUser($GLOBALS['user']->id);
+        $this->org = Config::get()->MUMIE_ORG;
+        
 
     }
 

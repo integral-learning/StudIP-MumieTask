@@ -97,7 +97,6 @@ class AdminController extends StudipController {
             $config->store(MUMIE_ORG, Request::get('mumie_org'));
             $config->store(MUMIE_API_KEY, Request::get('mumie_api_key'));
             PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Änderungen gespeichert') . '!'));
-            $this->redirect(PluginEngine::getURL("MumieTask", array(), 'admin/index'));
         }
     }
 
