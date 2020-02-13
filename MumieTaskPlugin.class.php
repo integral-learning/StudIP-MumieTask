@@ -6,7 +6,7 @@ require_once(__DIR__ . '/models/MumieHash.php');
 require_once(__DIR__ . '/services/MumieRouteMap.php');
 
 
-class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlugin, RESTAPIPlugin {
+class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlugin {
     function __construct() {
         global $perm;
         parent::__construct();
@@ -36,9 +36,5 @@ class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlug
     function getMetadata() {
         $metadata = array(        'category' => 'Inhalte und Aufgabenstellungen');
 
-    }
-
-    public function getRouteMaps() {
-        return new MumieRouteMap();
     }
 }
