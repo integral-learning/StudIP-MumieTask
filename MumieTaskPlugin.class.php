@@ -3,15 +3,13 @@
 require_once(__DIR__ . '/models/MumieServer.php');
 require_once(__DIR__ . '/models/MumieTask.php');
 require_once(__DIR__ . '/models/MumieHash.php');
-require_once(__DIR__ . '/services/MumieRouteMap.php');
-
 
 class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlugin {
     function __construct() {
         global $perm;
         parent::__construct();
         if ($perm->have_perm('root')) {
-            $config = new Navigation('MUMIE-Task Einstellungen',PluginEngine::getLink($this, array(), 'admin'));
+            $config = new Navigation('MUMIE-Task',PluginEngine::getLink($this, array(), 'admin'));
             $config->setURL(PluginEngine::getLink($this, array(), 'admin'));
             Navigation::addItem('/admin/config/mumie', $config);
         }

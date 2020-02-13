@@ -9,9 +9,7 @@ class AdminController extends StudipController {
     function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
-
-        $navigation = new Navigation('Mumie');
-        $navigation->setURL('https://www.google.de');
+        Navigation::activateItem('/admin/config/mumie');
 
         $links = new LinksWidget();
         $links->setTitle("Einstellungen");
