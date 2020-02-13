@@ -9,4 +9,8 @@ class MumieSSOToken extends SimpleORMap {
     public static function findByUser($user) {
         return MumieSSOToken::findOneBySql("the_user = ?", array($user));
     }
+
+    public static function findByToken($token) {
+        return MumieSSOToken::findOneBySql("token = ?", array($token));
+    }
 }

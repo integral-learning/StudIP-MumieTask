@@ -30,38 +30,32 @@ class SSOService {
         return $token; 
     }
 
-    public static function verifyToken()
+    public static function verifyToken($token, $hashedId)
     {
-        $token = $_POST['token'];
-        $hashedID = $_POST['userId'];
-
-        $il_user_id = ilMumieTaskIdHashingService::getUserFromHash($hashed_id);
-
-        $mumietoken = new ilMumieTaskSSOToken($hashed_id);
-        $mumietoken->read();
-
-        $user_query = $ilDB->query('SELECT * FROM usr_data WHERE usr_id = ' . $ilDB->quote($il_user_id, "integer"));
-        $user_rec = $ilDB->fetchAssoc($user_query);
         $response = new stdClass();
-        require_once(__DIR__ . "/class.ilMumieTaskAdminSettings.php");
-        $admin_settings = ilMumieTaskAdminSettings::getInstance();
+        $studipUserId = HashingService::getUserIdFromHash($hashedId);
+        $mumieToken = MumieSSOToken::findOneBySql("the_user = ? AND token = ?", array($hashedId, $token));
+        $db = DBManager::get();
+        $userRecord = $db->query(
+            'SELECT user_id, Vorname, Nachname, Email FROM auth_user_md5, mumie_id_hashes WHERE user_id = mumie_id_hashes.the_user AND mumie_id_hashes.hash = ' . $db->quote($hashedId)
+        )->fetchOne();
 
-        if (!is_null($mumietoken->getToken()) && $mumietoken->getToken() == $token && $user_rec != null) {
+        if (!is_null($mumieToken) && $mumieToken->token == $token && $userRecord != null) {
             $current = time();
-            if (($current - $mumietoken->getTimecreated()) >= 1000) {
+            if (($current - $mumieToken->timecreated) >= (60*60)) {
                 $response->status = "invalid";
             } else {
                 $response->status = "valid";
-                $response->userid = $hashed_id;
+                $response->userid = $hashedId;
 
-                if ($admin_settings->getShareFirstName()) {
-                    $response->firstname = $user_rec['firstname'];
+                if (Config::get()->MUMIE_SHARE_FIRSTNAME) {
+                    $response->firstname = $userRecord['Vorname'];
                 }
-                if ($admin_settings->getShareLastName()) {
-                    $response->lastname = $user_rec['lastname'];
+                if (Config::get()->MUMIE_SHARE_LASTNAME) {
+                    $response->lastname = $userRecord['Nachname'];
                 }
-                if ($admin_settings->getShareEmail()) {
-                    $response->email = $user_rec['email'];
+                if (Config::get()->MUMIE_SHARE_EMAIL) {
+                    $response->email = $userRecord['Email'];
                 }
             }
         } else {

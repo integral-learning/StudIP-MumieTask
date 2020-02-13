@@ -12,7 +12,10 @@ class HashingService {
     }
 
     private static function getHashedUserId($userId) {
-
           return hash("sha512", $id . substr(Config::get()->MUMIE_API_KEY, 0, 10));
+    }
+
+    public static function getUserIdFromHash($hash) {
+        MumieHash::findByHash($hash)->the_user;
     }
 }
