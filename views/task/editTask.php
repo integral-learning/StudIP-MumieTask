@@ -14,6 +14,9 @@ $template->set_attribute("mumie_coursefile", $task->mumie_coursefile);
 $template->set_attribute("task_url", MumieProblem::removeParamsFromUrl($task->task_url));
 $template->set_attribute("launch_container", $task->launch_container);
 $template->set_attribute("language", $task->language);
+$template->set_attribute("duedate", $task->duedate);
+$template->set_attribute("privategradepool", $task->privategradepool);
+$template->set_attribute("passing_grade", $task->passing_grade);
 /* The PluginEngine must be used here. 
    If it's called in the template MumieServer::find() will return an instance of stdClass and not MumieServer in the controller class. I don't know why
 */

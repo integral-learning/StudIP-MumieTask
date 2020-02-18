@@ -40,6 +40,9 @@ class TaskController extends StudipController {
             $task->language = Request::get('language');
             $task->mumie_coursefile = Request::get('coursefile');
             $task->course = \Context::getId();
+            $task->privategradepool = !Request::get('private_gradepool');
+            $task->duedate = Request::get('duedate');
+            $task->passing_grade = Request::get('passing_grade');
             
             $errors = $this->getFormValidationErrors($task);
             if(count($errors)>0) {
@@ -78,6 +81,9 @@ class TaskController extends StudipController {
             $task->language = Request::get('language');
             $task->mumie_coursefile = Request::get('coursefile');
             $task->course = \Context::getId();
+            $task->privategradepool = !Request::get('private_gradepool');
+            $task->duedate = Request::get('duedate');
+            $task->passing_grade = Request::get('passing_grade');
             
             $errors = $this->getFormValidationErrors($task);
             if(count($errors)>0) {

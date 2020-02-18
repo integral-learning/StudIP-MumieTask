@@ -11,23 +11,6 @@ class Initial extends Migration {
             );"
         );
 
-        /*
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_task (
-            task_id integer NOT NULL AUTO_INCREMENT,
-            name text NOT NULL,
-            course integer NOT NULL,
-            task_url text NOT NULL,
-            launch_container integer NOT NULL,
-            mumie_course text NOT NULL,
-            language text NOT NULL,
-            server text NOT NULL,
-            mumie_coursefile text NOT NULL,
-            points integer NOT NULL,
-            duedate integer,
-            privategradepool integer NOT NULL,
-            PRIMARY KEY (task_id)
-            );"
-        );*/
         $db->exec("CREATE TABLE IF NOT EXISTS mumie_tasks (
             task_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
@@ -38,6 +21,9 @@ class Initial extends Migration {
             language text NOT NULL,
             server text NOT NULL,
             mumie_coursefile text NOT NULL,
+            passing_grade integer NOT NULL,
+            duedate text,
+            privategradepool integer NOT NULL,
             PRIMARY KEY (task_id)
             );"
         );

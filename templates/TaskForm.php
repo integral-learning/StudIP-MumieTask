@@ -1,97 +1,115 @@
-
 <style type="text/css">
-<?php include 'public/plugins_packages/integral-learning/MumieTaskPlugin/mumieStyle.css'; ?>
+    <?php include 'public/plugins_packages/integral-learning/MumieTaskPlugin/mumieStyle.css';
+    ?>
 
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <form class="default" action="<?= $action; ?>" method="post">
-    <label>
-        <span class="required">
-            <?= dgettext('MumieTask', 'Name'); ?>
-        </span> 
-        <input id="mumie_name" required type="text" name="name" value="<?= $name?>" placeholder="<?= dgettext('MumieTask', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>" >
-    </label>
-    <label>
-        <span class="required">
-            <?= dgettext('MumieTask', 'MUMIE-Server'); ?>
-        </span> 
-        <select id="mumie_server" name="server">
-            <? 
-                $options = $collector->getServerOptions();
-                foreach (array_keys($options) as $key): 
-            ?>
-                <option value= <?= $key; ?> <?= $key == $server ? "selected = 'selected'" :"";?>>
+    <fieldset class="conf-form-field collapsable">
+        <legend>Allgemein</legend>
+        <label>
+            <span class="required">
+                <?= dgettext('MumieTask', 'Name'); ?>
+            </span>
+            <input id="mumie_name" required type="text" name="name" value="<?= $name?>"
+                placeholder="<?= dgettext('MumieTask', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
+        </label>
+        <label>
+            <span class="required">
+                <?= dgettext('MumieTask', 'MUMIE-Server'); ?>
+            </span>
+            <select id="mumie_server" name="server">
+                <? 
+                    $options = $collector->getServerOptions();
+                    foreach (array_keys($options) as $key): 
+                ?>
+                <option value=<?= $key; ?> <?= $key == $server ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
- 
-            <? endforeach ?>
-        </select>
-    </label>
-    <label>
-        <?= dgettext('MumieTask', 'MUMIE-Kurs'); ?>
-        <select id="mumie_course" name="course">
-            <? 
-                $options = $collector->getCourseOptions();
-                foreach (array_keys($options) as $key): 
-            ?>
-                <option value= <?= $key; ?> <?= $key == $mumie_course ? "selected = 'selected'" :"";?>>
+
+                <? endforeach ?>
+            </select>
+        </label>
+        <label>
+            <?= dgettext('MumieTask', 'MUMIE-Kurs'); ?>
+            <select id="mumie_course" name="course">
+                <? 
+                    $options = $collector->getCourseOptions();
+                    foreach (array_keys($options) as $key): 
+                ?>
+                <option value=<?= $key; ?> <?= $key == $mumie_course ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
- 
-            <? endforeach ?>
-        </select>
-    </label>
-    <input type="hidden" id="mumie_coursefile" name = "coursefile" value=<?= $mumie_coursefile;?>>
-    <label>
-        <?= dgettext('MumieTask', 'Sprache'); ?>
-        <select id="mumie_language" name="language">
-            <? 
-                $options = $collector->getLangOptions();
-                foreach (array_keys($options) as $key): 
-            ?>
-                <option value= <?= $key; ?> <?= $key == $language ? "selected = 'selected'" :"";?>>
+
+                <? endforeach ?>
+            </select>
+        </label>
+        <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
+        <label>
+            <?= dgettext('MumieTask', 'Sprache'); ?>
+            <select id="mumie_language" name="language">
+                <? 
+                    $options = $collector->getLangOptions();
+                    foreach (array_keys($options) as $key): 
+                ?>
+                <option value=<?= $key; ?> <?= $key == $language ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
- 
-            <? endforeach ?>
-        </select>
-    </label>
-    <label>
-        <?= dgettext('MumieTask', 'MUMIE-Aufgabe'); ?>
-        <select id="mumie_taskurl" name="task_url">
-            <? 
-                $options = $collector->getTaskOptions();
-                foreach (array_keys($options) as $key): 
-            ?>
-                <option value= <?= $key; ?> <?= $key == $task_url ? "selected = 'selected'" :"";?>>
+
+                <? endforeach ?>
+            </select>
+        </label>
+        <label>
+            <?= dgettext('MumieTask', 'MUMIE-Aufgabe'); ?>
+            <select id="mumie_taskurl" name="task_url">
+                <? 
+                    $options = $collector->getTaskOptions();
+                    foreach (array_keys($options) as $key): 
+                ?>
+                <option value=<?= $key; ?> <?= $key == $task_url ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
- 
-            <? endforeach ?>
-        </select>
-    </label>
-    <div id ="mumie_filter_section">
-        <div id="mumie_filter_header" class="mumie-collapsable">
-            <i class="fa fa-caret-down mumie-icon"></i>
-            Filter MumieTasks
+                <? endforeach ?>
+            </select>
+        </label>
+        <div id="mumie_filter_section">
+            <div id="mumie_filter_header" class="mumie-collapsable">
+                <i class="fa fa-caret-down mumie-icon"></i>
+                Filter MumieTasks
+            </div>
+            <div id="mumie_filter_wrapper">
+            </div>
         </div>
-        <div id = "mumie_filter_wrapper">
-        </div>
-    </div>
-    <label>
-        <?= dgettext('MumieTask', 'Startcontainer'); ?>
-        <select name="launch_container">
-            <option value="1" <?= $launch_container == 1 ? "selected = 'selected'" :"";?>>Eingebunden</option>
-            <option value="0" <?= $launch_container == 0 ? "selected = 'selected'" :"";?>>Neuer Browser-Tab</option>
-        </select>
-    </label>
-        <?= \Studip\Button::create(dgettext('MumieTask', 'Einfügen')); ?>
+        <label>
+            <?= dgettext('MumieTask', 'Startcontainer'); ?>
+            <select name="launch_container">
+                <option value="1" <?= $launch_container == 1 ? "selected = 'selected'" :"";?>>Eingebunden</option>
+                <option value="0" <?= $launch_container == 0 ? "selected = 'selected'" :"";?>>Neuer Browser-Tab</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset class="conf-form-field collapsable collapsed">
+        <legend><?= dgettext('MumieTask','Benotung'); ?></legend>
+        <label>
+            <?= dgettext('MumieTask', 'Bestehensgrenze'); ?>
+            <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100" value="<?= $passing_grade;?>">
+        </label>
+        <label>
+            <?= dgettext('MumieTask', 'Abgabefrist'); ?>
+            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker value="<?= $duedate;?>">
+        </label>
+        <label>
+            <?= dgettext('MumieTask', 'Punkte mit anderen Kursen teilen'); ?>
+            <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool" <?= $privategradepool ? "" : "checked"?>>
+        </label>
+    </fieldset>
+    <?= \Studip\Button::create(dgettext('MumieTask', 'Einfügen')); ?>
 </form>
 
 <script>
-
-(function() {
+    (function() {
         //ar addServerButton = document.getElementById("id_add_server_button");
         var missingConfig = document.getElementsByName("mumie_missing_config")[0];
 
@@ -292,13 +310,15 @@
                     taskDropDown.onchange = function() {
                         updateName();
                     };
-                    taskController.updateOptions(isEdit ? 
-                    taskDropDown.options[taskDropDown.selectedIndex].getAttribute('value') + "?lang=" + langController.getSelectedLanguage() : undefined
+                    taskController.updateOptions(isEdit ?
+                        taskDropDown.options[taskDropDown.selectedIndex].getAttribute('value') +
+                        "?lang=" + langController.getSelectedLanguage() : undefined
                     );
                 },
                 getSelectedTask: function() {
                     var selectedLink = taskDropDown.options[taskDropDown.selectedIndex] ==
-                        undefined ? undefined : taskDropDown.options[taskDropDown.selectedIndex].getAttribute('value');
+                        undefined ? undefined : taskDropDown.options[taskDropDown.selectedIndex]
+                        .getAttribute('value');
                     var tasks = courseController.getSelectedCourse().tasks;
                     for (var i in tasks) {
                         var task = tasks[i];
@@ -315,7 +335,8 @@
                 updateOptions: function(selectTaskByLink) {
                     removeChildElems(taskDropDown);
                     taskDropDown.selectedIndex = 0;
-                    var tasks = filterController.filterTasks(courseController.getSelectedCourse().tasks);
+                    var tasks = filterController.filterTasks(courseController.getSelectedCourse()
+                    .tasks);
                     for (var i in tasks) {
                         var task = tasks[i];
                         addTaskOption(task);
@@ -556,12 +577,12 @@
             langController.init();
             filterController.init();
         }
-                /*
-                if (addServerButton) {
-                    require(['auth_mumie/mumie_server_config'], function(MumieServer) {
-                        MumieServer.init(addServerButton, contextid);
-                    });
-                }
-                */
+        /*
+        if (addServerButton) {
+            require(['auth_mumie/mumie_server_config'], function(MumieServer) {
+                MumieServer.init(addServerButton, contextid);
+            });
+        }
+        */
     })();
 </script>
