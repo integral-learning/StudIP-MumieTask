@@ -4,6 +4,7 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/s
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieHash.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieSSOToken.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionServic.php');
 // TODO: Check how can access this
 
 class TaskController extends StudipController {
@@ -14,17 +15,20 @@ class TaskController extends StudipController {
     }
     public function index_action() {
         $this->tasks = MumieTask::findAllInCourse(\Context::getId());
-        $actions = new ActionsWidget();
-        $actions->addLink(
-            dgettext('Mumietask','Neue MUMIE-Task anlegen'),
-            $this->url_for('task/addTask'),
-            Icon::create('add')
-        )->asDialog('size=50%');
-
-        Sidebar::Get()->addWidget($actions);
+        if($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
+            $actions = new ActionsWidget();
+            $actions->addLink(
+                dgettext('Mumietask','Neue MUMIE-Task anlegen'),
+                $this->url_for('task/addTask'),
+                Icon::create('add')
+            )->asDialog('size=50%');
+    
+            Sidebar::Get()->addWidget($actions);
+        }
     }
 
     public function addTask_action() {
+        PermissionService::requireTeacherPermission();
         $this->structuredServers = MumieServerInstance::getAllWithStructure();
         if(Request::isPost()) {
             $task = new MumieTask();
@@ -51,6 +55,7 @@ class TaskController extends StudipController {
     }
 
     public function deleteTask_action() {
+        PermissionService::requireTeacherPermission();
         $task = MumieTask::find(Request::option("task_id"));
         $task->delete();
         PageLayout::postMessage(
@@ -60,6 +65,7 @@ class TaskController extends StudipController {
     }
 
     public function editTask_action() {
+        PermissionService::requireTeacherPermission();
         $this->task = MumieTask::find(Request::option("task_id"));
         $this->structuredServers = MumieServerInstance::getAllWithStructure();
         if(Request::isPost()) {
@@ -131,5 +137,4 @@ class TaskController extends StudipController {
         }
         
     }
-
 }

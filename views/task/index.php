@@ -8,6 +8,7 @@
                     <?= htmlReady($task['name']); ?>
                 </a>
             </td>
+            <?php if ($hasTeacherPermission): ?>
             <td>
                 <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('task_id' => $task["task_id"]),'task/editTask'); ?>">
                         <?= Icon::create('edit', 'clickable')->asImg('20px'); ?>
@@ -18,7 +19,10 @@
                     <?= Icon::create('trash', 'clickable')->asImg('20px'); ?>
                 </a>
             </td>
+            <?php endif ?>
         </tr>
     <? endforeach ?>
 </table>
-<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'task/addTask'); ?> class="button">Neue MUMIE-Task hinzufügen</a>
+<?php if ($hasTeacherPermission): ?>
+    <a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'task/addTask'); ?> class="button">Neue MUMIE-Task hinzufügen</a>
+<?php endif ?>
