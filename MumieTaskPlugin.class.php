@@ -3,6 +3,7 @@
 require_once(__DIR__ . '/models/MumieServer.php');
 require_once(__DIR__ . '/models/MumieTask.php');
 require_once(__DIR__ . '/models/MumieHash.php');
+require_once(__DIR__ . '/models/MumieGrade.php');
 
 class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlugin {
     function __construct() {

@@ -4,7 +4,7 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/s
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieHash.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieSSOToken.php');
-require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionServic.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
 // TODO: Check how can access this
 
 class TaskController extends StudipController {

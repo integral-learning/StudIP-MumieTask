@@ -1,7 +1,7 @@
 <?php 
 require_once('app/controllers/plugin_controller.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieServerInstance.php');
-require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionServic.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
 
 // TODO: Make sure that only admins have access
 

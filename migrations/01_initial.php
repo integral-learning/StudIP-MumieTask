@@ -43,6 +43,16 @@ class Initial extends Migration {
             PRIMARY KEY (hash_id)
         )");
 
+        $db->exec("CREATE TABLE IF NOT EXISTS mumie_grades (
+            grade_id integer NOT NULL AUTO_INCREMENT,
+            task_id integer,
+            the_user text NOT NULL,
+            points integer,
+            timechanged int(20) NOT NULL,
+            PRIMARY KEY (grade_id)
+            );"
+        );
+
 /*
         $db->exec("INSERT INTO mumie_servers (name, url_prefix)
             VALUES
@@ -96,6 +106,7 @@ class Initial extends Migration {
         $db->exec("DROP TABLE mumie_tasks");
         $db->exec("DROP TABLE mumie_sso_tokens");
         $db->exec("DROP TABLE mumie_id_hashes");
+        $db->exec("DROP TABLE mumie_grades");
 
         Config::get()->delete("MUMIE_SHARE_FIRSTNAME");
         Config::get()->delete("MUMIE_SHARE_LASTNAME");
