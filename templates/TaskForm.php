@@ -94,7 +94,8 @@
         <legend><?= dgettext('MumieTask','Benotung'); ?></legend>
         <label>
             <?= dgettext('MumieTask', 'Bestehensgrenze'); ?>
-            <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100" value="<?= $passing_grade;?>">
+            <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
+                value="<?= $passing_grade;?>">
         </label>
         <label>
             <?= dgettext('MumieTask', 'Abgabefrist'); ?>
@@ -102,10 +103,11 @@
         </label>
         <label>
             <?= dgettext('MumieTask', 'Punkte mit anderen Kursen teilen'); ?>
-            <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool" <?= $privategradepool ? "" : "checked"?>>
+            <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool"
+                <?= $privategradepool ? "" : "checked"?>>
         </label>
     </fieldset>
-    <?= \Studip\Button::create(dgettext('MumieTask', 'Einfügen')); ?>
+    <?= \Studip\Button::create(dgettext('MumieTask', 'Speichern')); ?>
 </form>
 
 <script>
@@ -336,7 +338,7 @@
                     removeChildElems(taskDropDown);
                     taskDropDown.selectedIndex = 0;
                     var tasks = filterController.filterTasks(courseController.getSelectedCourse()
-                    .tasks);
+                        .tasks);
                     for (var i in tasks) {
                         var task = tasks[i];
                         addTaskOption(task);

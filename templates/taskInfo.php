@@ -3,6 +3,6 @@
         <?= $header; ?>
     </b>
     <div style='padding: 5px;'>
-    <?= $body; ?>
+        <?= $body; ?>
     </div>
 </div>

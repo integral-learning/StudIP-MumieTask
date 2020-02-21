@@ -1,54 +1,91 @@
-<h1>TASKS INDEX</h1>
+<?php
+$widget = new SidebarWidget;
+$widget->title = dgettext("MumieTask",'Informationen');
+$factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
+if($task->duedate) {
+    $duedateInfo = $factory->open("taskInfo");
+    $duedateInfo->set_attribute("header", dgettext("MumieTask",'Abgabefrist'));
+    $duedateInfo->set_attribute(
+        "body", 
+        sprintf(
+            '%s  %s',
+            Icon::create('date'),
+            $task->duedate
+        )
+    );
+    $widget->addElement(
+        new WidgetElement(
+            $duedateInfo->render()
+        )
+    );
+}
 
-<table class="default">
-    <tr>
-        <th><?=dgettext("MumieTask", "MUMIE-Task"); ?>
-        <th><?=dgettext("MumieTask", "Abgabefrist"); ?>
-        <th><?=dgettext("MumieTask", "Punkte"); ?>
-        <th><?=dgettext("MumieTask", "Bestanden"); ?>
-        <?php if ($hasTeacherPermission): ?>
-        <th><?=dgettext("MumieTask", "Bearbeiten"); ?>
-        <th><?=dgettext("MumieTask", "Löschen"); ?>
-        <?php endif ?>
-    </tr>
+if($hasTeacherPermission = PermissionService::hasTeacherPermission()) {
+    $actions = new ActionsWidget();
+    $actions->addLink(
+        dgettext('Mumietask','Übersicht'),
+        PluginEngine::getLink('MumieTaskPlugin', array("task_id" => $task->task_id), 'task'),
+        Icon::create('assessment')
+    );
+    $actions->addLink(
+        dgettext('Mumietask','Bewertungen'),
+        PluginEngine::getLink('MumieTaskPlugin', array("task_id" => $task->task_id), 'task/gradeOverview'),
+        Icon::create('ranking')
+    );
+    Sidebar::Get()->addWidget($actions);
+}
 
-    <? foreach ($tasks as $task) : ?>
-        <tr>
-            <td>
-                <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('task_id' => $task["task_id"]),'task/displayTask'); ?>">
-                    <?= htmlReady($task['name']); ?>
-                </a>
-            </td>
-            <td>
-                <?= $task["duedate"]; ?>
-            </td>
-            <td>
-            <?php
-                $points = MumieGrade::getGradeForUser($task["task_id"], \Context::getId())->points;
-                $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
-                $template = $factory->open('grade.php');
-                $template->set_attribute('points', $points);
-                echo $template->render();
-            ?>        
-            </td>
-            <td>
-            <?= $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red') ?>
-            </td>
-            <?php if ($hasTeacherPermission): ?>
-            <td>
-                <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('task_id' => $task["task_id"]),'task/editTask'); ?>">
-                        <?= Icon::create('edit', 'clickable')->asImg('20px'); ?>
-                </a>
-            </td>
-            <td>
-                <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('task_id' => $task["task_id"]),'task/deleteTask'); ?>">
-                    <?= Icon::create('trash', 'clickable')->asImg('20px'); ?>
-                </a>
-            </td>
-            <?php endif ?>
-        </tr>
-    <? endforeach ?>
-</table>
-<?php if ($hasTeacherPermission): ?>
-    <a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'task/addTask'); ?> class="button">Neue MUMIE-Task hinzufügen</a>
-<?php endif ?>
+$points = MumieGrade::getGradeForUser($task["task_id"], $GLOBALS['user']->id)->points;
+$gradeTemplate = $factory->open('grade.php');
+$gradeTemplate->set_attribute('points', $points);
+
+$gradeInfo = $factory->open("taskInfo");
+$gradeInfo->set_attribute("header", dgettext("MumieTask",'Bewertung'));
+$gradeInfo->set_attribute("body", $gradeTemplate->render());
+            
+$widget->addElement(
+    new WidgetElement(
+        $gradeInfo->render()
+    )
+);
+
+$passed = $factory->open("taskInfo");
+$passed->set_attribute("header", dgettext("MumieTask",'Bestanden'));
+$passed->set_attribute("body", $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red'));
+$widget->addElement(
+    new WidgetElement(
+        $passed->render()
+    )
+);
+
+$passingGrade = $factory->open("taskInfo");
+$passingGrade->set_attribute("header", dgettext("MumieTask",'Mindestpunktzahl'));
+$passingGrade->set_attribute("body", $task["passing_grade"]);
+$widget->addElement(
+    new WidgetElement(
+        $passingGrade->render()
+    )
+);
+Sidebar::get()->addWidget($widget);
+
+?>
+
+
+<section class="contentbox">
+    <section>
+
+        <header>
+            <h1><?= dgettext("MumieTask", "Inhalt") ?></h1>
+        </header>
+        <div>TODO: Hier text einfügen, der darauf hinweist, dass auf eine externe Seite verlinkt ist</div>
+        <?php if($task->launch_container == 0) : ?>
+        <a href=<?= PluginEngine::getLink("MumieTaskPlugin", array("task_id" => $task->task_id), 'task/launch'); ?>
+            target="_blank" class="button">Anzeigen</a>
+        <?php else : ?>
+        <iframe width='90%' height='100%'
+            src=<?= PluginEngine::getLink("MumieTaskPlugin", array("task_id" => $task->task_id), 'task/launch'); ?>
+            webkitallowfullscreen mozallowfullscreen allowfullscreen>
+        </iframe>
+        <?php endif;?>
+    </section>
+</section>

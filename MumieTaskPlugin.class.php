@@ -25,7 +25,7 @@ class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlug
     }
 
     function getTabNavigation($course_id) {
-        $navigation = new Navigation("MUMIE-Task", PluginEngine::getLink($this, array(),'task'));
+        $navigation = new Navigation("MUMIE-Task", PluginEngine::getLink($this, array(),'taskWrapper'));
         $navigation->setImage(Icon::create('assessment'));
         return [
             'mumietask' => $navigation
