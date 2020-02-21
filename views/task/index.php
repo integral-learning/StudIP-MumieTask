@@ -5,6 +5,7 @@
         <th><?=dgettext("MumieTask", "MUMIE-Task"); ?>
         <th><?=dgettext("MumieTask", "Abgabefrist"); ?>
         <th><?=dgettext("MumieTask", "Punkte"); ?>
+        <th><?=dgettext("MumieTask", "Bestanden"); ?>
         <?php if ($hasTeacherPermission): ?>
         <th><?=dgettext("MumieTask", "Bearbeiten"); ?>
         <th><?=dgettext("MumieTask", "Löschen"); ?>
@@ -22,14 +23,16 @@
                 <?= $task["duedate"]; ?>
             </td>
             <td>
-                <?php 
-                $points=MumieGrade::getGradeForUser($task["task_id"], \Context::getId())->points;
-                if(isset($points)) {
-                    echo $points . '/100';
-                } else {
-                    echo '<i>' . dgettext("MumieTask", "Keine Bewertung") . '</i>';
-                }
-                ?>
+            <?php
+                $points = MumieGrade::getGradeForUser($task["task_id"], \Context::getId())->points;
+                $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
+                $template = $factory->open('grade.php');
+                $template->set_attribute('points', $points);
+                echo $template->render();
+            ?>        
+            </td>
+            <td>
+            <?= $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red') ?>
             </td>
             <?php if ($hasTeacherPermission): ?>
             <td>
