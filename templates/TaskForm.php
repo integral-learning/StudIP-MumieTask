@@ -95,7 +95,7 @@
         <label>
             <?= dgettext('MumieTask', 'Bestehensgrenze'); ?>
             <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
-                value="<?= $passing_grade;?>">
+                value="<?= $passing_grade ?? 60;?>">
         </label>
         <label>
             <?= dgettext('MumieTask', 'Abgabefrist'); ?>
