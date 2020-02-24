@@ -6,12 +6,12 @@ class MumieGradeService {
     private $force_update;
     private $courseId;
 
-    public function __construct($courseId, $force_update = false)
+    public function __construct($courseId, $tasks = null, $userIds = null, $force_update = false)
     {
         $this->courseId = $courseId;
         $this->force_update = $force_update;
-        $this->user_ids = $this->getAllUsers($courseId);
-        $this->tasks = MumieTask::findAllInCourse($courseId);
+        $this->user_ids = $userIds ?? $this->getAllUsers($courseId);
+        $this->tasks = $tasks ?? MumieTask::findAllInCourse($courseId);
     }
 
     /**
@@ -176,7 +176,9 @@ class MumieGradeService {
         return $latest_grade;
     }
 
-    public function updateGradesForAllTasks() {
+    public function update() {
+        PageLayout::postMessage(MessageBox::success("Updating grades" . ($this->force_update ? " - forced!" : "")));
+
         foreach($this->tasks as $task) {
             $this->updateGrades($task);
         }

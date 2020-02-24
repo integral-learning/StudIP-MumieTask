@@ -15,8 +15,6 @@ class TaskWrapperController extends StudipController {
         Navigation::activateItem('/course/mumietask');
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
 
-        $gradeService = new MumieGradeService(\Context::get()->Seminar_id);
-        $gradeService->updateGradesForAllTasks();
     }
     public function index_action() {
         $this->tasks = MumieTask::findAllInCourse(\Context::get()->Seminar_id);
@@ -27,9 +25,11 @@ class TaskWrapperController extends StudipController {
                 $this->url_for('taskWrapper/addTask'),
                 Icon::create('add')
             );
-    
+            
             Sidebar::Get()->addWidget($actions);
         }
+        $gradeService = new MumieGradeService(\Context::get()->Seminar_id);
+        $gradeService->update();
     }
 
     public function addTask_action() {
@@ -48,7 +48,7 @@ class TaskWrapperController extends StudipController {
             $task->privategradepool = !Request::get('private_gradepool');
             $task->duedate = strtotime(Request::get('duedate'));
             $task->passing_grade = Request::get('passing_grade');
-            
+
             $errors = $this->getFormValidationErrors($task);
             if(count($errors)>0) {
                 PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
@@ -104,6 +104,11 @@ class TaskWrapperController extends StudipController {
     private function getFormValidationErrors($task) {
         $server = MumieServer::getByUrl($task->server);
         
+        $errors = array();
+        if($task->isFieldDirty('duedate') && $task->duedate != 0 && $task->duedate < time()) {
+            $errors[] =  dgettext('MumieTask', 'Das Datum der Abgabefrist muss in der Zukunft liegen!');
+        }
+
         if($server == null || !(new MumieServerInstance($server))->isValidMumieServer()) {
             $errors[] = dgettext('MumieTask', 'Der gewählte MUMIE-Server konnte nicht gefunden werden.');
             return $errors;
@@ -130,9 +135,9 @@ class TaskWrapperController extends StudipController {
         }
         
         if(!in_array($task->language, $problem->getLanguages())) {
-            $errors[] =  dgettext('MumieTask', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem');
+            $errors[] =  dgettext('MumieTask', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
             return $errors;
-        }
-        
+        }      
+        return $errors;  
     }
 }

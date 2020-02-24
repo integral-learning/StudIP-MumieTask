@@ -5,6 +5,7 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/M
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieSSOToken.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/MumieGradeService.php');
 
 class TaskController extends StudipController {
     function before_filter(&$action, &$args)
@@ -12,9 +13,13 @@ class TaskController extends StudipController {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
+
+        
     }
     public function index_action() {
         $this->task = MumieTask::find(Request::option("task_id"));
+        $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
+        $gradeService->update();
     }
 
     public function launch_action() {
@@ -26,5 +31,7 @@ class TaskController extends StudipController {
     public function gradeOverview_action() {
         $this->task = MumieTask::find(Request::option("task_id"));
         $this->grades = MumieGrade::getAllGradesForTaskWithRealNames(Request::option("task_id"));
+        $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task));
+        $gradeService->update();
     }
 }

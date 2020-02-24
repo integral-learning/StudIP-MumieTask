@@ -33,30 +33,31 @@ if($hasTeacherPermission = PermissionService::hasTeacherPermission()) {
         Icon::create('ranking')
     );
     Sidebar::Get()->addWidget($actions);
+} else {
+    $points = MumieGrade::getGradeForUser($task["task_id"], $GLOBALS['user']->id)->points;
+    $gradeTemplate = $factory->open('grade.php');
+    $gradeTemplate->set_attribute('points', $points);
+    
+    $gradeInfo = $factory->open("taskInfo");
+    $gradeInfo->set_attribute("header", dgettext("MumieTask",'Bewertung'));
+    $gradeInfo->set_attribute("body", $gradeTemplate->render());
+                
+    $widget->addElement(
+        new WidgetElement(
+            $gradeInfo->render()
+        )
+    );
+    
+    $passed = $factory->open("taskInfo");
+    $passed->set_attribute("header", dgettext("MumieTask",'Bestanden'));
+    $passed->set_attribute("body", $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red'));
+    $widget->addElement(
+        new WidgetElement(
+            $passed->render()
+        )
+    );
 }
 
-$points = MumieGrade::getGradeForUser($task["task_id"], $GLOBALS['user']->id)->points;
-$gradeTemplate = $factory->open('grade.php');
-$gradeTemplate->set_attribute('points', $points);
-
-$gradeInfo = $factory->open("taskInfo");
-$gradeInfo->set_attribute("header", dgettext("MumieTask",'Bewertung'));
-$gradeInfo->set_attribute("body", $gradeTemplate->render());
-            
-$widget->addElement(
-    new WidgetElement(
-        $gradeInfo->render()
-    )
-);
-
-$passed = $factory->open("taskInfo");
-$passed->set_attribute("header", dgettext("MumieTask",'Bestanden'));
-$passed->set_attribute("body", $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red'));
-$widget->addElement(
-    new WidgetElement(
-        $passed->render()
-    )
-);
 
 $passingGrade = $factory->open("taskInfo");
 $passingGrade->set_attribute("header", dgettext("MumieTask",'Mindestpunktzahl'));
