@@ -10,7 +10,7 @@ if($task->duedate) {
         sprintf(
             '%s  %s',
             Icon::create('date'),
-            $task->duedate
+            date('d.m.Y H:i',$task->duedate)
         )
     );
     $widget->addElement(

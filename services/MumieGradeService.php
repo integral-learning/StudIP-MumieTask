@@ -150,10 +150,9 @@ class MumieGradeService {
         $valid_grade_by_user = array();
         foreach ($grades_by_user as $user_id => $xapi_grades) {
             $xapi_grades = array_filter($xapi_grades, function($grade) use ($task) {
-                if (!$task->duedate) {
+                if (!$task->duedate || $task->duedate == 0) {
                     return true;
                 }
-        
                 return strtotime($grade->timestamp) <= $task->duedate;
             });
             $valid_grade_by_user[$user_id] = $this->getLatestGrade($xapi_grades);

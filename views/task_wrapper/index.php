@@ -21,7 +21,7 @@
             </a>
         </td>
         <td>
-            <?= $task["duedate"]; ?>
+            <?= date('d.m.Y H:i',$task["duedate"]); ?>
         </td>
         <?php if ($hasTeacherPermission): ?>
         <td>

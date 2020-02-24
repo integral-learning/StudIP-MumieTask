@@ -99,7 +99,7 @@
         </label>
         <label>
             <?= dgettext('MumieTask', 'Abgabefrist'); ?>
-            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker value="<?= $duedate;?>">
+            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker value="<?= date('d.m.Y H:i',$duedate);?>">
         </label>
         <label>
             <?= dgettext('MumieTask', 'Punkte mit anderen Kursen teilen'); ?>

@@ -46,7 +46,7 @@ class TaskWrapperController extends StudipController {
             $task->mumie_coursefile = Request::get('coursefile');
             $task->course = \Context::get()->Seminar_id;
             $task->privategradepool = !Request::get('private_gradepool');
-            $task->duedate = Request::get('duedate');
+            $task->duedate = strtotime(Request::get('duedate'));
             $task->passing_grade = Request::get('passing_grade');
             
             $errors = $this->getFormValidationErrors($task);
@@ -87,7 +87,7 @@ class TaskWrapperController extends StudipController {
             $task->mumie_coursefile = Request::get('coursefile');
             $task->course = \Context::get()->Seminar_id;
             $task->privategradepool = !Request::get('private_gradepool');
-            $task->duedate = Request::get('duedate');
+            $task->duedate = strtotime(Request::get('duedate'));
             $task->passing_grade = Request::get('passing_grade');
             
             $errors = $this->getFormValidationErrors($task);

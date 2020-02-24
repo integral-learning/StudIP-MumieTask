@@ -22,7 +22,7 @@ class Initial extends Migration {
             server text NOT NULL,
             mumie_coursefile text NOT NULL,
             passing_grade integer NOT NULL,
-            duedate text,
+            duedate integer,
             privategradepool integer NOT NULL,
             PRIMARY KEY (task_id)
             );"
