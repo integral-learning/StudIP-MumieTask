@@ -5,6 +5,7 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/M
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieSSOToken.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
+require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/MumieGradeService.php');
 // TODO: Check how can access this
 
 class TaskWrapperController extends StudipController {
@@ -12,10 +13,14 @@ class TaskWrapperController extends StudipController {
     {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
+        $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
+
+        $gradeService = new MumieGradeService(\Context::get()->Seminar_id);
+        $gradeService->updateGradesForAllTasks();
     }
     public function index_action() {
-        $this->tasks = MumieTask::findAllInCourse(\Context::getId());
-        if($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
+        $this->tasks = MumieTask::findAllInCourse(\Context::get()->Seminar_id);
+        if($this->hasTeacherPermission) {
             $actions = new ActionsWidget();
             $actions->addLink(
                 dgettext('Mumietask','Neue MUMIE-Task anlegen'),
@@ -39,7 +44,7 @@ class TaskWrapperController extends StudipController {
             $task->mumie_course = Request::get('course');
             $task->language = Request::get('language');
             $task->mumie_coursefile = Request::get('coursefile');
-            $task->course = \Context::getId();
+            $task->course = \Context::get()->Seminar_id;
             $task->privategradepool = !Request::get('private_gradepool');
             $task->duedate = Request::get('duedate');
             $task->passing_grade = Request::get('passing_grade');
@@ -80,7 +85,7 @@ class TaskWrapperController extends StudipController {
             $task->mumie_course = Request::get('course');
             $task->language = Request::get('language');
             $task->mumie_coursefile = Request::get('coursefile');
-            $task->course = \Context::getId();
+            $task->course = \Context::get()->Seminar_id;
             $task->privategradepool = !Request::get('private_gradepool');
             $task->duedate = Request::get('duedate');
             $task->passing_grade = Request::get('passing_grade');

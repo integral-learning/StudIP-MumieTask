@@ -2,16 +2,16 @@
 require_once('HashingService.php');
 class MumieGradeService {
     private $user_ids;
-    private $task;
-    private $admin_settings;
+    private $tasks;
     private $force_update;
+    private $courseId;
 
-    public function __construct($task, $force_update)
+    public function __construct($courseId, $force_update = false)
     {
-        $this->admin_settings = ilMumieTaskAdminSettings::getInstance();
-        $this->task = $task;
+        $this->courseId = $courseId;
         $this->force_update = $force_update;
-        $this->user_ids = $this->getAllUsers($task);
+        $this->user_ids = $this->getAllUsers($courseId);
+        $this->tasks = MumieTask::findAllInCourse($courseId);
     }
 
     /**
@@ -30,9 +30,9 @@ class MumieGradeService {
     /**
      * Get the studip user ID from a xapi grade
      */
-    private function getStudIPId($xapi_grade)
+    private function getStudIPId($xapiGrade)
     {
-        $hashed_user = substr(strrchr($xapi_grade->actor->account->name, "_"), 1);
+        $hashed_user = substr(strrchr($xapiGrade->actor->account->name, "_"), 1);
         return HashingService::getUserIdFromHash($hashed_user);
     }
 
@@ -40,13 +40,13 @@ class MumieGradeService {
     /**
      * get a map of xapi grades by user
      */
-    public function getXapiGradesByUser()
+    public function getXapiGradesByUser($task)
     {
         $params = array(
             "users" => $this->getSyncIds($this->user_ids),
-            "course" => $this->task->getMumieCoursefile(),
-            "objectIds" => array(self::getMumieId($this->task)),
-            'lastSync' => $this->getLastSync(),
+            "course" => $task->mumie_coursefile,
+            "objectIds" => array(self::getMumieId($task)),
+            'lastSync' => $this->getLastSync($task),
             'includeAll' => true
         );
 
@@ -57,7 +57,8 @@ class MumieGradeService {
         */
 
         $payload = json_encode($params);
-        $ch = curl_init($this->task->getGradeSyncURL());
+
+        $ch = curl_init(MumieServerInstance::fromUrl($task->server)->getGradeSyncURL());
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_USERAGENT, "My User Agent Name");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -74,7 +75,7 @@ class MumieGradeService {
         $response = json_decode(curl_exec($ch));
         curl_close($ch);
 
-        return $this->getValidGradeByUser($response);
+        return $this->getValidGradeByUser($response, $task);
     }
     
     /**
@@ -85,7 +86,11 @@ class MumieGradeService {
      */
     private function getMumieId($mumietask)
     {
-        $id = substr($mumietask->getTaskurl(), strlen("link/"));
+        
+        $id = substr($mumietask->task_url, strlen("link/"));
+        if (strpos($id, "?") !== false) {
+            $id = substr($id, 0, strpos($id, "?"));
+        }
         return $id;
     }
 
@@ -93,23 +98,23 @@ class MumieGradeService {
     /**
      * LastSync is used to improve performance. We don't need to check grades that were awarded before the last time we synced
      */
-    private function getLastSync()
+    private function getLastSync($task)
     {
-        global $ilDB;
         if ($this->force_update) {
             return 1;
         }
 
         $oldest_timestamp = PHP_INT_MAX;
-        $result = $ilDB->query("SELECT usr_id, obj_id, status_changed" .
-            " FROM ut_lp_marks" .
-            " WHERE obj_id = " . $ilDB->quote($this->task->getId(), "integer") .
-            " AND mark IS NOT NULL");
-        while ($record = $ilDB->fetchAssoc($result)) {
-            if (in_array($record['usr_id'], $this->user_ids) && strtotime($record['status_changed'])<$oldest_timestamp) {
-                $oldest_timestamp = strtotime($record['status_changed']);
+        $grades = MumieGrade::findBySQL("task_id = ?", array($task->id));
+        if(count($grades) < count($this->user_ids)) {
+            return 1;
+        }
+        foreach($grades as $grade) {
+            if($grade->timechanged < $oldest_timestamo) {
+                $oldest_timestamp = $grade->timechanged;
             }
         }
+
         if ($oldest_timestamp == PHP_INT_MAX) {
             $oldest_timestamp = 1;
         }
@@ -117,20 +122,12 @@ class MumieGradeService {
     }
 
     /**
-     * Get all users that can get marks for this MUMIE task
+     * Get all users that can get marks in this course
      */
-    private function getAllUsers($task)
+    private function getAllUsers($courseId)
     {
-        global $ilDB;
-        $users = array();
-        $result = $ilDB->query("SELECT usr_id" .
-            " FROM ut_lp_marks" .
-            " WHERE obj_id = " . $ilDB->quote($task->getId(), "integer"));
-
-        while ($record = $ilDB->fetchAssoc($result)) {
-            array_push($users, $record['usr_id']);
-        }
-        return $users;
+        $query = "Select user_id from seminar_user where seminar_id = ? AND status = 'autor'";
+        return DBManager::get()->fetchAll($query, array($courseId));
     }
 
     /**
@@ -138,7 +135,7 @@ class MumieGradeService {
      *
      * Filter out grades that were earned after the due date. Other than that, select always the latest grade
      */
-    private function getValidGradeByUser($response)
+    private function getValidGradeByUser($response, $task)
     {
         $grades_by_user = new stdClass();
         if ($response) {
@@ -152,20 +149,17 @@ class MumieGradeService {
         
         $valid_grade_by_user = array();
         foreach ($grades_by_user as $user_id => $xapi_grades) {
-            $xapi_grades = array_filter($xapi_grades, array($this, "isGradeBeforeDueDate"));
+            $xapi_grades = array_filter($xapi_grades, function($grade) use ($task) {
+                if (!$task->duedate) {
+                    return true;
+                }
+        
+                return strtotime($grade->timestamp) <= $task->duedate;
+            });
             $valid_grade_by_user[$user_id] = $this->getLatestGrade($xapi_grades);
         }
 
         return array_filter($valid_grade_by_user);
-    }
-    
-    private function isGradeBeforeDueDate($grade)
-    {
-        if (!$this->task->getActivationLimited()) {
-            return true;
-        }
-
-        return strtotime($grade->timestamp) <= $this->task->getActivationEndingTime();
     }
 
     private function getLatestGrade($xapi_grades)
@@ -182,4 +176,30 @@ class MumieGradeService {
         }
         return $latest_grade;
     }
+
+    public function updateGradesForAllTasks() {
+        foreach($this->tasks as $task) {
+            $this->updateGrades($task);
+        }
+    }
+
+    private function updateGrades($task) {
+        $gradesByUser = $this->getXapiGradesByUser($task);
+        foreach (array_keys($gradesByUser) as $userId) {
+            $xapiGrade = $gradesByUser[$userId];
+            $percentage = round($xapiGrade->result->score->scaled * 100);
+            if($mumieGrade = MumieGrade::getGradeForUser($task->task_id, $userId)) {
+                $mumieGrade->points = $percentage;
+                $mumieGrade->store();
+            } else {
+                $mumieGrade = new MumieGrade();
+                $mumieGrade->the_user = $userId;
+                $mumieGrade->task_id = $task->task_id;
+            }            
+            $mumieGrade->timechanged = $xapiGrade->timestamp;
+            $mumieGrade->points = $percentage;
+            $mumieGrade->store();
+        }   
+     }
+
 }

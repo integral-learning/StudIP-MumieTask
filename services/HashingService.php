@@ -16,6 +16,6 @@ class HashingService {
     }
 
     public static function getUserIdFromHash($hash) {
-        MumieHash::findByHash($hash)->the_user;
+       return MumieHash::findByHash($hash)->the_user;
     }
 }

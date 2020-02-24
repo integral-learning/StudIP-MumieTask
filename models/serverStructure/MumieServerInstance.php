@@ -45,6 +45,12 @@ class MumieServerInstance implements \JsonSerializable{
         $this->url_prefix = $server->url_prefix;
     }
 
+    public static function fromURL($url) {
+        $server = new stdClass;
+        $server->url_prefix = $url;
+        return new MumieServerInstance($server);
+    }
+
     /**
      * Get the latest course structure form the MUMIE server
      * @return stdClass server response
@@ -153,5 +159,9 @@ class MumieServerInstance implements \JsonSerializable{
                 return $course;
             }
         }
+    }
+
+    public function getGradeSyncUrl() {
+        return $this->url_prefix . 'public/xapi?v=' . self::MUMIE_JSON_FORMAT_VERSION;
     }
 }

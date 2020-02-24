@@ -14,7 +14,7 @@ class Initial extends Migration {
         $db->exec("CREATE TABLE IF NOT EXISTS mumie_tasks (
             task_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
-            course integer NOT NULL,
+            course text NOT NULL,
             task_url text NOT NULL,
             launch_container integer NOT NULL,
             mumie_course text NOT NULL,
