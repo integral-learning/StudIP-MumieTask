@@ -33,7 +33,7 @@ class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlug
     }
 
     function getMetadata() {
-        $metadata = array(        'category' => 'Inhalte und Aufgabenstellungen');
-
+        $metadata = array('category' => 'Inhalte und Aufgabenstellungen');
+        return $metadata;
     }
 }
