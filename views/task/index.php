@@ -2,23 +2,24 @@
 $widget = new SidebarWidget;
 $widget->title = dgettext("MumieTask",'Informationen');
 $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
-if($task->duedate) {
-    $duedateInfo = $factory->open("taskInfo");
-    $duedateInfo->set_attribute("header", dgettext("MumieTask",'Abgabefrist'));
-    $duedateInfo->set_attribute(
-        "body", 
-        sprintf(
-            '%s  %s',
-            Icon::create('date'),
-            date('d.m.Y H:i',$task->duedate)
-        )
+
+$dateString = $task->duedate == 0 ? 
+    "-" : 
+    sprintf(
+        '%s  %s',
+        Icon::create('date'),
+        date('d.m.Y H:i',$task->duedate)
     );
-    $widget->addElement(
-        new WidgetElement(
-            $duedateInfo->render()
-        )
-    );
-}
+$duedateInfo = $factory->open("taskInfo");
+$duedateInfo->set_attribute("header", dgettext("MumieTask",'Abgabefrist'));
+$duedateInfo->set_attribute(
+    "body", $dateString
+);
+$widget->addElement(
+    new WidgetElement(
+        $duedateInfo->render()
+    )
+);
 
 if($hasTeacherPermission = PermissionService::hasTeacherPermission()) {
     $actions = new ActionsWidget();

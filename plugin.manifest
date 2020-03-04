@@ -2,3 +2,11 @@ pluginname=MUMIE Task
 pluginclassname=MumieTaskPlugin
 version=1.0
 origin=integral-learning
+
+icon = images/mumie.svg
+
+category = Inhalte und Aufgabenstellungen
+displayname = MUMIE-Task
+descriptionshort = TODO:
+
+descriptionlong = TODO

@@ -177,8 +177,6 @@ class MumieGradeService {
     }
 
     public function update() {
-        PageLayout::postMessage(MessageBox::success("Updating grades" . ($this->force_update ? " - forced!" : "")));
-
         foreach($this->tasks as $task) {
             $this->updateGrades($task);
         }
