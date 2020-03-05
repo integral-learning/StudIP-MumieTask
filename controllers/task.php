@@ -18,10 +18,13 @@ class TaskController extends StudipController {
     }
 
     public function index_action() {
+        $this->addSidebar();
+        if($this->hasTeacherPermission) {
+            Navigation::activateItem('/course/mumietask/task');
+        }
         $this->task = MumieTask::find(Request::option("task_id"));
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
         $gradeService->update();
-        $this->addSidebar();
     }
 
     public function launch_action() {
@@ -30,10 +33,13 @@ class TaskController extends StudipController {
     }
 
     public function gradeOverview_action() {
+        $this->addSidebar();
+        if($this->hasTeacherPermission) {
+            Navigation::activateItem('/course/mumietask/grades');
+        }
         $this->grades = MumieGrade::getAllGradesForTaskWithRealNames(Request::option("task_id"));
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task));
         $gradeService->update();
-        $this->addSidebar();
     }
 
     private function addSidebar() {
@@ -60,18 +66,29 @@ class TaskController extends StudipController {
         );
 
         if($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
-            $actions = new ActionsWidget();
-            $actions->addLink(
-                dgettext('MumieTaskPlugin','Aufgabe'),
-                PluginEngine::getLink('MumieTaskPlugin', array("task_id" => $this->task->task_id), 'task'),
-                Icon::create('assessment')
+            $navigation = Navigation::getItem('/course/mumietask');
+            $navigation->addSubNavigation(
+                'task', 
+                new Navigation(
+                    dgettext("MumieTaskPlugin", "Aufgabe"), 
+                    PluginEngine::getLink(
+                        'MumieTaskPlugin', 
+                        array("task_id" => $this->task->task_id), 
+                        'task'
+                    )
+                )
             );
-            $actions->addLink(
-                dgettext('MumieTaskPlugin','Bewertungen'),
-                PluginEngine::getLink('MumieTaskPlugin', array("task_id" => $this->task->task_id), 'task/gradeOverview'),
-                Icon::create('ranking')
+            $navigation->addSubNavigation(
+                'grades', 
+                new Navigation(
+                    dgettext("MumieTaskPlugin", "Bewertungen"), 
+                    PluginEngine::getLink(
+                        'MumieTaskPlugin', 
+                        array("task_id" => $this->task->task_id), 
+                        'task/gradeOverview'
+                    )
+                )
             );
-            Sidebar::Get()->addWidget($actions);
         } else {
             $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)->points;
             $gradeTemplate = $factory->open('grade.php');

@@ -10,7 +10,7 @@ class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlug
         global $perm;
         parent::__construct();
         if ($perm->have_perm('root')) {
-            $config = new Navigation('MUMIE-Task',PluginEngine::getLink($this, array(), 'admin'));
+            $config = new Navigation(dgettext("MumieTaskPlugin",'MUMIE-Task'),PluginEngine::getLink($this, array(), 'admin'));
             $config->setURL(PluginEngine::getLink($this, array(), 'admin'));
             Navigation::addItem('/admin/config/mumie', $config);
         }
@@ -25,7 +25,7 @@ class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlug
     }
 
     function getTabNavigation($course_id) {
-        $navigation = new Navigation("MUMIE-Task", PluginEngine::getLink($this, array(),'taskWrapper'));
+        $navigation = new Navigation(dgettext("MumieTaskPlugin",'MUMIE-Task'), PluginEngine::getLink($this, array(),'taskWrapper'));
         $navigation->setImage(Icon::create('assessment'));
         return [
             'mumietask' => $navigation
