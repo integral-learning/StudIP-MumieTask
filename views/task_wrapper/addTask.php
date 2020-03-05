@@ -1,3 +1,5 @@
+<h1><?= dgettext("MumieTaskPlugin", "Neue MUMIE-Task erstellen"); ?></h1>
+<br>
 <?php 
     require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/TaskOptionCollector.php');
     $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
@@ -13,4 +15,3 @@
     echo $template->render();
     
 ?>
-

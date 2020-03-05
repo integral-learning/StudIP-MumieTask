@@ -15,18 +15,19 @@ class AdminController extends StudipController {
         $links = new LinksWidget();
         $links->setTitle("Einstellungen");
         $links->addLink(
-            dgettext('MumieTask', 'MUMIE-Server'),
+            dgettext('MumieTaskPlugin', 'MUMIE-Server'),
             PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/index'),
             null);
         $links->addLink(
-            dgettext('MumieTask', 'Datenschutz'),
+            dgettext('MumieTaskPlugin', 'Datenschutz'),
             PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/privacy'),
             null);
         $links->addLink(
-            dgettext('MumieTask', 'Authentification'),
+            dgettext('MumieTaskPlugin', 'Authentification'),
             PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/authentication'),
             null);
         Sidebar::Get()->addWidget($links);
+        PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " . dgettext("MumieTaskPlugin", "Admininstrator-Einstellungen"));
     }
 
     public function index_action() {
@@ -39,7 +40,7 @@ class AdminController extends StudipController {
             $config->store(MUMIE_SHARE_FIRSTNAME, Request::get('share_firstname'));
             $config->store(MUMIE_SHARE_LASTNAME, Request::get('share_lastname'));
             $config->store(MUMIE_SHARE_EMAIL, Request::get('share_email'));
-            PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Änderungen gespeichert') . '!'));
+            PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!'));
         }
     }
     
@@ -54,7 +55,7 @@ class AdminController extends StudipController {
                 PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
             } else {
                 $server->store();
-                PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Server erfolgreich hinzugefügt') . '!'));
+                PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Server erfolgreich hinzugefügt') . '!'));
                 $this->redirect('admin/index');
             }
             
@@ -73,7 +74,7 @@ class AdminController extends StudipController {
             } else {
                 $server->store();
                 PageLayout::postMessage(
-                    MessageBox::success(dgettext('MumieTask', 'Server erfolgreich geändert') . '!')
+                    MessageBox::success(dgettext('MumieTaskPlugin', 'Server erfolgreich geändert') . '!')
                 );
          
                 $this->redirect('admin/index');
@@ -85,7 +86,7 @@ class AdminController extends StudipController {
         $server = MumieServer::find(Request::option('server_id'));
         $server->delete();
         PageLayout::postMessage(
-            MessageBox::success(dgettext('MumieServer', 'Server wurde gelöscht') . '!')
+            MessageBox::success(dgettext('MumieTaskPlugin', 'Server wurde gelöscht') . '!')
         );
         $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/index'));
     }
@@ -95,7 +96,7 @@ class AdminController extends StudipController {
             $config = Config::get();            
             $config->store(MUMIE_ORG, Request::get('mumie_org'));
             $config->store(MUMIE_API_KEY, Request::get('mumie_api_key'));
-            PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'Änderungen gespeichert') . '!'));
+            PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!'));
         }
     }
 
@@ -107,22 +108,22 @@ class AdminController extends StudipController {
         $serverByName = MumieServer::getByName($server->name);
 
         if(!$serverInstance->isValidMumieServer()) {
-            $errors[] = dgettext('MumieTask', 'Für folgende URL existiert kein MUMIE-Server') . ': <br>' . $server->url_prefix;
+            $errors[] = dgettext('MumieTaskPlugin', 'Für folgende URL existiert kein MUMIE-Server') . ': <br>' . $server->url_prefix;
         }
         
         if($isEdit) {
             if($serverByPrefix != null && $serverByPrefix->id !=$server->id) {
-                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix') . ':<br><br>' . $server->url_prefix;
+                $errors[] = dgettext('MumieTaskPlugin', 'Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix') . ':<br><br>' . $server->url_prefix;
             }
             if($serverByName != null && $serverByName->id != $server->id) {
-                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen Namen') . '!';
+                $errors[] = dgettext('MumieTaskPlugin', 'Es gibt bereits eine Serverkonfiguration für diesen Namen') . '!';
             }
         } else {
             if($serverByPrefix != null) {
-                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix') . ':<br><br>' . $server->url_prefix;
+                $errors[] = dgettext('MumieTaskPlugin', 'Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix') . ':<br><br>' . $server->url_prefix;
             }
             if($serverByName != null) {
-                $errors[] = dgettext('MumieTask', 'Es gibt bereits eine Serverkonfiguration für diesen Namen') . '!';
+                $errors[] = dgettext('MumieTaskPlugin', 'Es gibt bereits eine Serverkonfiguration für diesen Namen') . '!';
             }
         }
         return $errors;

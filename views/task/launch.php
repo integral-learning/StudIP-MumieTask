@@ -6,5 +6,4 @@
     $template->set_attribute('ssotoken', $mumieToken);
     $template->set_attribute('org', $org);
     echo $template->render();
-
 ?>

@@ -2,6 +2,6 @@
     if(isset($points)) {
         echo $points . '/100';
     } else {
-        echo '<i>' . dgettext("MumieTask", "Keine Bewertung") . '</i>';
+        echo '<i>-</i>';
     }
 ?>

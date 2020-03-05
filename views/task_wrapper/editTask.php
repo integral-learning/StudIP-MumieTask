@@ -1,3 +1,5 @@
+<h1><?= dgettext("MumieTaskPlugin", "MUMIE-Task bearbeiten"); ?></h1>
+<br>
 <?php
 
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/TaskOptionCollector.php');

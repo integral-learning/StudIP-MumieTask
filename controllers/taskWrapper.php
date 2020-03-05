@@ -14,14 +14,14 @@ class TaskWrapperController extends StudipController {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
-
+        PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " . dgettext("MumieTaskPlugin", "Aufgabenübersicht"));
     }
     public function index_action() {
         $this->tasks = MumieTask::findAllInCourse(\Context::get()->Seminar_id);
         if($this->hasTeacherPermission) {
             $actions = new ActionsWidget();
             $actions->addLink(
-                dgettext('Mumietask','Neue MUMIE-Task anlegen'),
+                dgettext('MumieTaskPlugin','Neue MUMIE-Task hinzufügen'),
                 $this->url_for('taskWrapper/addTask'),
                 Icon::create('add')
             );
@@ -54,7 +54,7 @@ class TaskWrapperController extends StudipController {
                 PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
             } else {
                 $task->store();
-                PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+                PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
                 $this->redirect('taskWrapper/index');
             }
 
@@ -67,7 +67,7 @@ class TaskWrapperController extends StudipController {
         $task = MumieTask::find(Request::option("task_id"));
         $task->delete();
         PageLayout::postMessage(
-            MessageBox::success(dgettext('MumieServer', 'MUMIE-Task wurde gelöscht') . '!')
+            MessageBox::success(dgettext('MumieTaskPlugin', 'MUMIE-Task wurde gelöscht') . '!')
         );
         $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'taskWrapper/index'));
     }
@@ -95,7 +95,7 @@ class TaskWrapperController extends StudipController {
                 PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
             } else {
                 $task->store();
-                PageLayout::postMessage(MessageBox::success(dgettext('MumieTask', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+                PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
                 $this->redirect('taskWrapper/index');
             }
         }
@@ -106,11 +106,11 @@ class TaskWrapperController extends StudipController {
         
         $errors = array();
         if($task->isFieldDirty('duedate') && $task->duedate != 0 && $task->duedate < time()) {
-            $errors[] =  dgettext('MumieTask', 'Das Datum der Abgabefrist muss in der Zukunft liegen!');
+            $errors[] =  dgettext('MumieTaskPlugin', 'Das Datum der Abgabefrist muss in der Zukunft liegen!');
         }
 
         if($server == null || !(new MumieServerInstance($server))->isValidMumieServer()) {
-            $errors[] = dgettext('MumieTask', 'Der gewählte MUMIE-Server konnte nicht gefunden werden.');
+            $errors[] = dgettext('MumieTaskPlugin', 'Der gewählte MUMIE-Server konnte nicht gefunden werden.');
             return $errors;
         }
 
@@ -119,23 +119,23 @@ class TaskWrapperController extends StudipController {
         $course = $serverInstance->getCoursebyName($task->mumie_course);
 
         if($course == null) {
-            $errors[] = dgettext('MumieTask', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.1');
+            $errors[] = dgettext('MumieTaskPlugin', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.');
             return $errors;
         }
 
         if($course == null || $task->mumie_coursefile == null) {
-            $errors[] = dgettext('MumieTask', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.2222');
+            $errors[] = dgettext('MumieTaskPlugin', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.');
             return $errors;
         }
 
         $problem = $course->getTaskByLink($task->task_url);
         if($problem == null) {
-            $errors[] = dgettext('MumieTask', 'Das gewählte MUMIE-Problem konnte nicht gefunden werden.');
+            $errors[] = dgettext('MumieTaskPlugin', 'Das gewählte MUMIE-Problem konnte nicht gefunden werden.');
             return $errors;
         }
         
         if(!in_array($task->language, $problem->getLanguages())) {
-            $errors[] =  dgettext('MumieTask', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
+            $errors[] =  dgettext('MumieTaskPlugin', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
             return $errors;
         }      
         return $errors;  

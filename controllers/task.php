@@ -13,7 +13,10 @@ class TaskController extends StudipController {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
+        $this->task = MumieTask::find(Request::option("task_id"));
+        PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
+
     public function index_action() {
         $this->task = MumieTask::find(Request::option("task_id"));
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
@@ -22,13 +25,11 @@ class TaskController extends StudipController {
     }
 
     public function launch_action() {
-        $this->task = MumieTask::find(Request::option("task_id"));
         $this->mumieToken = SSOService::generateTokenForUser($GLOBALS['user']->id);
         $this->org = Config::get()->MUMIE_ORG;
     }
 
     public function gradeOverview_action() {
-        $this->task = MumieTask::find(Request::option("task_id"));
         $this->grades = MumieGrade::getAllGradesForTaskWithRealNames(Request::option("task_id"));
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task));
         $gradeService->update();
@@ -37,7 +38,7 @@ class TaskController extends StudipController {
 
     private function addSidebar() {
         $widget = new SidebarWidget;
-        $widget->title = dgettext("MumieTask",'Informationen');
+        $widget->title = dgettext("MumieTaskPlugin",'Informationen');
         $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
 
         $dateString = $this->task->duedate == 0 ? 
@@ -61,12 +62,12 @@ class TaskController extends StudipController {
         if($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
             $actions = new ActionsWidget();
             $actions->addLink(
-                dgettext('Mumietask','Übersicht'),
+                dgettext('MumieTaskPlugin','Aufgabe'),
                 PluginEngine::getLink('MumieTaskPlugin', array("task_id" => $this->task->task_id), 'task'),
                 Icon::create('assessment')
             );
             $actions->addLink(
-                dgettext('Mumietask','Bewertungen'),
+                dgettext('MumieTaskPlugin','Bewertungen'),
                 PluginEngine::getLink('MumieTaskPlugin', array("task_id" => $this->task->task_id), 'task/gradeOverview'),
                 Icon::create('ranking')
             );
@@ -77,7 +78,7 @@ class TaskController extends StudipController {
             $gradeTemplate->set_attribute('points', $points);
             
             $gradeInfo = $factory->open("taskInfo");
-            $gradeInfo->set_attribute("header", dgettext("MumieTask",'Bewertung'));
+            $gradeInfo->set_attribute("header", dgettext("MumieTaskPlugin",'Bewertung'));
             $gradeInfo->set_attribute("body", $gradeTemplate->render());
                         
             $widget->addElement(
@@ -87,7 +88,7 @@ class TaskController extends StudipController {
             );
             
             $passed = $factory->open("taskInfo");
-            $passed->set_attribute("header", dgettext("MumieTask",'Bestanden'));
+            $passed->set_attribute("header", dgettext("MumieTaskPlugin",'Bestanden'));
             $passed->set_attribute("body", $points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red'));
             $widget->addElement(
                 new WidgetElement(
@@ -98,7 +99,7 @@ class TaskController extends StudipController {
 
 
         $passingGrade = $factory->open("taskInfo");
-        $passingGrade->set_attribute("header", dgettext("MumieTask",'Mindestpunktzahl'));
+        $passingGrade->set_attribute("header", dgettext("MumieTaskPlugin",'Mindestpunktzahl'));
         $passingGrade->set_attribute("body", $this->task["passing_grade"]);
         $widget->addElement(
             new WidgetElement(

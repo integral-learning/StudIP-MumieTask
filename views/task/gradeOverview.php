@@ -1,15 +1,14 @@
-<h1>OVERVIEW</h1>
-
+<h1><?= dgettext("MumieTaskPlugin", "Bewertungsübersicht");?></h1>
 <table class="default">
     <tr>
         <th>
-            <?= dgettext("MumiePlugin", "Nutzer"); ?>
+            <?= dgettext("MumieTaskPlugin", "Nutzer"); ?>
         </th>
         <th>
-            <?=dgettext("MumieTask", "Punkte"); ?>
+            <?=dgettext("MumieTaskPlugin", "Punkte"); ?>
         </th>
         <th>
-            <?=dgettext("MumieTask", "Bestanden"); ?>
+            <?=dgettext("MumieTaskPlugin", "Bestanden"); ?>
         </th>
     </tr>
     <? foreach($grades as $grade): ?>

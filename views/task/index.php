@@ -1,10 +1,9 @@
+<h1><?= $task->name;?></h1>
 <section class="contentbox">
     <section>
-
         <header>
             <h1><?= dgettext("MumieTask", "Inhalt") ?></h1>
         </header>
-        <div>TODO: Hier text einfügen, der darauf hinweist, dass auf eine externe Seite verlinkt ist</div>
         <?php if($task->launch_container == 0) : ?>
         <a href=<?= PluginEngine::getLink("MumieTaskPlugin", array("task_id" => $task->task_id), 'task/launch'); ?>
             target="_blank" class="button">Anzeigen</a>

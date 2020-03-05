@@ -1,15 +1,13 @@
-<h1>TASKS INDEX</h1>
-
 <table class="default">
     <tr>
-        <th><?=dgettext("MumieTask", "MUMIE-Task"); ?></th>
-        <th><?=dgettext("MumieTask", "Abgabefrist"); ?></th>
+        <th><?=dgettext("MumieTaskPlugin", "MUMIE-Task"); ?></th>
+        <th><?=dgettext("MumieTaskPlugin", "Abgabefrist"); ?></th>
         <?php if ($hasTeacherPermission): ?>
-        <th><?=dgettext("MumieTask", "Bearbeiten"); ?></th>
-        <th><?=dgettext("MumieTask", "Löschen"); ?></th>
+        <th><?=dgettext("MumieTaskPlugin", "Bearbeiten"); ?></th>
+        <th><?=dgettext("MumieTaskPlugin", "Löschen"); ?></th>
         <?php else : ?>
-        <th><?=dgettext("MumieTask", "Punkte"); ?></th>
-        <th><?=dgettext("MumieTask", "Bestanden"); ?></th>
+        <th><?=dgettext("MumieTaskPlugin", "Punkte"); ?></th>
+        <th><?=dgettext("MumieTaskPlugin", "Bestanden"); ?></th>
         <?php endif ?>
     </tr>
 
@@ -54,6 +52,6 @@
     <? endforeach ?>
 </table>
 <?php if ($hasTeacherPermission): ?>
-<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'taskWrapper/addTask'); ?> class="button">Neue MUMIE-Task
-    hinzufügen</a>
+<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'taskWrapper/addTask'); ?> class="button"><?= dgettext("MumieTaskPlugin", "Neue MUMIE-Task
+    hinzufügen");?></a>
 <?php endif ?>

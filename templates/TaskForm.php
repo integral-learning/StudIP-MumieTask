@@ -10,14 +10,14 @@
         <legend>Allgemein</legend>
         <label>
             <span class="required">
-                <?= dgettext('MumieTask', 'Name'); ?>
+                <?= dgettext('MumieTaskPlugin', 'Name'); ?>
             </span>
             <input id="mumie_name" required type="text" name="name" value="<?= $name?>"
-                placeholder="<?= dgettext('MumieTask', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
+                placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
         </label>
         <label>
             <span class="required">
-                <?= dgettext('MumieTask', 'MUMIE-Server'); ?>
+                <?= dgettext('MumieTaskPlugin', 'MUMIE-Server'); ?>
             </span>
             <select id="mumie_server" name="server">
                 <? 
@@ -32,7 +32,7 @@
             </select>
         </label>
         <label>
-            <?= dgettext('MumieTask', 'MUMIE-Kurs'); ?>
+            <?= dgettext('MumieTaskPlugin', 'MUMIE-Kurs'); ?>
             <select id="mumie_course" name="course">
                 <? 
                     $options = $collector->getCourseOptions();
@@ -47,7 +47,7 @@
         </label>
         <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
         <label>
-            <?= dgettext('MumieTask', 'Sprache'); ?>
+            <?= dgettext('MumieTaskPlugin', 'Sprache'); ?>
             <select id="mumie_language" name="language">
                 <? 
                     $options = $collector->getLangOptions();
@@ -61,7 +61,7 @@
             </select>
         </label>
         <label>
-            <?= dgettext('MumieTask', 'MUMIE-Aufgabe'); ?>
+            <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
             <select id="mumie_taskurl" name="task_url">
                 <? 
                     $options = $collector->getTaskOptions();
@@ -82,7 +82,7 @@
             </div>
         </div>
         <label>
-            <?= dgettext('MumieTask', 'Startcontainer'); ?>
+            <?= dgettext('MumieTaskPlugin', 'Startcontainer'); ?>
             <select name="launch_container">
                 <option value="1" <?= $launch_container == 1 ? "selected = 'selected'" :"";?>>Eingebunden</option>
                 <option value="0" <?= $launch_container == 0 ? "selected = 'selected'" :"";?>>Neuer Browser-Tab</option>
@@ -91,23 +91,23 @@
     </fieldset>
 
     <fieldset class="conf-form-field collapsable collapsed">
-        <legend><?= dgettext('MumieTask','Benotung'); ?></legend>
+        <legend><?= dgettext('MumieTaskPlugin','Benotung'); ?></legend>
         <label>
-            <?= dgettext('MumieTask', 'Bestehensgrenze'); ?>
+            <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
             <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
                 value="<?= $passing_grade ?? 60;?>">
         </label>
         <label>
-            <?= dgettext('MumieTask', 'Abgabefrist'); ?>
+            <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
             <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker value="<?= $duedate == 0 ? null : date('d.m.Y H:i',$duedate);?>">
         </label>
         <label>
-            <?= dgettext('MumieTask', 'Punkte mit anderen Kursen teilen'); ?>
+            <?= dgettext('MumieTaskPlugin', 'Punkte mit anderen Kursen teilen'); ?>
             <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool"
                 <?= $privategradepool ? "" : "checked"?>>
         </label>
     </fieldset>
-    <?= \Studip\Button::create(dgettext('MumieTask', 'Speichern')); ?>
+    <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
 </form>
 
 <script>
