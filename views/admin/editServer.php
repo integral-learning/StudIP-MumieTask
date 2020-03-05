@@ -1,4 +1,5 @@
 <?php 
+    PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Server bearbeiten"));
     $server = MumieServer::find(Request::option('server_id'));
     $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
     $template = $factory->open('ServerForm.php');

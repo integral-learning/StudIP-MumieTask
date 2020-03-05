@@ -1,5 +1,10 @@
-<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/addServer'); ?>"
-    method="get" data-dialog>
+<style type="text/css">
+    <?php include 'public/plugins_packages/integral-learning/MumieTaskPlugin/mumieStyle.css';
+    ?>
+</style>
+
+<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/addServer'); ?>" method="get"
+    data-dialog>
     <fieldset class="conf-form-field collapsable">
 
         <legend><?=dgettext("MumieTaskPlugin","MUMIE-Server-Konfiguration");?></legend>
@@ -41,43 +46,40 @@
     </fieldset>
 </form>
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/privacy'); ?>" method="post">
-    <fieldset class="conf-form-field collapsable collapsed">
+    <fieldset class="conf-form-field collapsable">
         <legend><?=dgettext("MumieTaskPlugin","Datenschutz");?></legend>
-        <table>
+        <div class="mumie_section_header">
+            <?=dgettext("MumieTaskPlugin", "Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen"); ?>
+        </div>
+        <table class="mumie_settings_table">
             <tr>
                 <td>
                     <label for="mumie_share_firstname">
-                        <?= dgettext('MumieTaskPlugin', 'Vornamen teilen') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'Vorname') . ':'; ?>
                     </label>
                 </td>
                 <td>
-                    <input type="checkbox" id="mumie_share_firstname" name="share_firstname"
-                        <?= Config::get()->MUMIE_SHARE_FIRSTNAME ? "checked" : "";?>
-                        placeholder="<?= dgettext('MumieTaskPlugin', 'Bestimmen Sie, ob Sie den Vornamen der Nutzer mit MUMIE-Servern teilen wollen'); ?>">
+                    <input type="checkbox" id="mumie_share_firstname" name="share_firstname" <?= Config::get()->MUMIE_SHARE_FIRSTNAME ? "checked" : "";?>>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="mumie_share_lastname">
-                        <?= dgettext('MumieTaskPlugin', 'Nachnamen teilen') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'Nachname') . ':'; ?>
                     </label>
                 </td>
                 <td>
-                    <input type="checkbox" name="share_lastname" id="mumie_share_lastname"
-                        <?= Config::get()->MUMIE_SHARE_LASTNAME ? "checked" : "";?>
-                        placeholder="<?= dgettext('MumieTaskPlugin', 'Bestimmen Sie, ob Sie den Nachnamen der Nutzer mit MUMIE-Servern teilen wollen'); ?>">
+                    <input type="checkbox" name="share_lastname" id="mumie_share_lastname" <?= Config::get()->MUMIE_SHARE_LASTNAME ? "checked" : "";?>>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="mumie_share_email">
-                        <?= dgettext('MumieTaskPlugin', 'E-Mai-Addresse teilen') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'E-Mai-Addresse') . ':'; ?>
                     </label>
                 </td>
                 <td>
-                    <input type="checkbox" id="mumie_share_lastname" name="share_email"
-                        <?= Config::get()->MUMIE_SHARE_EMAIL ? "checked" : "";?>
-                        placeholder="<?= dgettext('MumieTaskPlugin', 'Bestimmen Sie, ob Sie die E-Mail-Addresse der Nutzer mit MUMIE-Servern teilen wollen'); ?>">
+                    <input type="checkbox" id="mumie_share_lastname" name="share_email" <?= Config::get()->MUMIE_SHARE_EMAIL ? "checked" : "";?>>
                 </td>
             <tr>
         </table>
@@ -87,8 +89,8 @@
     </fieldset>
 </form>
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>"
-        method="post">
-        <fieldset class="conf-form-field collapsable collapsed">
+    method="post">
+    <fieldset class="conf-form-field collapsable">
         <legend><?=dgettext("MumieTaskPlugin","Authentifizierung");?></legend>
         <table>
             <tr>
@@ -98,19 +100,17 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" id="mumie_org" name="mumie_org" value=<?= Config::get()->MUMIE_ORG;?>
-                        placeholder="<?= dgettext('MumieTaskPlugin', 'Bestimmen Sie, ob Sie den Vornamen der Nutzer mit MUMIE-Servern teilen wollen'); ?>">
+                    <input type="text" id="mumie_org" name="mumie_org" value=<?= Config::get()->MUMIE_ORG;?>>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="mumie_api_key">
-                        <?= dgettext('MumieTaskPlugin', 'API-KEY teilen') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'API-KEY') . ':'; ?>
                     </label>
                 </td>
                 <td>
-                    <input type="text" name="mumie_api_key" id="mumie_api_key" value=<?= Config::get()->MUMIE_API_KEY;?>
-                        placeholder="<?= dgettext('MumieTaskPlugin', 'Bestimmen Sie, ob Sie den Nachnamen der Nutzer mit MUMIE-Servern teilen wollen'); ?>">
+                    <input type="text" name="mumie_api_key" id="mumie_api_key" value=<?= Config::get()->MUMIE_API_KEY;?>>
                 </td>
             </tr>
         </table>
