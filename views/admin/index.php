@@ -51,7 +51,7 @@
         <div class="mumie_section_header">
             <?=dgettext("MumieTaskPlugin", "Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen"); ?>
         </div>
-        <table class="mumie_settings_table">
+        <table>
             <tr>
                 <td>
                     <label for="mumie_share_firstname">
@@ -75,7 +75,7 @@
             <tr>
                 <td>
                     <label for="mumie_share_email">
-                        <?= dgettext('MumieTaskPlugin', 'E-Mai-Addresse') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'E-Mail-Addresse') . ':'; ?>
                     </label>
                 </td>
                 <td>
