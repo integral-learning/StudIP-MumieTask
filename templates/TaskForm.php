@@ -9,17 +9,15 @@
     <fieldset class="conf-form-field collapsable">
         <legend>Allgemein</legend>
         <div class="mumie_form_elem_wrapper">
-            <label>
+            <label for="mumie_name">
                 <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'Name'); ?>
                 </span>
-                <input id="mumie_name" required type="text" name="name" value="<?= $name?>"
-                    placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
-
             </label>
+            <input id="mumie_name" required type="text" name="name" value="<?= $name?>">
         </div>
         <div class="mumie_form_elem_wrapper">
-            <label for="server">
+            <label for="mumie_server">
                 <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Server'); ?>
                 </span>
@@ -38,7 +36,7 @@
             <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte wählen Sie einen MUMIE-Server, um eine aktuelle Auswahl von verfügbaren Kursen und Aufgaben zu erhalten.")])->asImg(); ?>
         </div>
         <div class="mumie_form_elem_wrapper">
-            <label for="course">
+            <label for="mumie_course">
                 <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Kurs'); ?>
                 </span>
@@ -59,7 +57,7 @@
         <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
         <div class="mumie_form_elem_wrapper">
 
-            <label for="language">
+            <label for="mumie_language">
                 <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'Sprache'); ?>
                 </span>
@@ -78,7 +76,7 @@
             <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte wählen Sie die Sprache, in der diese MUMIE-Task angezeigt werden soll.")])->asImg(); ?>
         </div>
         <div class="mumie_form_elem_wrapper">
-            <label for="task_url">
+            <label for="mumie_taskurl">
                 <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
                 </span>
@@ -105,12 +103,12 @@
         </div>
         <div class="mumie_form_elem_wrapper">
 
-            <label for="launch_container">
+            <label for="mumie_launch_container">
                 <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'Startcontainer'); ?>
                 </span>
             </label>
-            <select name="launch_container">
+            <select id="mumie_launch_container" name="launch_container">
                 <option value="1" <?= $launch_container == 1 ? "selected = 'selected'" :"";?>>Eingebunden</option>
                 <option value="0" <?= $launch_container == 0 ? "selected = 'selected'" :"";?>>Neuer Browser-Tab</option>
             </select>
@@ -122,7 +120,7 @@
         <legend><?= dgettext('MumieTaskPlugin','Benotung'); ?></legend>
         <div class="mumie_form_elem_wrapper">
 
-            <label for="passing_grade">
+            <label for="mumie_passing_grade">
                 <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
             </label>
             <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
@@ -131,7 +129,7 @@
         </div>
         <div class="mumie_form_elem_wrapper">
 
-            <label for="duedate">
+            <label for="mumie_due_date">
                 <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
             </label>
             <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker
@@ -185,7 +183,6 @@
                     serverDropDown.disabled = true;
                     removeChildElems(serverDropDown);
                 }
-
             };
         })();
 
