@@ -88,8 +88,7 @@
         </div>
     </fieldset>
 </form>
-<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>"
-    method="post">
+<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>" method="post">
     <fieldset class="conf-form-field collapsable">
         <legend><?=dgettext("MumieTaskPlugin","Authentifizierung");?></legend>
         <table>

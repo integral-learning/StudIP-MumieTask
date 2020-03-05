@@ -8,104 +8,145 @@
 <form class="default" action="<?= $action; ?>" method="post">
     <fieldset class="conf-form-field collapsable">
         <legend>Allgemein</legend>
-        <label>
-            <span class="required">
-                <?= dgettext('MumieTaskPlugin', 'Name'); ?>
-            </span>
-            <input id="mumie_name" required type="text" name="name" value="<?= $name?>"
-                placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
-        </label>
-        <label>
-            <span class="required">
-                <?= dgettext('MumieTaskPlugin', 'MUMIE-Server'); ?>
-            </span>
+        <div class="mumie_form_elem_wrapper">
+            <label>
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'Name'); ?>
+                </span>
+                <input id="mumie_name" required type="text" name="name" value="<?= $name?>"
+                    placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
+
+            </label>
+        </div>
+        <div class="mumie_form_elem_wrapper">
+            <label for="server">
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'MUMIE-Server'); ?>
+                </span>
+            </label>
             <select id="mumie_server" name="server">
                 <? 
-                    $options = $collector->getServerOptions();
-                    foreach (array_keys($options) as $key): 
-                ?>
+                        $options = $collector->getServerOptions();
+                        foreach (array_keys($options) as $key): 
+                            ?>
                 <option value=<?= $key; ?> <?= $key == $server ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
 
                 <? endforeach ?>
             </select>
-        </label>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'MUMIE-Kurs'); ?>
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte wählen Sie einen MUMIE-Server, um eine aktuelle Auswahl von verfügbaren Kursen und Aufgaben zu erhalten.")])->asImg(); ?>
+        </div>
+        <div class="mumie_form_elem_wrapper">
+            <label for="course">
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'MUMIE-Kurs'); ?>
+                </span>
+            </label>
             <select id="mumie_course" name="course">
                 <? 
-                    $options = $collector->getCourseOptions();
-                    foreach (array_keys($options) as $key): 
-                ?>
+                        $options = $collector->getCourseOptions();
+                        foreach (array_keys($options) as $key): 
+                    ?>
                 <option value=<?= $key; ?> <?= $key == $mumie_course ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
 
                 <? endforeach ?>
             </select>
-        </label>
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte wählen Sie den MUMIE-Kurs, den Sie für diese MUMIE-Task verwenden möchten.")])->asImg(); ?>
+        </div>
         <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'Sprache'); ?>
+        <div class="mumie_form_elem_wrapper">
+
+            <label for="language">
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'Sprache'); ?>
+                </span>
+            </label>
             <select id="mumie_language" name="language">
                 <? 
-                    $options = $collector->getLangOptions();
-                    foreach (array_keys($options) as $key): 
-                ?>
+                        $options = $collector->getLangOptions();
+                        foreach (array_keys($options) as $key): 
+                    ?>
                 <option value=<?= $key; ?> <?= $key == $language ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
 
                 <? endforeach ?>
             </select>
-        </label>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte wählen Sie die Sprache, in der diese MUMIE-Task angezeigt werden soll.")])->asImg(); ?>
+        </div>
+        <div class="mumie_form_elem_wrapper">
+            <label for="task_url">
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
+                </span>
+            </label>
             <select id="mumie_taskurl" name="task_url">
                 <? 
-                    $options = $collector->getTaskOptions();
-                    foreach (array_keys($options) as $key): 
-                ?>
+                        $options = $collector->getTaskOptions();
+                        foreach (array_keys($options) as $key): 
+                    ?>
                 <option value=<?= $key; ?> <?= $key == $task_url ? "selected = 'selected'" :"";?>>
                     <?= $options[$key]; ?>
                 </option>
                 <? endforeach ?>
             </select>
-        </label>
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Eine MUMIE-Aufgabe kann durch Studierende bearbeitet werden und wird einzeln benotet.")])->asImg(); ?>
+        </div>
         <div id="mumie_filter_section">
             <div id="mumie_filter_header" class="mumie-collapsable">
                 <i class="fa fa-caret-down mumie-icon"></i>
-                Filter MumieTasks
+                <?=dgettext("MumieTaskPlugin", "Filter MUMIE-Tasks");?>
             </div>
             <div id="mumie_filter_wrapper">
             </div>
         </div>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'Startcontainer'); ?>
+        <div class="mumie_form_elem_wrapper">
+
+            <label for="launch_container">
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'Startcontainer'); ?>
+                </span>
+            </label>
             <select name="launch_container">
                 <option value="1" <?= $launch_container == 1 ? "selected = 'selected'" :"";?>>Eingebunden</option>
                 <option value="0" <?= $launch_container == 0 ? "selected = 'selected'" :"";?>>Neuer Browser-Tab</option>
             </select>
-        </label>
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte wählen Sie, ob diese Aktivität in die StudIP-Umgebung eingebunden oder in einem neuen Browser-Tab geöffnet werden soll.")])->asImg(); ?>
+        </div>
     </fieldset>
 
     <fieldset class="conf-form-field collapsable collapsed">
         <legend><?= dgettext('MumieTaskPlugin','Benotung'); ?></legend>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
+        <div class="mumie_form_elem_wrapper">
+
+            <label for="passing_grade">
+                <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
+            </label>
             <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
                 value="<?= $passing_grade ?? 60;?>">
-        </label>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
-            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker value="<?= $duedate == 0 ? null : date('d.m.Y H:i',$duedate);?>">
-        </label>
-        <label>
-            <?= dgettext('MumieTaskPlugin', 'Punkte mit anderen Kursen teilen'); ?>
-            <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool"
-                <?= $privategradepool ? "" : "checked"?>>
-        </label>
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Geben Sie eine zum Bestehen der Aufgabe nötige Mindestpunktzahl an.")])->asImg(); ?>
+        </div>
+        <div class="mumie_form_elem_wrapper">
+
+            <label for="duedate">
+                <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
+            </label>
+            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker
+                value="<?= $duedate == 0 ? null : date('d.m.Y H:i',$duedate);?>">
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Falls diese Option aktiviert ist, werden keine Noten, die nach dem gewählten Datum erzielt wurden, mit StudIP synchronisiert.")])->asImg(); ?>
+
+        </div>
+        <div class="mumie_form_elem_wrapper">
+
+            <label>
+                <?= dgettext('MumieTaskPlugin', 'Punkte mit anderen Kursen teilen'); ?>
+                <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool"
+                    <?= $privategradepool ? "" : "checked"?>>
+            </label>
+        </div>
     </fieldset>
     <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
 </form>

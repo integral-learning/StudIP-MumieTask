@@ -7,22 +7,32 @@
         <legend>
             <?= dgettext("MumieTaskPlugin", "MUMIE-Server"); ?>
         </legend>
-        <label for="name">
-            <?= dgettext('MumieTaskPlugin', 'Name') . ':'; ?>
-        </label>
-        <input required type="text" name="name" value="<?= $name?>"
-            placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
-        <div class="mumie_form_desc">
-            <?=dgettext("MumieTaskPlugin","Bitte wählen Sie einen eindeutigen Namen für diese Konfiguration!"); ?>
+
+        <div class="mumie_form_elem_wrapper">
+            <label for="name">
+                <span class="required">
+                    <?=
+                dgettext('MumieTaskPlugin', 'Name') . ': '
+                ?>
+                </span>
+            </label>
+
+            <input required type="text" name="name" value="<?= $name?>"
+                placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
+            <?=Icon::create('info', 'info', ['title' => dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest')])->asImg(); ?>
         </div>
-        <label for="url_prefix">
-            <?= dgettext('MumieTaskPlugin', 'URL-Prefix') . ':'; ?>
-        </label>
-        <input required type="text" name="url_prefix" value="<?= $url_prefix?>"
-            placeholder="<?= dgettext('MumieTaskPlugin', 'Geben Sie die URL des Servers ein'); ?>">
-        <div class="mumie_form_desc">
-            <?=dgettext("MumieTaskPlugin","Bitte geben Sie die URL des MUMIE-Servers ein. Für jede URL kann nur ein Server in StudIP konfiguriert werden."); ?>
+        <div class="mumie_form_elem_wrapper">
+            <label for="url_prefix">
+                <span class="required">
+                    <?= dgettext('MumieTaskPlugin', 'URL-Prefix') . ':'; ?>
+                </span>
+            </label>
+            <input required type="text" name="url_prefix" value="<?= $url_prefix?>"
+                placeholder="<?= dgettext('MumieTaskPlugin', 'Geben Sie die URL des Servers ein'); ?>">
+            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte geben Sie die URL des MUMIE-Servers ein. Für jede URL kann nur ein Server in StudIP konfiguriert werden.")])->asImg(); ?>
         </div>
-        <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
+        <div>
+            <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
+            <div>
     </fieldset>
 </form>

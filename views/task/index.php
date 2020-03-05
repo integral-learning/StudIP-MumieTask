@@ -1,4 +1,4 @@
-<h1><?= $task->name;?></h1>
+<h1><?= dgettext("MumieTaskPlugin", "Aufgabe");?></h1>
 <section class="contentbox">
     <section>
         <header>
