@@ -12,21 +12,6 @@ class AdminController extends StudipController {
         parent::before_filter($action, $args);
         Navigation::activateItem('/admin/config/mumie');
         PermissionService::requireAdminPermission();
-        $links = new LinksWidget();
-        $links->setTitle("Einstellungen");
-        $links->addLink(
-            dgettext('MumieTaskPlugin', 'MUMIE-Server'),
-            PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/index'),
-            null);
-        $links->addLink(
-            dgettext('MumieTaskPlugin', 'Datenschutz'),
-            PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/privacy'),
-            null);
-        $links->addLink(
-            dgettext('MumieTaskPlugin', 'Authentification'),
-            PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/authentication'),
-            null);
-        Sidebar::Get()->addWidget($links);
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " . dgettext("MumieTaskPlugin", "Admininstrator-Einstellungen"));
     }
 
@@ -42,6 +27,7 @@ class AdminController extends StudipController {
             $config->store(MUMIE_SHARE_EMAIL, Request::get('share_email'));
             PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!'));
         }
+        $this->redirect('admin/index');
     }
     
     public function addServer_action() {
@@ -98,6 +84,7 @@ class AdminController extends StudipController {
             $config->store(MUMIE_API_KEY, Request::get('mumie_api_key'));
             PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!'));
         }
+        $this->redirect('admin/index');
     }
 
     private function getFormValidationErrors($server, $isEdit = false) {
