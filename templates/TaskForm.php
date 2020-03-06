@@ -146,6 +146,7 @@
             </label>
         </div>
     </fieldset>
+    <a href="<?= $cancelLink; ?>" class="button"><?= dgettext("MumieTaskPlugin", "Abbrechen");?></a>
     <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
 </form>
 

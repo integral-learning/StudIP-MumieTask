@@ -23,6 +23,7 @@ $template->set_attribute("passing_grade", $task->passing_grade);
    If it's called in the template MumieServer::find() will return an instance of stdClass and not MumieServer in the controller class. I don't know why
 */
 $template->set_attribute('action', PluginEngine::getLink('MumieTaskPlugin', array('task_id' => $task["task_id"]), 'taskWrapper/editTask'));
+$template->set_attribute('cancelLink', PluginEngine::getLink('MumieTaskPlugin', array(), 'taskWrapper/index'));
 echo $template->render();
 
 ?>
