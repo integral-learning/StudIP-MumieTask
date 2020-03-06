@@ -1,6 +1,7 @@
 <?php
 
-class MumieCourse implements \JsonSerializable{
+class MumieCourse implements \JsonSerializable
+{
     /**
      * The course's name
      * @var string
@@ -36,7 +37,8 @@ class MumieCourse implements \JsonSerializable{
      * Constructor
      * @param stdClass $coursewithtasks
      */
-    public function __construct($coursewithtasks) {
+    public function __construct($coursewithtasks)
+    {
         $this->name = $coursewithtasks->name;
         $this->coursefile = $coursewithtasks->pathToCourseFile;
         $this->tasks = [];
@@ -53,7 +55,8 @@ class MumieCourse implements \JsonSerializable{
     /**
      * Collect and set all languages used in this course
      */
-    public function collectLanguages() {
+    public function collectLanguages()
+    {
         $langs = [];
         foreach ($this->tasks as $task) {
             array_push($langs, ...$task->getLanguages());
@@ -64,7 +67,8 @@ class MumieCourse implements \JsonSerializable{
     /**
      * Collect and set all tags that are used in this course
      */
-    public function collectTags() {
+    public function collectTags()
+    {
         $tags = array();
         foreach ($this->tasks as $task) {
             foreach ($task->getTags() as $tag) {
@@ -92,17 +96,20 @@ class MumieCourse implements \JsonSerializable{
      * Necessary to encode this object as json.
      * @return mixed
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $vars = get_object_vars($this);
 
         return $vars;
     }
 
-    public function getLanguages() {
+    public function getLanguages()
+    {
         return $this->languages;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -110,7 +117,7 @@ class MumieCourse implements \JsonSerializable{
      * Get all tasks available on the server
      *
      * @return  MumieProblem[]
-     */ 
+     */
     public function getTasks()
     {
         return $this->tasks;

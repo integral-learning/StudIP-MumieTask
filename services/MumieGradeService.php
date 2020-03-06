@@ -1,6 +1,7 @@
 <?php
 require_once('HashingService.php');
-class MumieGradeService {
+class MumieGradeService
+{
     private $user_ids;
     private $tasks;
     private $force_update;
@@ -86,7 +87,6 @@ class MumieGradeService {
      */
     private function getMumieId($mumietask)
     {
-        
         $id = substr($mumietask->task_url, strlen("link/"));
         if (strpos($id, "?") !== false) {
             $id = substr($id, 0, strpos($id, "?"));
@@ -106,11 +106,11 @@ class MumieGradeService {
 
         $oldest_timestamp = PHP_INT_MAX;
         $grades = MumieGrade::findBySQL("task_id = ?", array($task->id));
-        if(count($grades) < count($this->user_ids)) {
+        if (count($grades) < count($this->user_ids)) {
             return 1;
         }
-        foreach($grades as $grade) {
-            if($grade->timechanged < $oldest_timestamo) {
+        foreach ($grades as $grade) {
+            if ($grade->timechanged < $oldest_timestamo) {
                 $oldest_timestamp = $grade->timechanged;
             }
         }
@@ -149,7 +149,7 @@ class MumieGradeService {
         
         $valid_grade_by_user = array();
         foreach ($grades_by_user as $user_id => $xapi_grades) {
-            $xapi_grades = array_filter($xapi_grades, function($grade) use ($task) {
+            $xapi_grades = array_filter($xapi_grades, function ($grade) use ($task) {
                 if (!$task->duedate || $task->duedate == 0) {
                     return true;
                 }
@@ -176,29 +176,30 @@ class MumieGradeService {
         return $latest_grade;
     }
 
-    public function update() {
-        foreach($this->tasks as $task) {
+    public function update()
+    {
+        foreach ($this->tasks as $task) {
             $this->updateGrades($task);
         }
     }
 
-    private function updateGrades($task) {
+    private function updateGrades($task)
+    {
         $gradesByUser = $this->getXapiGradesByUser($task);
         foreach (array_keys($gradesByUser) as $userId) {
             $xapiGrade = $gradesByUser[$userId];
             $percentage = round($xapiGrade->result->score->scaled * 100);
-            if($mumieGrade = MumieGrade::getGradeForUser($task->task_id, $userId)) {
+            if ($mumieGrade = MumieGrade::getGradeForUser($task->task_id, $userId)) {
                 $mumieGrade->points = $percentage;
                 $mumieGrade->store();
             } else {
                 $mumieGrade = new MumieGrade();
                 $mumieGrade->the_user = $userId;
                 $mumieGrade->task_id = $task->task_id;
-            }            
+            }
             $mumieGrade->timechanged = $xapiGrade->timestamp;
             $mumieGrade->points = $percentage;
             $mumieGrade->store();
-        }   
-     }
-
+        }
+    }
 }

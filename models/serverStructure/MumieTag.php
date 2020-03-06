@@ -1,6 +1,7 @@
 <?php
 
-class MumieTag implements \JsonSerializable {
+class MumieTag implements \JsonSerializable
+{
     /**
      * Name of the tag
      * @var string
@@ -17,7 +18,8 @@ class MumieTag implements \JsonSerializable {
      * @param string $name
      * @param string[] $values
      */
-    public function __construct($name, $values) {
+    public function __construct($name, $values)
+    {
         $this->name = $name;
         $this->values = $values;
     }
@@ -26,7 +28,8 @@ class MumieTag implements \JsonSerializable {
      * Necessary to encode this object as json.
      * @return mixed
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $vars = get_object_vars($this);
 
         return $vars;
@@ -37,7 +40,8 @@ class MumieTag implements \JsonSerializable {
      * @param MumieTag $tag the tag to merge with
      * @return MumieTag the new tag
      */
-    public function merge($tag) {
+    public function merge($tag)
+    {
         $mergedtag = new MumieTag($this->name, $this->values);
         if ($tag instanceof MumieTag && $tag->name == $mergedtag->name) {
             array_push($mergedtag->values, ...$tag->values);
@@ -51,7 +55,8 @@ class MumieTag implements \JsonSerializable {
      * Get the name of this tag
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 }

@@ -1,19 +1,21 @@
 <?php
 
-class TaskOptionCollector {
-
+class TaskOptionCollector
+{
     private $serverOptions;
     private $courseOptions;
     private $taskOptions;
     private $langOptions;
     private $servers;
 
-    function __construct($servers) {
+    public function __construct($servers)
+    {
         $this->servers = $servers;
     }
 
 
-    public function collect() {
+    public function collect()
+    {
         foreach ($this->servers as $server) {
             $this->compileServerOption($server);
             $this->compileLangOptions($server);
@@ -51,7 +53,7 @@ class TaskOptionCollector {
 
     /**
      * Get the value of courseOptions
-     */ 
+     */
     public function getCourseOptions()
     {
         return $this->courseOptions;
@@ -59,7 +61,7 @@ class TaskOptionCollector {
 
     /**
      * Get the value of serverOptions
-     */ 
+     */
     public function getServerOptions()
     {
         return $this->serverOptions;
@@ -67,7 +69,7 @@ class TaskOptionCollector {
 
     /**
      * Get the value of taskOptions
-     */ 
+     */
     public function getTaskOptions()
     {
         return $this->taskOptions;
@@ -75,7 +77,7 @@ class TaskOptionCollector {
 
     /**
      * Get the value of langOptions
-     */ 
+     */
     public function getLangOptions()
     {
         return $this->langOptions;

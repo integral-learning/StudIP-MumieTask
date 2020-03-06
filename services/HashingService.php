@@ -1,7 +1,9 @@
-<?php 
-class HashingService {
-    public static function getHash($userId) {
-        if($hash = MumieHash::findByUser($userId)) {
+<?php
+class HashingService
+{
+    public static function getHash($userId)
+    {
+        if ($hash = MumieHash::findByUser($userId)) {
         } else {
             $hash = new MumieHash();
             $hash->the_user = $userId;
@@ -11,11 +13,13 @@ class HashingService {
         return $hash;
     }
 
-    private static function getHashedUserId($userId) {
-          return hash("sha512", $id . substr(Config::get()->MUMIE_API_KEY, 0, 10));
+    private static function getHashedUserId($userId)
+    {
+        return hash("sha512", $id . substr(Config::get()->MUMIE_API_KEY, 0, 10));
     }
 
-    public static function getUserIdFromHash($hash) {
-       return MumieHash::findByHash($hash)->the_user;
+    public static function getUserIdFromHash($hash)
+    {
+        return MumieHash::findByHash($hash)->the_user;
     }
 }

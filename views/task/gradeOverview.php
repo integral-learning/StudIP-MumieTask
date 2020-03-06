@@ -11,7 +11,7 @@
                 <?=dgettext("MumieTaskPlugin", "Bestanden"); ?>
             </th>
         </tr>
-        <? foreach($grades as $grade): ?>
+        <?php foreach ($grades as $grade): ?>
         <tr>
             <td>
                 <?= $grade["Nachname"] .", " .$grade["Vorname"];?>
@@ -25,10 +25,10 @@
             ?>
             </td>
             <td>
-                <?= $grade["points"] >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red') ?>
+                <?= $grade["points"] >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red') ?>
 
             </td>
         </tr>
-        <? endforeach ?>
+        <?php endforeach ?>
     </table>
 </section>

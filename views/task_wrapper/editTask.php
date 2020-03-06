@@ -19,7 +19,7 @@ $template->set_attribute("language", $task->language);
 $template->set_attribute("duedate", $task->duedate);
 $template->set_attribute("privategradepool", $task->privategradepool);
 $template->set_attribute("passing_grade", $task->passing_grade);
-/* The PluginEngine must be used here. 
+/* The PluginEngine must be used here.
    If it's called in the template MumieServer::find() will return an instance of stdClass and not MumieServer in the controller class. I don't know why
 */
 $template->set_attribute('action', PluginEngine::getLink('MumieTaskPlugin', array('task_id' => $task["task_id"]), 'taskWrapper/editTask'));

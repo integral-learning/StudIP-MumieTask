@@ -3,7 +3,7 @@
         <header>
             <h1><?= dgettext("MumieTask", "Inhalt") ?></h1>
         </header>
-        <?php if($task->launch_container == 0) : ?>
+        <?php if ($task->launch_container == 0) : ?>
         <a href=<?= PluginEngine::getLink("MumieTaskPlugin", array("task_id" => $task->task_id), 'task/launch'); ?>
             target="_blank" class="button">Anzeigen</a>
         <?php else : ?>

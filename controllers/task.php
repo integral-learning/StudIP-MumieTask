@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('app/controllers/plugin_controller.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieServerInstance.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieHash.php');
@@ -7,8 +7,9 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/M
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/MumieGradeService.php');
 
-class TaskController extends StudipController {
-    function before_filter(&$action, &$args)
+class TaskController extends StudipController
+{
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
@@ -19,23 +20,26 @@ class TaskController extends StudipController {
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
 
-    public function index_action() {
+    public function index_action()
+    {
         $this->addSidebar();
-        if($this->hasTeacherPermission) {
+        if ($this->hasTeacherPermission) {
             Navigation::activateItem('/course/mumietask/task');
         }
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
         $gradeService->update();
     }
 
-    public function launch_action() {
+    public function launch_action()
+    {
         $this->mumieToken = SSOService::generateTokenForUser($GLOBALS['user']->id);
         $this->org = Config::get()->MUMIE_ORG;
     }
 
-    public function gradeOverview_action() {
+    public function gradeOverview_action()
+    {
         $this->addSidebar();
-        if($this->hasTeacherPermission) {
+        if ($this->hasTeacherPermission) {
             Navigation::activateItem('/course/mumietask/grades');
         }
         $this->grades = MumieGrade::getAllGradesForTaskWithRealNames(Request::option("task_id"));
@@ -43,22 +47,24 @@ class TaskController extends StudipController {
         $gradeService->update();
     }
 
-    private function addSidebar() {
+    private function addSidebar()
+    {
         $widget = new SidebarWidget;
-        $widget->title = dgettext("MumieTaskPlugin",'Informationen');
+        $widget->title = dgettext("MumieTaskPlugin", 'Informationen');
         $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
 
-        $dateString = $this->task->duedate == 0 ? 
-            "-" : 
+        $dateString = $this->task->duedate == 0 ?
+            "-" :
             sprintf(
                 '%s  %s',
                 Icon::create('date'),
-                date('d.m.Y H:i',$this->task->duedate)
+                date('d.m.Y H:i', $this->task->duedate)
             );
         $duedateInfo = $factory->open("taskInfo");
-        $duedateInfo->set_attribute("header", dgettext("MumieTask",'Abgabefrist'));
+        $duedateInfo->set_attribute("header", dgettext("MumieTask", 'Abgabefrist'));
         $duedateInfo->set_attribute(
-            "body", $dateString
+            "body",
+            $dateString
         );
         $widget->addElement(
             new WidgetElement(
@@ -66,26 +72,26 @@ class TaskController extends StudipController {
             )
         );
 
-        if($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
+        if ($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
             $navigation = Navigation::getItem('/course/mumietask');
             $navigation->addSubNavigation(
-                'task', 
+                'task',
                 new Navigation(
-                    dgettext("MumieTaskPlugin", "Aufgabe"), 
+                    dgettext("MumieTaskPlugin", "Aufgabe"),
                     PluginEngine::getLink(
-                        'MumieTaskPlugin', 
-                        array("task_id" => $this->task->task_id), 
+                        'MumieTaskPlugin',
+                        array("task_id" => $this->task->task_id),
                         'task'
                     )
                 )
             );
             $navigation->addSubNavigation(
-                'grades', 
+                'grades',
                 new Navigation(
-                    dgettext("MumieTaskPlugin", "Bewertungen"), 
+                    dgettext("MumieTaskPlugin", "Bewertungen"),
                     PluginEngine::getLink(
-                        'MumieTaskPlugin', 
-                        array("task_id" => $this->task->task_id), 
+                        'MumieTaskPlugin',
+                        array("task_id" => $this->task->task_id),
                         'task/gradeOverview'
                     )
                 )
@@ -96,7 +102,7 @@ class TaskController extends StudipController {
             $gradeTemplate->set_attribute('points', $points);
             
             $gradeInfo = $factory->open("taskInfo");
-            $gradeInfo->set_attribute("header", dgettext("MumieTaskPlugin",'Bewertung'));
+            $gradeInfo->set_attribute("header", dgettext("MumieTaskPlugin", 'Bewertung'));
             $gradeInfo->set_attribute("body", $gradeTemplate->render());
                         
             $widget->addElement(
@@ -106,8 +112,8 @@ class TaskController extends StudipController {
             );
             
             $passed = $factory->open("taskInfo");
-            $passed->set_attribute("header", dgettext("MumieTaskPlugin",'Bestanden'));
-            $passed->set_attribute("body", $points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline',  'status-red'));
+            $passed->set_attribute("header", dgettext("MumieTaskPlugin", 'Bestanden'));
+            $passed->set_attribute("body", $points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red'));
             $widget->addElement(
                 new WidgetElement(
                     $passed->render()
@@ -117,7 +123,7 @@ class TaskController extends StudipController {
 
 
         $passingGrade = $factory->open("taskInfo");
-        $passingGrade->set_attribute("header", dgettext("MumieTaskPlugin",'Mindestpunktzahl'));
+        $passingGrade->set_attribute("header", dgettext("MumieTaskPlugin", 'Mindestpunktzahl'));
         $passingGrade->set_attribute("body", $this->task["passing_grade"]);
         $widget->addElement(
             new WidgetElement(

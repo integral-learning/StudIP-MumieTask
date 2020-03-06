@@ -1,9 +1,12 @@
-<?php 
-class Initial extends Migration {
-    public function up() {
+<?php
+class Initial extends Migration
+{
+    public function up()
+    {
         $db = DBManager::get();
 
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_servers (
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS mumie_servers (
             server_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
             url_prefix text NOT NULL,
@@ -11,7 +14,8 @@ class Initial extends Migration {
             );"
         );
 
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_tasks (
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS mumie_tasks (
             task_id integer NOT NULL AUTO_INCREMENT,
             name text NOT NULL,
             course text NOT NULL,
@@ -43,7 +47,8 @@ class Initial extends Migration {
             PRIMARY KEY (hash_id)
         )");
 
-        $db->exec("CREATE TABLE IF NOT EXISTS mumie_grades (
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS mumie_grades (
             grade_id integer NOT NULL AUTO_INCREMENT,
             task_id integer,
             the_user text NOT NULL,
@@ -52,13 +57,6 @@ class Initial extends Migration {
             PRIMARY KEY (grade_id)
             );"
         );
-
-/*
-        $db->exec("INSERT INTO mumie_servers (name, url_prefix)
-            VALUES
-            ('OMB+', 'https://www.ombplus.de/ombplus/')
-            ;");
-            */
 
         Config::get()->create("MUMIE_SHARE_FIRSTNAME", array(
             'value' => 0,
@@ -100,7 +98,8 @@ class Initial extends Migration {
         ));
     }
 
-    public function down() {
+    public function down()
+    {
         $db = DBManager::get();
         $db->exec("DROP TABLE mumie_servers;");
         $db->exec("DROP TABLE mumie_tasks");
