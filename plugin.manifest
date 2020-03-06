@@ -3,10 +3,9 @@ pluginclassname=MumieTaskPlugin
 version=1.0
 origin=integral-learning
 
-icon = images/mumie.svg
-
+icon = images/mumie.jpg
 category = Inhalte und Aufgabenstellungen
 displayname = MUMIE-Task
-descriptionshort = TODO:
-
-descriptionlong = TODO
+descriptionshort = Inhalte von MUMIE-Servern einbinden:
+descriptionlong = MUMIE ist eine E-Learning-Plattform zum Lernen und Lehren von Mathematik und Informatik. Sie wurde ursprünglich entwickelt, um das praxisorientierte Unterrichten an der Schnittstelle zwischen Gymnasium und Universität zu verbessern. Die MUMIE zeichnet sich durch ihr hohes Maß an Flexibilität aus und kann unkompliziert in andere Lern- und Content-Management-Systeme eingebunden werden. MUMIE-Kurse und deren hochwertige Kursmaterialien können ganz nach Ihren Wünschen an Ihre pädagogischen Anforderungen angepasst werden. Sie bietet Lern- und Trainingsumgebungen und Wiki-artige soziale Netzwerke für virtuelle Tutorien und selbstorganisiertes Lernen und zur Verbesserung von kognitiven und metakognitiven Fähigkeiten. Leistungsstarke Autorenwerkzeuge ermöglichen die Erstellung von neuen Inhalten. Dies öffnet die Tür für neue, herausfordernde und effizientere pädagogische Szenarien.
+homepage = https://wiki.mumie.net/wiki/MUMIE-LMS-integration

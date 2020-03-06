@@ -41,45 +41,58 @@
             <? endforeach ?>
         </table>
         <div data-dialog-button>
-            <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Neuen Server hinzufügen')); ?>
+            <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Server hinzufügen')); ?>
         </div>
     </fieldset>
 </form>
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/privacy'); ?>" method="post">
     <fieldset class="conf-form-field collapsable">
-        <legend><?=dgettext("MumieTaskPlugin","Datenschutz");?></legend>
-        <div class="mumie_section_header">
-            <?=dgettext("MumieTaskPlugin", "Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen"); ?>
-        </div>
-        <table>
+        <legend>
+            <?=dgettext("MumieTaskPlugin","Datenschutz");?>
+        </legend>
+        <table class="default">
+            <caption>
+                <?=dgettext("MumieTaskPlugin", "Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen."); ?>
+            </caption>
+            <tr>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Einstellung");?>
+                </th>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Wert");?>
+                </th>
+            </tr>
             <tr>
                 <td>
                     <label for="mumie_share_firstname">
-                        <?= dgettext('MumieTaskPlugin', 'Vorname') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'Vorname'); ?>
                     </label>
                 </td>
                 <td>
-                    <input type="checkbox" id="mumie_share_firstname" name="share_firstname" <?= Config::get()->MUMIE_SHARE_FIRSTNAME ? "checked" : "";?>>
+                    <input type="checkbox" id="mumie_share_firstname" name="share_firstname"
+                        <?= Config::get()->MUMIE_SHARE_FIRSTNAME ? "checked" : "";?>>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="mumie_share_lastname">
-                        <?= dgettext('MumieTaskPlugin', 'Nachname') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'Nachname'); ?>
                     </label>
                 </td>
                 <td>
-                    <input type="checkbox" name="share_lastname" id="mumie_share_lastname" <?= Config::get()->MUMIE_SHARE_LASTNAME ? "checked" : "";?>>
+                    <input type="checkbox" name="share_lastname" id="mumie_share_lastname"
+                        <?= Config::get()->MUMIE_SHARE_LASTNAME ? "checked" : "";?>>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="mumie_share_email">
-                        <?= dgettext('MumieTaskPlugin', 'E-Mail-Addresse') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'E-Mail-Addresse'); ?>
                     </label>
                 </td>
                 <td>
-                    <input type="checkbox" id="mumie_share_lastname" name="share_email" <?= Config::get()->MUMIE_SHARE_EMAIL ? "checked" : "";?>>
+                    <input type="checkbox" id="mumie_share_email" name="share_email"
+                        <?= Config::get()->MUMIE_SHARE_EMAIL ? "checked" : "";?>>
                 </td>
             <tr>
         </table>
@@ -88,14 +101,23 @@
         </div>
     </fieldset>
 </form>
-<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>" method="post">
+<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>"
+    method="post">
     <fieldset class="conf-form-field collapsable">
         <legend><?=dgettext("MumieTaskPlugin","Authentifizierung");?></legend>
-        <table>
+        <table class="default">
+            <tr>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Einstellung");?>
+                </th>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Wert");?>
+                </th>
+            </tr>
             <tr>
                 <td>
                     <label for="mumie_org">
-                        <?= dgettext('MumieTaskPlugin', 'MUMIE-Org') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'MUMIE-Organisation') . ':'; ?>
                     </label>
                 </td>
                 <td>
@@ -109,7 +131,8 @@
                     </label>
                 </td>
                 <td>
-                    <input type="text" name="mumie_api_key" id="mumie_api_key" value=<?= Config::get()->MUMIE_API_KEY;?>>
+                    <input type="text" name="mumie_api_key" id="mumie_api_key"
+                        value=<?= Config::get()->MUMIE_API_KEY;?>>
                 </td>
             </tr>
         </table>
