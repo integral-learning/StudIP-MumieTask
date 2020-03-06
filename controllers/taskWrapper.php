@@ -21,7 +21,7 @@ class TaskWrapperController extends StudipController {
         if($this->hasTeacherPermission) {
             $actions = new ActionsWidget();
             $actions->addLink(
-                dgettext('MumieTaskPlugin','Neue MUMIE-Task hinzufügen'),
+                dgettext('MumieTaskPlugin','MUMIE-Task hinzufügen'),
                 $this->url_for('taskWrapper/addTask'),
                 Icon::create('add')
             );

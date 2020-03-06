@@ -13,7 +13,9 @@ class TaskController extends StudipController {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
-        $this->task = MumieTask::find(Request::option("task_id"));
+        // There is a bug in navigation, where params are not properly encoded/decoded. That's why we need to check for two parameters.
+        $task_id = Request::option("task_id")  === "" ? Request::option("amp;task_id") : Request::option("task_id");
+        $this->task = MumieTask::find($task_id);
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
 
@@ -22,7 +24,6 @@ class TaskController extends StudipController {
         if($this->hasTeacherPermission) {
             Navigation::activateItem('/course/mumietask/task');
         }
-        $this->task = MumieTask::find(Request::option("task_id"));
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
         $gradeService->update();
     }

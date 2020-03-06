@@ -52,6 +52,6 @@
     <? endforeach ?>
 </table>
 <?php if ($hasTeacherPermission): ?>
-<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'taskWrapper/addTask'); ?> class="button"><?= dgettext("MumieTaskPlugin", "Neue MUMIE-Task
+<a href=<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'taskWrapper/addTask'); ?> class="button"><?= dgettext("MumieTaskPlugin", "MUMIE-Task
     hinzufügen");?></a>
 <?php endif ?>
