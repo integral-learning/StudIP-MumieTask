@@ -27,7 +27,6 @@ $template->set_attribute("task_url", MumieProblem::removeParamsFromUrl($task->ta
 $template->set_attribute("launch_container", $task->launch_container);
 $template->set_attribute("language", $task->language);
 $template->set_attribute("duedate", $task->duedate);
-$template->set_attribute("privategradepool", $task->privategradepool);
 $template->set_attribute("passing_grade", $task->passing_grade);
 $template->set_attribute("missingServerConfig", is_null(MumieServer::getByUrl($task->server)));
 /* The PluginEngine must be used here.

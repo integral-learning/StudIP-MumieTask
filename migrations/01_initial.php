@@ -49,7 +49,6 @@ class Initial extends Migration
             mumie_coursefile text NOT NULL,
             passing_grade integer NOT NULL,
             duedate integer,
-            privategradepool integer NOT NULL,
             PRIMARY KEY (task_id)
             );"
         );

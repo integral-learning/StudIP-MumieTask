@@ -189,13 +189,6 @@
                 )->asImg();
             ?>
         </div>
-        <div class="mumie_form_elem_wrapper">
-            <label>
-                <?= dgettext('MumieTaskPlugin', 'Punkte mit anderen Kursen teilen'); ?>
-                <input type="checkbox" name="private_gradepool" id="mumie_private_gradepool"
-                    <?= $privategradepool ? "" : "checked"?>>
-            </label>
-        </div>
     </fieldset>
     <a href="<?= $cancelLink; ?>" class="button"><?= dgettext("MumieTaskPlugin", "Abbrechen");?></a>
     <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
