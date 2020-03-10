@@ -8,8 +8,18 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/MumieGradeService.php');
 // TODO: Check how can access this
 
+/**
+ * TaskWrapperController is used to add, edit, delete MUMIE tasks and display all tasks of the current course in a list view.
+ */
 class TaskWrapperController extends StudipController
 {
+    /**
+     * Check permissions, manage navigation and set title.
+     *
+     * @param  mixed $action
+     * @param  mixed $args
+     * @return void
+     */
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -17,6 +27,12 @@ class TaskWrapperController extends StudipController
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " . dgettext("MumieTaskPlugin", "Aufgabenübersicht"));
     }
+        
+    /**
+     * Display all MUMIE Tasks in this course in a table with updated grades.
+     *
+     * @return void
+     */
     public function index_action()
     {
         $this->tasks = MumieTask::findAllInCourse(\Context::get()->Seminar_id);
@@ -33,7 +49,12 @@ class TaskWrapperController extends StudipController
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id);
         $gradeService->update();
     }
-
+    
+    /**
+     * Open/submit forms for adding MUMIE tasks to the current course.
+     *
+     * @return void
+     */
     public function addTask_action()
     {
         PermissionService::requireTeacherPermission();
@@ -62,7 +83,13 @@ class TaskWrapperController extends StudipController
             }
         }
     }
-
+    
+    /**
+     * Delete a given MUMIE Task from the current course.
+     * The task_id is found in POST request
+     *
+     * @return void
+     */
     public function deleteTask_action()
     {
         PermissionService::requireTeacherPermission();
@@ -73,7 +100,13 @@ class TaskWrapperController extends StudipController
         );
         $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'taskWrapper/index'));
     }
-
+    
+    /**
+     * Open/submit a form for editing given MUMIE tasks
+     * The task_id is found in POST request
+     *
+     * @return void
+     */
     public function editTask_action()
     {
         PermissionService::requireTeacherPermission();
@@ -103,7 +136,13 @@ class TaskWrapperController extends StudipController
             }
         }
     }
-
+    
+    /**
+     * Validate submitted form parameters
+     *
+     * @param  MumieTask $task
+     * @return string[] List of errors
+     */
     private function getFormValidationErrors($task)
     {
         $server = MumieServer::getByUrl($task->server);

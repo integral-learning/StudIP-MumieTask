@@ -6,10 +6,7 @@
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/addServer'); ?>" method="get"
     data-dialog>
     <fieldset class="conf-form-field collapsable">
-
-        <legend><?=dgettext("MumieTaskPlugin","MUMIE-Server-Konfiguration");?></legend>
-
-
+        <legend><?=dgettext("MumieTaskPlugin", "MUMIE-Server-Konfiguration");?></legend>
         <table class="default">
             <tr>
                 <th>Name</th>
@@ -17,7 +14,7 @@
                 <th>Bearbeiten</th>
                 <th>Löschen</th>
             </tr>
-            <? foreach ($servers as $server) : ?>
+            <?php foreach ($servers as $server) : ?>
             <tr>
                 <td>
                     <?= htmlReady($server['name']); ?>
@@ -26,19 +23,26 @@
                     <?= htmlReady($server['url_prefix']); ?>
                 </td>
                 <td>
-                    <a href="<?= PluginEngine::getLink("MumieTaskPlugin", array('server_id' => $server["server_id"]),'admin/editServer'); ?>"
-                        data-dialog>
+                    <a href="
+                        <?=
+                            PluginEngine::getLink(
+                                "MumieTaskPlugin",
+                                array('server_id' => $server["server_id"]),
+                                'admin/editServer'
+                            );
+                        ?>"
+                    data-dialog>
                         <?= Icon::create('edit', 'clickable')->asImg('20px'); ?>
                     </a>
                 </td>
                 <td>
                     <a
-                        href="<?= PluginEngine::getLink("MumieTaskPlugin", array('server_id' => $server["server_id"]),'admin/delete'); ?>">
+                        href="<?= PluginEngine::getLink("MumieTaskPlugin", array('server_id' => $server["server_id"]), 'admin/delete'); ?>">
                         <?= Icon::create('trash', 'clickable')->asImg('20px'); ?>
                     </a>
                 </td>
             </tr>
-            <? endforeach ?>
+            <?php endforeach ?>
         </table>
         <div data-dialog-button>
             <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Server hinzufügen')); ?>
@@ -48,7 +52,7 @@
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/privacy'); ?>" method="post">
     <fieldset class="conf-form-field collapsable">
         <legend>
-            <?=dgettext("MumieTaskPlugin","Datenschutz");?>
+            <?=dgettext("MumieTaskPlugin", "Datenschutz");?>
         </legend>
         <table class="default">
             <caption>
@@ -104,7 +108,7 @@
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>"
     method="post">
     <fieldset class="conf-form-field collapsable">
-        <legend><?=dgettext("MumieTaskPlugin","Authentifizierung");?></legend>
+        <legend><?=dgettext("MumieTaskPlugin", "Authentifizierung");?></legend>
         <table class="default">
             <tr>
                 <th>

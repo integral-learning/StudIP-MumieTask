@@ -1,9 +1,18 @@
 <?php
 require_once('HashingService.php');
+/**
+ * SSOService provides funtions used in the SSO process for MUMIE servers
+ */
 class SSOService
 {
     const TOKEN_LENGTH = 30;
-
+    
+    /**
+     * Generate a SSO-Token object for a given StudIP user.
+     *
+     * @param  string $userId
+     * @return MumieSSOToken
+     */
     public static function generateTokenForUser($userId)
     {
         $hashedUserID = HashingService::getHash($userId)->hash;
@@ -17,7 +26,12 @@ class SSOService
         $ssoToken->store();
         return $ssoToken;
     }
-
+    
+    /**
+     * Generate a randomized alphanumerical token.
+     *
+     * @return void
+     */
     private static function generateToken()
     {
         $token = "";
@@ -32,7 +46,16 @@ class SSOService
 
         return $token;
     }
-
+    
+    /**
+     * Verify a login attempt to a MUMIE server.
+     *
+     * Include personal user data, if this option is enabled in the plugin settings.
+     *
+     * @param  string $token
+     * @param  string $hashedId
+     * @return void
+     */
     public static function verifyToken($token, $hashedId)
     {
         $response = new stdClass();

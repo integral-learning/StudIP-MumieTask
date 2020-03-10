@@ -1,12 +1,44 @@
 <?php
 require_once('HashingService.php');
+/**
+ * MumieGradeService synchronizes grades StudIP users have earned on the MUMIE LMS with the StudIP database.
+ */
 class MumieGradeService
 {
+    /**
+     * The userIds we want to get grades for
+     *
+     * @var string[]
+     */
     private $user_ids;
+    /**
+     * All MUMIE Tasks we want to get grades for
+     *
+     * @var MumieTask[]
+     */
     private $tasks;
+    /**
+     * If an update is forced, existing data will always be replaced by the latest grade from the server
+     *
+     * @var boolean
+     */
     private $force_update;
+    /**
+     * The course we want to update
+     *
+     * @var mixed
+     */
     private $courseId;
-
+    
+    /**
+     * __construct
+     *
+     * @param  string $courseId
+     * @param  MumieTask[] $tasks
+     * @param  string[] $userIds
+     * @param  boolean $force_update
+     * @return void
+     */
     public function __construct($courseId, $tasks = null, $userIds = null, $force_update = false)
     {
         $this->courseId = $courseId;
@@ -16,9 +48,12 @@ class MumieGradeService
     }
 
     /**
-     * SyncIds are composed of a hashed ILIAS user id and a shorthand for the organization the oparates the ilias platfrom.
+     * SyncIds are composed of a hashed StudIP user id and a shorthand for the organization that operates the StudIP platfrom.
      *
-     * They must be a unique identifier for users on both ILIAS and MUMIE servers
+     * They must be a unique identifier for users on both StudIP and MUMIE servers
+     *
+     * @param  string[] $user_ids
+     * @return string[]
      */
     private function getSyncIds($user_ids)
     {
@@ -30,6 +65,9 @@ class MumieGradeService
 
     /**
      * Get the studip user ID from a xapi grade
+     *
+     * @param  stdClass $xapiGrade
+     * @return string
      */
     private function getStudIPId($xapiGrade)
     {
@@ -37,9 +75,11 @@ class MumieGradeService
         return HashingService::getUserIdFromHash($hashed_user);
     }
 
-
     /**
      * get a map of xapi grades by user
+     *
+     * @param  MumieTask $task
+     * @return array
      */
     public function getXapiGradesByUser($task)
     {
@@ -50,12 +90,6 @@ class MumieGradeService
             'lastSync' => $this->getLastSync($task),
             'includeAll' => true
         );
-
-        /*
-        if ($this->task->getActivationLimited() == 1) {
-            $params["dueDate"] = $this->task->getActivationEndingTime() * 1000;
-        }
-        */
 
         $payload = json_encode($params);
 
@@ -96,7 +130,12 @@ class MumieGradeService
 
 
     /**
+     * Get a timestamp from the last grade synchronization.
+     *
      * LastSync is used to improve performance. We don't need to check grades that were awarded before the last time we synced
+     *
+     * @param  MumieTask $task
+     * @return int
      */
     private function getLastSync($task)
     {
@@ -123,6 +162,9 @@ class MumieGradeService
 
     /**
      * Get all users that can get marks in this course
+     *
+     * @param  string $courseId
+     * @return void
      */
     private function getAllUsers($courseId)
     {
@@ -134,6 +176,10 @@ class MumieGradeService
      * A user can submit multiple solutions to MUMIE Tasks.
      *
      * Filter out grades that were earned after the due date. Other than that, select always the latest grade
+     *
+     * @param  stdClass $response MUMIE Server response for grade sync request
+     * @param  MumieTask $task
+     * @return array
      */
     private function getValidGradeByUser($response, $task)
     {
@@ -160,7 +206,13 @@ class MumieGradeService
 
         return array_filter($valid_grade_by_user);
     }
-
+    
+    /**
+     * Get the latest grade from a list of grades
+     *
+     * @param  stdClass[] $xapi_grades
+     * @return stdClass
+     */
     private function getLatestGrade($xapi_grades)
     {
         if (empty($xapi_grades)) {
@@ -175,14 +227,25 @@ class MumieGradeService
         }
         return $latest_grade;
     }
-
+    
+    /**
+     * Load MUMIE grades into StudIP database.
+     *
+     * @return void
+     */
     public function update()
     {
         foreach ($this->tasks as $task) {
             $this->updateGrades($task);
         }
     }
-
+    
+    /**
+     * Update grades for a given MUMIE Task
+     *
+     * @param  MumieTask $task
+     * @return void
+     */
     private function updateGrades($task)
     {
         $gradesByUser = $this->getXapiGradesByUser($task);

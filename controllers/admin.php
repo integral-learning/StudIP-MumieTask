@@ -3,10 +3,21 @@ require_once('app/controllers/plugin_controller.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieServerInstance.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
 
-// TODO: Make sure that only admins have access
-
+/**
+ * This controller is used to display and edit global settings for MUMIE Tasks on an admin level.
+ */
 class AdminController extends StudipController
 {
+        
+    /**
+     * Execute this before any other action.
+     *
+     * Check for admin permission, set title and manage navigation.
+     *
+     * @param  mixed $action
+     * @param  mixed $args
+     * @return void
+     */
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -14,12 +25,24 @@ class AdminController extends StudipController
         PermissionService::requireAdminPermission();
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " . dgettext("MumieTaskPlugin", "Admininstrator-Einstellungen"));
     }
-
+    
+    /**
+     * This action is associated with the landing page of admin settings.
+     *
+     * Load MUMIE server data from the database.
+     *
+     * @return void
+     */
     public function index_action()
     {
         $this->servers = MumieServer::findBySQL("server_id > 0");
     }
-
+    
+    /**
+     * This function is used to save changes in the privacy settings.
+     *
+     * @return void
+     */
     public function privacy_action()
     {
         if (Request::isPost()) {
@@ -31,7 +54,12 @@ class AdminController extends StudipController
         }
         $this->redirect('admin/index');
     }
-    
+        
+    /**
+     * Display a form for creation of MUMIE server or save it (If called by a post request).
+     *
+     * @return void
+     */
     public function addServer_action()
     {
         if (Request::isPost()) {
@@ -49,7 +77,13 @@ class AdminController extends StudipController
             }
         }
     }
-
+    
+    /**
+     * Display a form to edit an existing server or save changes(if it's called by post request).
+     * Server_id is part of the POST request.
+     *
+     * @return void
+     */
     public function editServer_action()
     {
         if (Request::isPost()) {
@@ -70,7 +104,12 @@ class AdminController extends StudipController
             }
         }
     }
-
+    
+    /**
+     * Delete a given MUMIE server
+     * server_id is part of the POST request.
+     * @return void
+     */
     public function delete_action()
     {
         $server = MumieServer::find(Request::option('server_id'));
@@ -80,7 +119,12 @@ class AdminController extends StudipController
         );
         $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'admin/index'));
     }
-
+    
+    /**
+     * Saves changes to the authentification settings (must be called by POST)
+     *
+     * @return void
+     */
     public function authentication_action()
     {
         if (Request::isPost()) {
@@ -91,7 +135,14 @@ class AdminController extends StudipController
         }
         $this->redirect('admin/index');
     }
-
+    
+    /**
+     * Validate submitted form parameters.
+     *
+     * @param  MumieServer $server
+     * @param  boolean $isEdit
+     * @return string[] List of errors.
+     */
     private function getFormValidationErrors($server, $isEdit = false)
     {
         $serverInstance = new MumieServerInstance($server);

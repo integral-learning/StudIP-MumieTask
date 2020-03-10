@@ -1,6 +1,15 @@
 <?php
+
+/**
+ * Database definition for inital installation.
+ */
 class Initial extends Migration
 {
+    /**
+     * Insert all necessary tables into the database.
+     *
+     * @return void
+     */
     public function up()
     {
         $db = DBManager::get();
@@ -98,6 +107,12 @@ class Initial extends Migration
         ));
     }
 
+        
+    /**
+     * Delete all tables that were created by this plugin from the database.
+     *
+     * @return void
+     */
     public function down()
     {
         $db = DBManager::get();

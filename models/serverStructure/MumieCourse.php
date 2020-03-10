@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * This class represents a course in the MUMIE server structure.
+ */
 class MumieCourse implements \JsonSerializable
 {
     /**
@@ -81,7 +84,13 @@ class MumieCourse implements \JsonSerializable
 
         $this->tags = array_values($tags);
     }
-
+    
+    /**
+     * Find a Task in the course structure by a given link
+     *
+     * @param  string $link
+     * @return MumieTask
+     */
     public function getTaskByLink($link)
     {
         $link = MumieProblem::removeParamsFromUrl($link);
@@ -102,12 +111,22 @@ class MumieCourse implements \JsonSerializable
 
         return $vars;
     }
-
+    
+    /**
+     * Get all languages used in this course.
+     *
+     * @return string
+     */
     public function getLanguages()
     {
         return $this->languages;
     }
-
+    
+    /**
+     * Get the name of this course
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;

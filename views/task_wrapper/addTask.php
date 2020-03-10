@@ -1,4 +1,6 @@
-<h1><?= dgettext("MumieTaskPlugin", "Neue MUMIE-Task erstellen"); ?></h1>
+<h1>
+    <?= dgettext("MumieTaskPlugin", "Neue MUMIE-Task erstellen"); ?>
+</h1>
 <br>
 <?php
     require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/TaskOptionCollector.php');
@@ -14,7 +16,21 @@
     /* The PluginEngine must be used here.
        If it's called in the template MumieServer::find() will return an instance of stdClass and not MumieServer. I don't know why
     */
-    $template->set_attribute('action', PluginEngine::getLink('MumieTaskPlugin', array(), 'taskWrapper/addTask'));
-    $template->set_attribute('cancelLink', PluginEngine::getLink('MumieTaskPlugin', array(), 'taskWrapper/index'));
+    $template->set_attribute(
+        'action',
+        PluginEngine::getLink(
+            'MumieTaskPlugin',
+            array(),
+            'taskWrapper/addTask'
+        )
+    );
+    $template->set_attribute(
+        'cancelLink',
+        PluginEngine::getLink(
+            'MumieTaskPlugin',
+            array(),
+            'taskWrapper/index'
+        )
+    );
     echo $template->render();
 ?>

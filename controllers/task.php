@@ -7,19 +7,34 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/M
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/MumieGradeService.php');
 
+/**
+ * TaskController displays and opens individual MUMIE Tasks.
+ */
 class TaskController extends StudipController
 {
+    /**
+     * Executed before all other actions. Checks permissions, loads MUMIE Task from database and sets title
+     *
+     * @param  mixed $action
+     * @param  mixed $args
+     * @return void
+     */
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
         Navigation::activateItem('/course/mumietask');
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
         // There is a bug in navigation, where params are not properly encoded/decoded. That's why we need to check for two parameters.
-        $task_id = Request::option("task_id")  === "" ? Request::option("amp;task_id") : Request::option("task_id");
+        $task_id = is_null(Request::option("task_id")) || Request::option("task_id")  == "" ? Request::option("amp;task_id") : Request::option("task_id");
         $this->task = MumieTask::find($task_id);
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
-
+    
+    /**
+     * Display a individual task
+     *
+     * @return void
+     */
     public function index_action()
     {
         $this->addSidebar();
@@ -29,13 +44,23 @@ class TaskController extends StudipController
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
         $gradeService->update();
     }
-
+    
+    /**
+     * Open the problem in MUMIE either in an iFrame or a new browser tab. The user is automatically logged in.
+     *
+     * @return void
+     */
     public function launch_action()
     {
         $this->mumieToken = SSOService::generateTokenForUser($GLOBALS['user']->id);
         $this->org = Config::get()->MUMIE_ORG;
     }
-
+    
+    /**
+     * Display all grades given for this task. This view is only available for teachers.
+     *
+     * @return void
+     */
     public function gradeOverview_action()
     {
         $this->addSidebar();
@@ -46,7 +71,12 @@ class TaskController extends StudipController
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task));
         $gradeService->update();
     }
-
+    
+    /**
+     * Display information about the task to the sidebar and add navigation for teachers
+     *
+     * @return void
+     */
     private function addSidebar()
     {
         $widget = new SidebarWidget;

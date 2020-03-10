@@ -4,8 +4,17 @@
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieCourse.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieProblem.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieTag.php');
+/**
+ * Represents a MumieServer in the MUMIE server structure
+ */
 class MumieServerInstance implements \JsonSerializable
 {
+        
+    /**
+     * Object saved in the database
+     *
+     * @var MumieServer
+     */
     private $server;
     /**
      * This is used as parameter when requesting available courses and tasks.
@@ -39,14 +48,26 @@ class MumieServerInstance implements \JsonSerializable
      * @var string[]
      */
     private $languages = array();
-
+    
+    /**
+     * Constructor
+     *
+     * @param  MumieServer $server
+     * @return void
+     */
     public function __construct($server)
     {
         $this->server = $server;
         $this->name = $server->name;
         $this->url_prefix = $server->url_prefix;
     }
-
+    
+    /**
+     * Construct a MumieServerInstance from a given URL
+     *
+     * @param  string $url
+     * @return MumieServerInstance
+     */
     public static function fromURL($url)
     {
         $server = new stdClass;
@@ -123,7 +144,12 @@ class MumieServerInstance implements \JsonSerializable
 
         return $vars;
     }
-
+    
+    /**
+     * Get all MUMIE servers from the database and load their structure
+     *
+     * @return MumieServerIsntance[]
+     */
     public static function getAllWithStructure()
     {
         return array_map(function ($server) {
@@ -132,12 +158,22 @@ class MumieServerInstance implements \JsonSerializable
             return $instance;
         }, MumieServer::getAll());
     }
-
+    
+    /**
+     * getUrlprefix
+     *
+     * @return string
+     */
     public function getUrlprefix()
     {
         return $this->url_prefix;
     }
-
+    
+    /**
+     * getName
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
@@ -162,7 +198,13 @@ class MumieServerInstance implements \JsonSerializable
     {
         return $this->languages;
     }
-
+    
+    /**
+     * Find a course in this server by name
+     *
+     * @param  string $name
+     * @return MumieCourse
+     */
     public function getCourseByName($name)
     {
         foreach ($this->courses as $course) {
@@ -171,7 +213,12 @@ class MumieServerInstance implements \JsonSerializable
             }
         }
     }
-
+    
+    /**
+     * Get the url this server uses for grade synchronization.
+     *
+     * @return string
+     */
     public function getGradeSyncUrl()
     {
         return $this->url_prefix . 'public/xapi?v=' . self::MUMIE_JSON_FORMAT_VERSION;

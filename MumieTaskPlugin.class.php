@@ -5,6 +5,9 @@ require_once(__DIR__ . '/models/MumieTask.php');
 require_once(__DIR__ . '/models/MumieHash.php');
 require_once(__DIR__ . '/models/MumieGrade.php');
 
+/**
+ * MumieTaskPlugin is easy way to add content from MUMIE LMS to StudIP. It provides functionality for SSO and synchronizes grades from MUMIE with StudIP
+ */
 class MumieTaskPlugin extends StudIPPlugin implements SystemPlugin, StandardPlugin
 {
     public function __construct()

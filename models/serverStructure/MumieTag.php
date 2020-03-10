@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * MumieTags are used to store meta information about a MumieProblem. E.G. Chapter, type ect.
+ */
 class MumieTag implements \JsonSerializable
 {
     /**

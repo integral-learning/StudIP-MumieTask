@@ -19,7 +19,15 @@
 
             <input required type="text" name="name" value="<?= $name?>"
                 placeholder="<?= dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest'); ?>">
-            <?=Icon::create('info', 'info', ['title' => dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest')])->asImg(); ?>
+            <?=
+                Icon::create(
+                    'info',
+                    'info',
+                    [
+                        'title' => dgettext('MumieTaskPlugin', 'Legen Sie einen Namen für die Server-Konfiguration fest')
+                    ]
+                )->asImg();
+            ?>
         </div>
         <div class="mumie_form_elem_wrapper">
             <label for="url_prefix">
@@ -29,7 +37,15 @@
             </label>
             <input required type="text" name="url_prefix" value="<?= $url_prefix?>"
                 placeholder="<?= dgettext('MumieTaskPlugin', 'Geben Sie die URL des Servers ein'); ?>">
-            <?=Icon::create('info', 'info', ['title' => dgettext("MumieTaskPlugin","Bitte geben Sie die URL des MUMIE-Servers ein. Für jede URL kann nur ein Server in StudIP konfiguriert werden.")])->asImg(); ?>
+            <?=
+                Icon::create(
+                    'info',
+                    'info',
+                    [
+                        'title' => dgettext("MumieTaskPlugin", "Bitte geben Sie die URL des MUMIE-Servers ein. Für jede URL kann nur ein Server in StudIP konfiguriert werden.")
+                        ]
+                )->asImg();
+            ?>
         </div>
         <div>
             <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
