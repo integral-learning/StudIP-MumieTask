@@ -70,6 +70,7 @@
             ?>
         </div>
         <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
+        <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value=<?= $missingServerConfig ? $server : ""?>>
         <div class="mumie_form_elem_wrapper">
             <label for="mumie_language">
                 <span class="required">
@@ -202,7 +203,6 @@
 
 <script>
     (function() {
-        //ar addServerButton = document.getElementById("id_add_server_button");
         var missingConfig = document.getElementsByName("mumie_missing_config")[0];
 
         var serverController = (function() {
@@ -636,27 +636,13 @@
          * @returns {boolean}
          */
         function serverConfigExists() {
-            return true;
-            //return document.getElementsByName("mumie_missing_config")[0].getAttribute("value") === "";
+            return document.getElementsByName("mumie_missing_config")[0].getAttribute("value") === "";
         }
 
         var isEdit = document.getElementById("mumie_name").getAttribute('value');
         console.log("hallo");
 
         if (isEdit && !serverConfigExists()) {
-            /*
-            require(['core/str', "core/notification"], function(str, notification) {
-                str.get_strings([{
-                    'key': 'mumie_form_missing_server',
-                    component: 'mod_mumie'
-                }]).done(function(s) {
-                    notification.addNotification({
-                        message: s[0] + "<b>" + missingConfig.getAttribute("value") + "</b>",
-                        type: "problem"
-                    });
-                }).fail(notification.exception);
-            });
-            */
             serverController.disable();
             courseController.disable();
             langController.disable();
