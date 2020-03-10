@@ -39,6 +39,7 @@ class TaskController extends StudipController
     {
         $this->addSidebar();
         if ($this->hasTeacherPermission) {
+            $this->addTeacherNavigation();
             Navigation::activateItem('/course/mumietask/task');
         }
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
@@ -65,6 +66,7 @@ class TaskController extends StudipController
     {
         $this->addSidebar();
         if ($this->hasTeacherPermission) {
+            $this->addTeacherNavigation();
             Navigation::activateItem('/course/mumietask/grades');
         }
         $this->grades = MumieGrade::getAllGradesForTaskWithRealNames(Request::option("task_id"));
@@ -102,31 +104,7 @@ class TaskController extends StudipController
             )
         );
 
-        if ($this->hasTeacherPermission = PermissionService::hasTeacherPermission()) {
-            $navigation = Navigation::getItem('/course/mumietask');
-            $navigation->addSubNavigation(
-                'task',
-                new Navigation(
-                    dgettext("MumieTaskPlugin", "Aufgabe"),
-                    PluginEngine::getLink(
-                        'MumieTaskPlugin',
-                        array("task_id" => $this->task->task_id),
-                        'task'
-                    )
-                )
-            );
-            $navigation->addSubNavigation(
-                'grades',
-                new Navigation(
-                    dgettext("MumieTaskPlugin", "Bewertungen"),
-                    PluginEngine::getLink(
-                        'MumieTaskPlugin',
-                        array("task_id" => $this->task->task_id),
-                        'task/gradeOverview'
-                    )
-                )
-            );
-        } else {
+        if (!$this->hasTeacherPermission) {
             $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)->points;
             $gradeTemplate = $factory->open('grade.php');
             $gradeTemplate->set_attribute('points', $points);
@@ -161,5 +139,37 @@ class TaskController extends StudipController
             )
         );
         Sidebar::get()->addWidget($widget);
+    }
+    
+    /**
+     * Add a navigation widget for teachers
+     *
+     * @return void
+     */
+    private function addTeacherNavigation()
+    {
+        $navigation = Navigation::getItem('/course/mumietask');
+        $navigation->addSubNavigation(
+            'task',
+            new Navigation(
+                dgettext("MumieTaskPlugin", "Aufgabe"),
+                PluginEngine::getLink(
+                    'MumieTaskPlugin',
+                    array("task_id" => $this->task->task_id),
+                    'task'
+                )
+            )
+        );
+        $navigation->addSubNavigation(
+            'grades',
+            new Navigation(
+                dgettext("MumieTaskPlugin", "Bewertungen"),
+                PluginEngine::getLink(
+                    'MumieTaskPlugin',
+                    array("task_id" => $this->task->task_id),
+                    'task/gradeOverview'
+                )
+            )
+        );
     }
 }
