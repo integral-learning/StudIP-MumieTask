@@ -1,0 +1,336 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-10 15:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1252\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: MumieTaskPlugin.class.php:31 MumieTaskPlugin.class.php:47
+#: controllers/taskWrapper.php:41 controllers/admin.php:40
+#: controllers/task.php:44 views/task_wrapper/index.php:3
+msgid "MUMIE-Task"
+msgstr ""
+
+#: controllers/taskWrapper.php:41
+msgid "Aufgabenübersicht"
+msgstr ""
+
+#: controllers/taskWrapper.php:55
+msgid "MUMIE-Task hinzufügen"
+msgstr ""
+
+#: controllers/taskWrapper.php:91 controllers/taskWrapper.php:144
+#: controllers/admin.php:86 controllers/admin.php:110
+msgid "Es sind folgende Fehler aufgetreten:"
+msgstr ""
+
+#: controllers/taskWrapper.php:94 controllers/taskWrapper.php:147
+msgid "MUMIE-Task erfolgreich hinzugefügt"
+msgstr ""
+
+#: controllers/taskWrapper.php:112
+msgid "MUMIE-Task wurde gelöscht"
+msgstr ""
+
+#: controllers/taskWrapper.php:165
+msgid "Das Datum der Abgabefrist muss in der Zukunft liegen!"
+msgstr ""
+
+#: controllers/taskWrapper.php:169
+msgid "Der gewählte MUMIE-Server konnte nicht gefunden werden."
+msgstr ""
+
+#: controllers/taskWrapper.php:178 controllers/taskWrapper.php:183
+msgid "Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden."
+msgstr ""
+
+#: controllers/taskWrapper.php:189
+msgid "Das gewählte MUMIE-Problem konnte nicht gefunden werden."
+msgstr ""
+
+#: controllers/taskWrapper.php:194
+msgid ""
+"Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte "
+"Problem."
+msgstr ""
+
+#: controllers/admin.php:40
+msgid "Admininstrator-Einstellungen"
+msgstr ""
+
+#: controllers/admin.php:67 controllers/admin.php:148
+msgid "Änderungen gespeichert"
+msgstr ""
+
+#: controllers/admin.php:89
+msgid "Server erfolgreich hinzugefügt"
+msgstr ""
+
+#: controllers/admin.php:114
+msgid "Server erfolgreich geändert"
+msgstr ""
+
+#: controllers/admin.php:132
+msgid "Server wurde gelöscht"
+msgstr ""
+
+#: controllers/admin.php:169
+msgid "Für folgende URL existiert kein MUMIE-Server"
+msgstr ""
+
+#: controllers/admin.php:174 controllers/admin.php:181
+msgid "Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix"
+msgstr ""
+
+#: controllers/admin.php:177 controllers/admin.php:184
+msgid "Es gibt bereits eine Serverkonfiguration für diesen Namen"
+msgstr ""
+
+#: controllers/task.php:99
+msgid "Informationen"
+msgstr ""
+
+#: controllers/task.php:110 views/task_wrapper/index.php:4
+#: templates/TaskForm.php:178
+msgid "Abgabefrist"
+msgstr ""
+
+#: controllers/task.php:127
+msgid "Bewertung"
+msgstr ""
+
+#: controllers/task.php:137 views/task/gradeOverview.php:11
+#: views/task_wrapper/index.php:10
+msgid "Bestanden"
+msgstr ""
+
+#: controllers/task.php:148
+msgid "Mindestpunktzahl"
+msgstr ""
+
+#: controllers/task.php:169
+msgid "Aufgabe"
+msgstr ""
+
+#: controllers/task.php:180
+msgid "Bewertungen"
+msgstr ""
+
+#: views/admin/editServer.php:2
+msgid "MUMIE-Server bearbeiten"
+msgstr ""
+
+#: views/admin/addServer.php:8
+msgid "Neuer MUMIE-Server"
+msgstr ""
+
+#: views/admin/index.php:9
+msgid "MUMIE-Server-Konfiguration"
+msgstr ""
+
+#: views/admin/index.php:48
+msgid "Server hinzufügen"
+msgstr ""
+
+#: views/admin/index.php:55
+msgid "Datenschutz"
+msgstr ""
+
+#: views/admin/index.php:59
+msgid ""
+"Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen."
+msgstr ""
+
+#: views/admin/index.php:63 views/admin/index.php:115
+msgid "Einstellung"
+msgstr ""
+
+#: views/admin/index.php:66 views/admin/index.php:118
+msgid "Wert"
+msgstr ""
+
+#: views/admin/index.php:72
+msgid "Vorname"
+msgstr ""
+
+#: views/admin/index.php:83
+msgid "Nachname"
+msgstr ""
+
+#: views/admin/index.php:94
+msgid "E-Mail-Addresse"
+msgstr ""
+
+#: views/admin/index.php:104 views/admin/index.php:144
+#: templates/ServerForm.php:51 templates/TaskForm.php:201
+msgid "Speichern"
+msgstr ""
+
+#: views/admin/index.php:111
+msgid "Authentifizierung"
+msgstr ""
+
+#: views/admin/index.php:124
+msgid "MUMIE-Organisation"
+msgstr ""
+
+#: views/admin/index.php:134
+msgid "API-KEY"
+msgstr ""
+
+#: views/task/gradeOverview.php:5
+msgid "Nutzer"
+msgstr ""
+
+#: views/task/gradeOverview.php:8 views/task_wrapper/index.php:9
+msgid "Punkte"
+msgstr ""
+
+#: views/task/index.php:4
+msgid "Inhalt"
+msgstr ""
+
+#: views/task/index.php:8
+msgid "Anzeigen"
+msgstr ""
+
+#: views/task_wrapper/addTask.php:2
+msgid "Neue MUMIE-Task erstellen"
+msgstr ""
+
+#: views/task_wrapper/editTask.php:1
+msgid "MUMIE-Task bearbeiten"
+msgstr ""
+
+#: views/task_wrapper/editTask.php:12
+msgid ""
+"Es konnte keine Kofiguration für die MUMIE-Server-URL gefunden werden, die "
+"zum Erstellen dieser MUMIE Task benutzt wurde:"
+msgstr ""
+
+#: views/task_wrapper/index.php:6
+msgid "Bearbeiten"
+msgstr ""
+
+#: views/task_wrapper/index.php:7
+msgid "Löschen"
+msgstr ""
+
+#: views/task_wrapper/index.php:55
+msgid ""
+"MUMIE-Task\n"
+"    hinzufügen"
+msgstr ""
+
+#: templates/ServerForm.php:8 templates/TaskForm.php:22
+msgid "MUMIE-Server"
+msgstr ""
+
+#: templates/ServerForm.php:15 templates/TaskForm.php:14
+msgid "Name"
+msgstr ""
+
+#: templates/ServerForm.php:21 templates/ServerForm.php:27
+msgid "Legen Sie einen Namen für die Server-Konfiguration fest"
+msgstr ""
+
+#: templates/ServerForm.php:35
+msgid "URL-Prefix"
+msgstr ""
+
+#: templates/ServerForm.php:39
+msgid "Geben Sie die URL des Servers ein"
+msgstr ""
+
+#: templates/ServerForm.php:45
+msgid ""
+"Bitte geben Sie die URL des MUMIE-Servers ein. Für jede URL kann nur ein "
+"Server in StudIP konfiguriert werden."
+msgstr ""
+
+#: templates/TaskForm.php:40
+msgid ""
+"Bitte wählen Sie einen MUMIE-Server, um eine aktuelle Auswahl von "
+"verfügbaren Kursen und Aufgaben zu erhalten."
+msgstr ""
+
+#: templates/TaskForm.php:48
+msgid "MUMIE-Kurs"
+msgstr ""
+
+#: templates/TaskForm.php:67
+msgid ""
+"Bitte wählen Sie den MUMIE-Kurs, den Sie für diese MUMIE-Task verwenden "
+"möchten."
+msgstr ""
+
+#: templates/TaskForm.php:77
+msgid "Sprache"
+msgstr ""
+
+#: templates/TaskForm.php:96
+msgid ""
+"Bitte wählen Sie die Sprache, in der diese MUMIE-Task angezeigt werden soll."
+msgstr ""
+
+#: templates/TaskForm.php:104
+msgid "MUMIE-Aufgabe"
+msgstr ""
+
+#: templates/TaskForm.php:122
+msgid ""
+"Eine MUMIE-Aufgabe kann durch Studierende bearbeitet werden und wird einzeln "
+"benotet."
+msgstr ""
+
+#: templates/TaskForm.php:130
+msgid "Filter MUMIE-Tasks"
+msgstr ""
+
+#: templates/TaskForm.php:139
+msgid "Startcontainer"
+msgstr ""
+
+#: templates/TaskForm.php:151
+msgid ""
+"Bitte wählen Sie, ob diese Aktivität in die StudIP-Umgebung eingebunden "
+"oder in einem neuen Browser-Tab geöffnet werden soll."
+msgstr ""
+
+#: templates/TaskForm.php:159
+msgid "Benotung"
+msgstr ""
+
+#: templates/TaskForm.php:162
+msgid "Bestehensgrenze"
+msgstr ""
+
+#: templates/TaskForm.php:171
+msgid "Geben Sie eine zum Bestehen der Aufgabe nötige Mindestpunktzahl an."
+msgstr ""
+
+#: templates/TaskForm.php:187
+msgid ""
+"Falls diese Option aktiviert ist, werden keine Noten, die nach dem gew�"
+"�hlten Datum erzielt wurden, mit StudIP synchronisiert."
+msgstr ""
+
+#: templates/TaskForm.php:194
+msgid "Punkte mit anderen Kursen teilen"
+msgstr ""
+
+#: templates/TaskForm.php:200
+msgid "Abbrechen"
+msgstr ""
