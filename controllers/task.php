@@ -83,9 +83,9 @@ class TaskController extends StudipController
             $this->addTeacherNavigation();
             Navigation::activateItem('/course/mumietask/grades');
         }
-        $this->grades = MumieGrade::getAllGradesForTaskWithRealNames(Request::option("task_id"));
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task));
         $gradeService->update();
+        $this->grades = MumieGrade::getAllGradesForTaskWithRealNames($this->task);
     }
     
     /**

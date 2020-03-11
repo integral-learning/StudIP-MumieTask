@@ -45,15 +45,18 @@ class MumieGrade extends SimpleORMap
     /**
      * Get grades for a given task of all students. Also include their names in the data set.
      *
-     * @param  string $taskId
+     * @param  MumieTask $task
      * @return stdClass[]
      */
-    public static function getAllGradesForTaskWithRealNames($taskId)
+    public static function getAllGradesForTaskWithRealNames($task)
     {
-        $query = "SELECT Vorname, Nachname, points 
-        FROM mumie_grades JOIN auth_user_md5 on (mumie_grades.the_user = auth_user_md5.user_id) 
-        WHERE mumie_grades.task_id = ?  
-        ORDER BY Nachname, Vorname";
-        return DBManager::get()->fetchAll($query, array($taskId));
+        $query = "SELECT Vorname, Nachname, points  
+            FROM seminar_user 
+                JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) 
+                LEFT OUTER JOIN (SELECT * FROM mumie_grades WHERE task_id = ?) AS mumie_grades ON (seminar_user.user_id = mumie_grades.the_user)
+            WHERE seminar_id = ? AND status = 'autor'
+        ORDER BY Nachname, Vorname
+        ";
+        return DBManager::get()->fetchAll($query, array($task->task_id, $task->course));
     }
 }
