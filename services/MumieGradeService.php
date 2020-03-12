@@ -274,7 +274,7 @@ class MumieGradeService
                 $mumieGrade->the_user = $userId;
                 $mumieGrade->task_id = $task->task_id;
             }
-            $mumieGrade->timechanged = $xapiGrade->timestamp;
+            $mumieGrade->timechanged = strtotime($xapiGrade->timestamp);
             $mumieGrade->points = $percentage;
             $mumieGrade->store();
         }
