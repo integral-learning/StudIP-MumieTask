@@ -106,6 +106,7 @@ class TaskWrapperController extends StudipController
     {
         PermissionService::requireTeacherPermission();
         $task = MumieTask::find(Request::option("task_id"));
+        MumieGrade::deleteAllGradesForTask($task);
         $task->delete();
         PageLayout::postMessage(
             MessageBox::success(dgettext('MumieTaskPlugin', 'MUMIE-Task wurde gelöscht') . '!')

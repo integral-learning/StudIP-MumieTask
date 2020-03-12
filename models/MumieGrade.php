@@ -59,4 +59,18 @@ class MumieGrade extends SimpleORMap
         ";
         return DBManager::get()->fetchAll($query, array($task->task_id, $task->course));
     }
+    
+    /**
+     * Delete all grades from the database that were saved for a given MUMIE-Task
+     *
+     * @param  MumieTask $task
+     * @return void
+     */
+    public static function deleteAllGradesForTask($task)
+    {
+        $grades = self::findBySQL("task_id = ?", array($task->task_id));
+        foreach ($grades as $grade) {
+            $grade->delete();
+        }
+    }
 }
