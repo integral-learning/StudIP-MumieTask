@@ -3,7 +3,11 @@ pluginclassname=MumieTaskPlugin
 version=1.0
 origin=integral-learning
 
-icon = images/mumie.jpg
+screenshots = assets/images/screenshots
+screenshots.embedded_view.png = MUMIE-Inhalte in StudIP anzeigen
+screenshots.task_wrapper.png = Aufgabensammlung
+screenshots.grade_overview.png = Bewertungsübersicht
+icon = assets/images/mumie.jpg
 category = Inhalte und Aufgabenstellungen
 displayname = MUMIE-Task
 descriptionshort = Inhalte von MUMIE-Servern einbinden:
