@@ -74,8 +74,8 @@ class MumieCourse implements \JsonSerializable
     public function collectLanguages()
     {
         $langs = [];
-        foreach ($this->tasks as $task) {
-            array_push($langs, ...$task->getLanguages());
+        foreach ($this->name as $translation) {
+            array_push($langs, $translation->language);
         }
         $this->languages = array_values(array_unique($langs));
     }

@@ -29,9 +29,14 @@ class MumieServerInstance implements \JsonSerializable
      */
     private $server;
     /**
+     * This is used as parameter when synchronizing grades
+     */
+    const MUMIE_GRADE_SYNC_VERSION = 2;
+
+    /**
      * This is used as parameter when requesting available courses and tasks.
      */
-    const MUMIE_JSON_FORMAT_VERSION = 2;
+    const MUMIE_JSON_FORMAT_VERSION = 3;
 
     /**
      * Primary key for db entry
@@ -220,8 +225,10 @@ class MumieServerInstance implements \JsonSerializable
     public function getCourseByName($name)
     {
         foreach ($this->courses as $course) {
-            if ($course->getName() == $name) {
-                return $course;
+            foreach ($course->getName() as $translation) {
+                if ($translation->value == $name) {
+                    return $course;
+                }
             }
         }
     }
@@ -233,6 +240,6 @@ class MumieServerInstance implements \JsonSerializable
      */
     public function getGradeSyncUrl()
     {
-        return $this->url_prefix . 'public/xapi?v=' . self::MUMIE_JSON_FORMAT_VERSION;
+        return $this->url_prefix . 'public/xapi?v=' . self::MUMIE_GRADE_SYNC_VERSION;
     }
 }
