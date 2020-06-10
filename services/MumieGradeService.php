@@ -138,7 +138,10 @@ class MumieGradeService
         $id = $mumietask->task_url;
         $prefix = "link/";
         if (strpos($id, $prefix) !== false) {
-            $id = substr($mumietask->taskurl, strlen($prefix));
+            $id = substr($mumietask->task_url, strlen($prefix));
+        }
+        if (strpos($id, "?") !== false) {
+            $id = substr($id, 0, strpos($id, "?"));
         }
         return $id;
     }

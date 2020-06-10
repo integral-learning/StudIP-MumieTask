@@ -197,7 +197,6 @@
 <script>
     (function() {
         var missingConfig = document.getElementsByName("mumie_missing_config")[0];
-        console.log("FOOO");
 
         var serverController = (function() {
             var serverStructure;
@@ -255,7 +254,6 @@
              * Update the hidden input field with the selected course's course file path
              */
             function updateCoursefilePath() {
-                console.log(courseController.getSelectedCourse());
                 coursefileElem.value = courseController.getSelectedCourse().coursefile;
             }
 
@@ -271,7 +269,6 @@
                 },
                 getSelectedCourse: function() {
                     var selectedCourseName = courseDropDown.options[courseDropDown.selectedIndex].text;
-                    console.log("selected course name" + selectedCourseName);
                     var courses = serverController.getSelectedServer().courses;
                     for (var i in courses) {
                         var course = courses[i];
@@ -281,7 +278,6 @@
                             }
                         }
                     }
-                    console.log("course not found");
                     return null;
                 },
                 disable: function() {

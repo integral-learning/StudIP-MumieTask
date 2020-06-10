@@ -118,7 +118,6 @@ class TaskOptionCollector
         foreach($course->getName() as $translation) {
             $this->courseOptions[$translation->value] = $translation->value;
         }
-        //$this->courseOptions[$course->getName()] = $course->getName();
 
         foreach ($course->getTasks() as $task) {
             $this->compileTaskOption($task);
