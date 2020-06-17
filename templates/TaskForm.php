@@ -240,9 +240,14 @@
              */
             function addOptionForCourse(course) {
                 var optionCourse = document.createElement("option");
-                optionCourse.setAttribute("value", course.name);
-                optionCourse.text = course.name;
-                courseDropDown.append(optionCourse);
+                for (var i in course.name) {
+                    var name = course.name[i];
+                    if (name.language == langController.getSelectedLanguage()) {
+                        optionCourse.setAttribute("value", name.value);
+                        optionCourse.text = name.value;
+                        courseDropDown.append(optionCourse);
+                    }
+                }
             }
 
             /**
@@ -267,8 +272,10 @@
                     var courses = serverController.getSelectedServer().courses;
                     for (var i in courses) {
                         var course = courses[i];
-                        if (course.name == selectedCourseName) {
-                            return course;
+                        for (var j in course.name) {
+                            if (course.name[j].value == selectedCourseName) {
+                                return course;
+                            }
                         }
                     }
                     return null;
@@ -311,6 +318,7 @@
 
                     languageDropDown.onchange = function() {
                         taskController.updateOptions();
+                        courseController.updateOptions();
                     };
                     langController.updateOptions();
                 },
@@ -633,7 +641,6 @@
         }
 
         var isEdit = document.getElementById("mumie_name").getAttribute('value');
-        console.log("hallo");
 
         if (isEdit && !serverConfigExists()) {
             serverController.disable();

@@ -115,7 +115,9 @@ class TaskOptionCollector
      */
     private function compileCourseOption($course)
     {
-        $this->courseOptions[$course->getName()] = $course->getName();
+        foreach($course->getName() as $translation) {
+            $this->courseOptions[$translation->value] = $translation->value;
+        }
 
         foreach ($course->getTasks() as $task) {
             $this->compileTaskOption($task);

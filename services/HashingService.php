@@ -44,7 +44,7 @@ class HashingService
      */
     private static function getHashedUserId($userId)
     {
-        return hash("sha512", $id . substr(Config::get()->MUMIE_API_KEY, 0, 10));
+        return hash("sha512", $userId . substr(Config::get()->MUMIE_API_KEY, 0, 10));
     }
     
     /**

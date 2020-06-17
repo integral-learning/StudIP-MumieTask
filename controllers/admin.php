@@ -64,7 +64,7 @@ class AdminController extends StudipController
             $config->store(MUMIE_SHARE_FIRSTNAME, Request::get('share_firstname'));
             $config->store(MUMIE_SHARE_LASTNAME, Request::get('share_lastname'));
             $config->store(MUMIE_SHARE_EMAIL, Request::get('share_email'));
-            PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!'));
+            PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');
     }
@@ -83,10 +83,11 @@ class AdminController extends StudipController
             $errors = $this->getFormValidationErrors($server);
         
             if (count($errors)>0) {
-                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+                PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
             } else {
                 $server->store();
-                PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Server erfolgreich hinzugefügt') . '!'));
+                PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Server erfolgreich hinzugefügt') . '!');
+
                 $this->redirect('admin/index');
             }
         }
@@ -107,7 +108,7 @@ class AdminController extends StudipController
             $errors = $this->getFormValidationErrors($server, true);
         
             if (count($errors)>0) {
-                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+                PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
             } else {
                 $server->store();
                 PageLayout::postMessage(
@@ -145,7 +146,7 @@ class AdminController extends StudipController
             $config = Config::get();
             $config->store(MUMIE_ORG, Request::get('mumie_org'));
             $config->store(MUMIE_API_KEY, Request::get('mumie_api_key'));
-            PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!'));
+            PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');
     }
