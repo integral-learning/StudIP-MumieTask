@@ -87,10 +87,11 @@ class TaskWrapperController extends StudipController
 
             $errors = $this->getFormValidationErrors($task);
             if (count($errors)>0) {
-                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+                PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
             } else {
                 $task->store();
-                PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+                PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'MUMIE-Task erfolgreich hinzugefügt') . '!');
+
                 $this->redirect('taskWrapper/index');
             }
         }
@@ -140,10 +141,10 @@ class TaskWrapperController extends StudipController
             
             $errors = $this->getFormValidationErrors($task);
             if (count($errors)>0) {
-                PageLayout::postMessage(MessageBox::error(_('Es sind folgende Fehler aufgetreten:'), $errors));
+                PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
             } else {
                 $task->store();
-                PageLayout::postMessage(MessageBox::success(dgettext('MumieTaskPlugin', 'MUMIE-Task erfolgreich hinzugefügt') . '!'));
+                PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'MUMIE-Task erfolgreich hinzugefügt') . '!');
                 $this->redirect('taskWrapper/index');
             }
         }

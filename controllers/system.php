@@ -18,7 +18,7 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/M
 /**
  * This controller provides an endpoint for SSO to MUMIE servers.
  */
-class SystemController extends StudipController
+class SystemController extends PluginController
 {
     /**
      * This function is called as POST by MUMIE servers during single sign on attempts from users to authenticate them.
@@ -27,8 +27,8 @@ class SystemController extends StudipController
      */
     public function verifyToken_action()
     {
-        $token = $_POST['token'];
-        $user = $_POST['userId'];
+        $token = Request::get('token');
+        $user = Request::get('userId');
         echo json_encode(SSOService::verifyToken($token, $user));
         exit;
     }
