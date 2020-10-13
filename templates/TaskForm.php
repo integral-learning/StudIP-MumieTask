@@ -648,7 +648,7 @@
             langController.disable();
             taskController.disable();
         } else {
-            serverController.init(JSON.parse('<?=json_encode($serverStructure);?>'));
+            serverController.init(JSON.parse(`<?=json_encode($serverStructure);?>`));
             courseController.init(isEdit);
             taskController.init(isEdit);
             langController.init();
