@@ -124,14 +124,7 @@
                 )->asImg();
             ?>
         </div>
-        <div id="mumie_filter_section">
-            <div id="mumie_filter_header" class="mumie-collapsable">
-                <i class="fa fa-caret-down mumie-icon"></i>
-                <?=dgettext("MumieTaskPlugin", "Filter MUMIE-Tasks");?>
-            </div>
-            <div id="mumie_filter_wrapper">
-            </div>
-        </div>
+        <a id="mumie_prb_selector_btn" class="button"><?= dgettext("MumieTaskPlugin", "Abbrechen");?></a>
         <div class="mumie_form_elem_wrapper">
 
             <label for="mumie_launch_container">
@@ -197,6 +190,7 @@
 <script>
     (function() {
         var missingConfig = document.getElementsByName("mumie_missing_config")[0];
+        var lmsSelectorUrl = 'http://localhost:7070';
 
         var serverController = (function() {
             var serverStructure;
@@ -208,7 +202,6 @@
                     serverDropDown.onchange = function() {
                         courseController.updateOptions();
                         langController.updateOptions();
-                        filterController.updateOptions();
                         taskController.updateOptions();
                     };
                 },
@@ -262,7 +255,6 @@
                     courseDropDown.onchange = function() {
                         updateCoursefilePath();
                         langController.updateOptions();
-                        filterController.updateOptions();
                         taskController.updateOptions();
                     };
                     courseController.updateOptions(isEdit ? coursefileElem.value : false);
@@ -341,6 +333,17 @@
                             languageDropDown.selectedIndex = languageDropDown.childElementCount - 1;
                         }
                     }
+                },
+                setLanguage: function(lang) {
+                    for (var i in languageDropDown.options) {
+                        var option = languageDropDown.options[i];
+                        if (option.value == lang) {
+                            languageDropDown.selectedIndex = i;
+                            courseController.updateOptions();
+                            return;
+                        }
+                    }
+                    throw new Error("Selected language not available");
                 }
             };
         })();
@@ -427,8 +430,7 @@
                 updateOptions: function(selectTaskByLink) {
                     removeChildElems(taskDropDown);
                     taskDropDown.selectedIndex = 0;
-                    var tasks = filterController.filterTasks(courseController.getSelectedCourse()
-                        .tasks);
+                    var tasks = courseController.getSelectedCourse().tasks;
                     for (var i in tasks) {
                         var task = tasks[i];
                         addTaskOption(task);
@@ -441,186 +443,117 @@
             };
         })();
 
-        var filterController = (function() {
-            var filterSection = document.getElementById('mumie_filter_section');
-            var filterWrapper = document.getElementById("mumie_filter_wrapper");
-            var filterSectionHeader = document.getElementById('mumie_filter_header');
-
-            var selectedTags = [];
+        var problemSelectorController = (function() {
+            var problemSelectorButton = document.getElementById('mumie_prb_selector_btn');
+            var problemSelectorWindow;
+            var mumieOrg = `<?= Config::get()->MUMIE_ORG;?>`
 
             /**
-             * Add a new filter category to the form for a given tag
-             * @param {Object} tag
+             * Send a message to the problem selector window.
+             *
+             * Don't do anything, if there is no problem selector window.
+             * @param {Object} response
              */
-            function addFilter(tag) {
-                var filter = document.createElement('div');
-                filter.classList.add('row', 'fitem', 'form-group', 'mumie-filter');
-
-                var selectionBox = createSelectionBox(tag);
-
-                var label = document.createElement('label');
-                label.innerHTML = '<i class="fa fa-caret-down mumie-icon"></i>' + tag.name;
-                label.classList.add('mumie-collapsable', 'mumie_label');
-                label.onclick = function() {
-                    toggleVisibility(selectionBox);
-                };
-                filter.appendChild(label);
-                filter.appendChild(selectionBox);
-                filterWrapper.appendChild(filter);
+            function sendResponse(response) {
+                if (!problemSelectorWindow) {
+                    return;
+                }
+                problemSelectorWindow.postMessage(JSON.stringify(response), lmsSelectorUrl);
             }
 
             /**
-             * Create an element that contains checkboxes for all tag values
-             * @param {Object} tag
-             * @returns {Object} A div containing mulitple checkboxes
+             * Send a success message to problem selector window
+             * @param {string} message
              */
-            function createSelectionBox(tag) {
-                var selectionBox = document.createElement('div');
-                selectionBox.classList.add('mumie_selection_box');
-                for (var i in tag.values) {
-                    selectedTags[tag.name] = [];
-                    var inputWrapper = document.createElement('div');
-                    inputWrapper.classList.add('mumie_input_wrapper');
-
-                    var value = tag.values[i];
-                    var checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.value = value;
-                    setCheckboxListener(tag, checkbox);
-
-                    var label = document.createElement('label');
-                    label.classList.add('mumie_label');
-                    label.innerText = value;
-                    label.style = "padding-left: 5px";
-                    inputWrapper.appendChild(checkbox);
-                    inputWrapper.appendChild(label);
-                    selectionBox.insertBefore(inputWrapper, selectionBox.firstChild);
-                }
-                return selectionBox;
+            function sendSuccess(message = '') {
+                sendResponse({
+                    success: true,
+                    message: message
+                });
             }
 
             /**
-             * Selecting a tag value should filter the drop down menu for MUMIE problems for the chosen values
-             * @param {*} tag The tag we created the checkbox for
-             * @param {*} checkbox The checkbox containing the filter input checkboxes
+             * Send a failure message to problem selector window
+             * @param {string} message
              */
-            function setCheckboxListener(tag, checkbox) {
-                checkbox.onclick = function() {
-                    if (!checkbox.checked) {
-                        var update = [];
-                        for (var i in selectedTags[tag.name]) {
-                            var value = selectedTags[tag.name][i];
-                            if (value != checkbox.value) {
-                                update.push(value);
-                            }
-                        }
-                        selectedTags[tag.name] = update;
-                    } else {
-                        selectedTags[tag.name].push(checkbox.value);
-                    }
-                    taskController.updateOptions();
-                };
+            function sendFailure(message = '') {
+                sendResponse({
+                    success: false,
+                    message: message
+                });
             }
 
             /**
-             * Toggle visibility of the given object
-             * @param {Object} elem
+             * Add an event listener that accepts messages from LMS-Browser and updates the selected problem.
              */
-            function toggleVisibility(elem) {
-                elem.classList.toggle('hidden');
+            function addMessageListener() {
+                window.addEventListener('message', (event) => {
+                    if (event.origin != lmsSelectorUrl) {
+                        return;
+                    }
+                    var importObj = JSON.parse(event.data);
+                    try {
+                        langController.setLanguage(importObj.language);
+                        taskController.updateOptions(importObj.link + '?lang=' + importObj.language);
+                        sendSuccess();
+                        window.focus();
+                        displayProblemSelectedMessage();
+                    } catch (error) {
+                        sendFailure(error.message);
+                    }
+                  }, false);
             }
 
             /**
-             * Filter a list of tasks
-             * @param {Array} tasks the tasks to filter
-             * @param {Array} filterSelection the selection to filter with
-             * @returns {Array} the filtered tasks
+             * Display a success message in Moodle that a problem was successfully selected.
              */
-            function filterTasks(tasks, filterSelection) {
-                var filteredTasks = [];
-                for (var i in tasks) {
-                    var task = tasks[i];
-                    if (filterTask(task, filterSelection)) {
-                        filteredTasks.push(task);
-                    }
-                }
-                return filteredTasks;
-            }
-
-            /**
-             * Check if the task fullfills the requirements set by the filter selection
-             * @param {Object} task
-             * @param {Array} filterSelection
-             * @returns {boolean}
-             */
-            function filterTask(task, filterSelection) {
-                var obj = [];
-                for (var i in task.tags) {
-                    var tag = task.tags[i];
-                    obj[tag.name] = tag.values;
-                }
-
-                for (var j in Object.keys(filterSelection)) {
-                    var tagName = Object.keys(filterSelection)[j];
-                    if (filterSelection[tagName].length == 0) {
-                        continue;
-                    }
-                    if (!obj[tagName]) {
-                        return false;
-                    }
-                    if (!haveCommonEntry(filterSelection[tagName], obj[tagName])) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            /**
-             * Return true, of the two arrays have at least one entry in common
-             * @param {Array} array1
-             * @param {Array} array2
-             * @returns {boolean}
-             */
-            function haveCommonEntry(array1, array2) {
-                if (!Array.isArray(array1) || !Array.isArray(array2)) {
-                    return false;
-                }
-                for (var i = 0; i < array1.length; i++) {
-                    if (array2.includes(array1[i])) {
-                        return true;
-                    }
-                }
-                return false;
+            function displayProblemSelectedMessage() {
+                require(['core/str', "core/notification"], function(str, notification) {
+                    str.get_strings([{
+                        'key': 'mumie_form_updated_selection',
+                        component: 'mod_mumie'
+                    }]).done(function(s) {
+                        notification.addNotification({
+                            message: s[0],
+                            type: "info"
+                        });
+                    }).fail(notification.exception);
+                });
             }
 
             return {
                 init: function() {
-                    this.updateOptions();
-                    filterSectionHeader.onclick = function() {
-                        toggleVisibility(filterWrapper);
+                    problemSelectorButton.onclick = function() {
+                        problemSelectorWindow = window.open(
+                            lmsSelectorUrl
+                                + '/lms-problem-selector?'
+                                + 'org='
+                                + mumieOrg
+                                + '&serverUrl='
+                                + encodeURIComponent(serverController.getSelectedServer().url_prefix)
+                                + "&lang="
+                                + langController.getSelectedLanguage()
+                                + "&problem=" + taskController.getSelectedTask().link
+                                + "&origin=" + encodeURIComponent(window.location.origin)
+                            , '_blank'
+                        );
                     };
+
+                    window.onclose = function() {
+                        sendSuccess();
+                    };
+
+                    window.addEventListener("beforeunload", function() {
+                        sendSuccess();
+                     }, false);
+
+                    addMessageListener();
                 },
-                updateOptions: function() {
-                    var tags = courseController.getSelectedCourse().tags;
-                    selectedTags = [];
-                    if (tags.length > 0) {
-                        filterSection.hidden = false;
-                    } else {
-                        filterSection.hidden = true;
-                    }
-                    removeChildElems(filterWrapper);
-                    for (var i in tags) {
-                        var tag = tags[i];
-                        addFilter(tag);
-                    }
-                },
-                filterTasks: function(tasks) {
-                    return filterTasks(tasks, selectedTags);
+                disable: function() {
+                    problemSelectorButton.disabled = true;
                 }
             };
-
         })();
-
 
         /**
          * Remove all child elements of a given html element
@@ -647,12 +580,13 @@
             courseController.disable();
             langController.disable();
             taskController.disable();
+            problemSelectorController.disable();
         } else {
             serverController.init(JSON.parse(`<?=json_encode($serverStructure);?>`));
             courseController.init(isEdit);
             taskController.init(isEdit);
             langController.init();
-            filterController.init();
+            problemSelectorController.init();
         }
     })();
 </script>
