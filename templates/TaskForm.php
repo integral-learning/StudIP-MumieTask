@@ -124,7 +124,7 @@
                 )->asImg();
             ?>
         </div>
-        <a id="mumie_prb_selector_btn" class="button"><?= dgettext("MumieTaskPlugin", "Abbrechen");?></a>
+        <a id="mumie_prb_selector_btn" class="button"><?= dgettext("MumieTaskPlugin", "Aufgaben-Auswahl öffnen");?></a>
         <div class="mumie_form_elem_wrapper">
 
             <label for="mumie_launch_container">

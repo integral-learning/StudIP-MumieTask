@@ -302,6 +302,10 @@ msgid ""
 "benotet."
 msgstr "A MUMIE Task is a single graded exercise for students."
 
+#: templates/TaskForm.php:127
+msgid "Aufgaben-Auswahl öffnen"
+msgstr "Open Problem Selector"
+
 #: templates/TaskForm.php:130
 msgid "Filter MUMIE-Tasks"
 msgstr "Filter MUMIE tasks"

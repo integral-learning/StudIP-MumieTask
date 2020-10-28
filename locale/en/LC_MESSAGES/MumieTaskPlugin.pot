@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-10 15:51+0100\n"
+"POT-Creation-Date: 2020-10-28 12:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,16 +31,16 @@ msgstr ""
 msgid "MUMIE-Task hinzufügen"
 msgstr ""
 
-#: controllers/taskWrapper.php:91 controllers/taskWrapper.php:144
-#: controllers/admin.php:86 controllers/admin.php:110
+#: controllers/taskWrapper.php:90 controllers/taskWrapper.php:144
+#: controllers/admin.php:86 controllers/admin.php:111
 msgid "Es sind folgende Fehler aufgetreten:"
 msgstr ""
 
-#: controllers/taskWrapper.php:94 controllers/taskWrapper.php:147
+#: controllers/taskWrapper.php:93 controllers/taskWrapper.php:147
 msgid "MUMIE-Task erfolgreich hinzugefügt"
 msgstr ""
 
-#: controllers/taskWrapper.php:112
+#: controllers/taskWrapper.php:113
 msgid "MUMIE-Task wurde gelöscht"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Admininstrator-Einstellungen"
 msgstr ""
 
-#: controllers/admin.php:67 controllers/admin.php:148
+#: controllers/admin.php:67 controllers/admin.php:149
 msgid "Änderungen gespeichert"
 msgstr ""
 
@@ -78,23 +78,23 @@ msgstr ""
 msgid "Server erfolgreich hinzugefügt"
 msgstr ""
 
-#: controllers/admin.php:114
+#: controllers/admin.php:115
 msgid "Server erfolgreich geändert"
 msgstr ""
 
-#: controllers/admin.php:132
+#: controllers/admin.php:133
 msgid "Server wurde gelöscht"
 msgstr ""
 
-#: controllers/admin.php:169
+#: controllers/admin.php:170
 msgid "Für folgende URL existiert kein MUMIE-Server"
 msgstr ""
 
-#: controllers/admin.php:174 controllers/admin.php:181
+#: controllers/admin.php:175 controllers/admin.php:182
 msgid "Es gibt bereits eine Serverkonfiguration für diesen URL-Prefix"
 msgstr ""
 
-#: controllers/admin.php:177 controllers/admin.php:184
+#: controllers/admin.php:178 controllers/admin.php:185
 msgid "Es gibt bereits eine Serverkonfiguration für diesen Namen"
 msgstr ""
 
@@ -103,7 +103,7 @@ msgid "Informationen"
 msgstr ""
 
 #: controllers/task.php:110 views/task_wrapper/index.php:4
-#: templates/TaskForm.php:178
+#: templates/TaskForm.php:171
 msgid "Abgabefrist"
 msgstr ""
 
@@ -174,7 +174,7 @@ msgid "E-Mail-Addresse"
 msgstr ""
 
 #: views/admin/index.php:104 views/admin/index.php:144
-#: templates/ServerForm.php:51 templates/TaskForm.php:201
+#: templates/ServerForm.php:51 templates/TaskForm.php:187
 msgid "Speichern"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Punkte"
 msgstr ""
 
-#: views/task/index.php:4
+#: views/task/index.php:5
 msgid "Inhalt"
 msgstr ""
 
@@ -295,42 +295,38 @@ msgid ""
 "benotet."
 msgstr ""
 
-#: templates/TaskForm.php:130
-msgid "Filter MUMIE-Tasks"
+#: templates/TaskForm.php:127
+msgid "Aufgaben-Auswahl öffnen"
 msgstr ""
 
-#: templates/TaskForm.php:139
+#: templates/TaskForm.php:132
 msgid "Startcontainer"
 msgstr ""
 
-#: templates/TaskForm.php:151
+#: templates/TaskForm.php:144
 msgid ""
 "Bitte wählen Sie, ob diese Aktivität in die StudIP-Umgebung eingebunden "
 "oder in einem neuen Browser-Tab geöffnet werden soll."
 msgstr ""
 
-#: templates/TaskForm.php:159
+#: templates/TaskForm.php:152
 msgid "Benotung"
 msgstr ""
 
-#: templates/TaskForm.php:162
+#: templates/TaskForm.php:155
 msgid "Bestehensgrenze"
 msgstr ""
 
-#: templates/TaskForm.php:171
+#: templates/TaskForm.php:164
 msgid "Geben Sie eine zum Bestehen der Aufgabe nötige Mindestpunktzahl an."
 msgstr ""
 
-#: templates/TaskForm.php:187
+#: templates/TaskForm.php:180
 msgid ""
 "Falls diese Option aktiviert ist, werden keine Noten, die nach dem gew�"
 "�hlten Datum erzielt wurden, mit StudIP synchronisiert."
 msgstr ""
 
-#: templates/TaskForm.php:194
-msgid "Punkte mit anderen Kursen teilen"
-msgstr ""
-
-#: templates/TaskForm.php:200
+#: templates/TaskForm.php:186
 msgid "Abbrechen"
 msgstr ""
