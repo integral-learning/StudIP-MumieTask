@@ -1,6 +1,6 @@
 pluginname=MUMIE Task
 pluginclassname=MumieTaskPlugin
-version=1.2
+version=1.3
 origin=integral-learning
 
 screenshots = assets/images/screenshots

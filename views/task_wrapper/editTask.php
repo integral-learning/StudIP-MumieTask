@@ -23,7 +23,7 @@ $template->set_attribute("name", $task->name);
 $template->set_attribute("server", $task->server);
 $template->set_attribute("mumie_course", $task->mumie_course);
 $template->set_attribute("mumie_coursefile", $task->mumie_coursefile);
-$template->set_attribute("task_url", MumieProblem::removeParamsFromUrl($task->task_url));
+$template->set_attribute("task_url", $task->task_url);
 $template->set_attribute("launch_container", $task->launch_container);
 $template->set_attribute("language", $task->language);
 $template->set_attribute("duedate", $task->duedate);
@@ -34,6 +34,7 @@ $template->set_attribute("missingServerConfig", is_null(MumieServer::getByUrl($t
 */
 $template->set_attribute('action', PluginEngine::getLink('MumieTaskPlugin', array('task_id' => $task["task_id"]), 'taskWrapper/editTask'));
 $template->set_attribute('cancelLink', PluginEngine::getLink('MumieTaskPlugin', array(), 'taskWrapper/index'));
+$template->set_attribute("mumieOrg", Config::get()->MUMIE_ORG);
 echo $template->render();
 
 ?>
