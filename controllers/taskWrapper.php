@@ -40,7 +40,7 @@ class TaskWrapperController extends StudipController
         $this->hasTeacherPermission = PermissionService::hasTeacherPermission();
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " . dgettext("MumieTaskPlugin", "Aufgabenübersicht"));
     }
-        
+
     /**
      * Display all MUMIE Tasks in this course in a table with updated grades.
      *
@@ -56,13 +56,13 @@ class TaskWrapperController extends StudipController
                 $this->url_for('taskWrapper/addTask'),
                 Icon::create('add')
             );
-            
+
             Sidebar::Get()->addWidget($actions);
         }
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id);
         $gradeService->update();
     }
-    
+
     /**
      * Open/submit forms for adding MUMIE tasks to the current course.
      *
@@ -96,7 +96,7 @@ class TaskWrapperController extends StudipController
             }
         }
     }
-    
+
     /**
      * Delete a given MUMIE Task from the current course.
      * The task_id is found in POST request
@@ -114,7 +114,7 @@ class TaskWrapperController extends StudipController
         );
         $this->redirect(PluginEngine::getURL("MumieTaskPlugin", array(), 'taskWrapper/index'));
     }
-    
+
     /**
      * Open/submit a form for editing given MUMIE tasks
      * The task_id is found in POST request
@@ -138,7 +138,7 @@ class TaskWrapperController extends StudipController
             $task->course = \Context::get()->Seminar_id;
             $task->duedate = strtotime(Request::get('duedate'));
             $task->passing_grade = Request::get('passing_grade');
-            
+
             $errors = $this->getFormValidationErrors($task);
             if (count($errors)>0) {
                 PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
@@ -149,7 +149,7 @@ class TaskWrapperController extends StudipController
             }
         }
     }
-    
+
     /**
      * Validate submitted form parameters
      *
@@ -159,7 +159,7 @@ class TaskWrapperController extends StudipController
     private function getFormValidationErrors($task)
     {
         $server = MumieServer::getByUrl($task->server);
-        
+
         $errors = array();
         if ($task->isFieldDirty('duedate') && $task->duedate != 0 && $task->duedate < time()) {
             $errors[] =  dgettext('MumieTaskPlugin', 'Das Datum der Abgabefrist muss in der Zukunft liegen!');
@@ -189,7 +189,7 @@ class TaskWrapperController extends StudipController
             $errors[] = dgettext('MumieTaskPlugin', 'Das gewählte MUMIE-Problem konnte nicht gefunden werden.');
             return $errors;
         }
-        
+
         if (!in_array($task->language, $problem->getLanguages())) {
             $errors[] =  dgettext('MumieTaskPlugin', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
             return $errors;

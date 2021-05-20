@@ -97,7 +97,7 @@ class MumieCourse implements \JsonSerializable
 
         $this->tags = array_values($tags);
     }
-    
+
     /**
      * Find a Task in the course structure by a given link
      *
@@ -124,7 +124,7 @@ class MumieCourse implements \JsonSerializable
 
         return $vars;
     }
-    
+
     /**
      * Get all languages used in this course.
      *
@@ -134,7 +134,7 @@ class MumieCourse implements \JsonSerializable
     {
         return $this->languages;
     }
-    
+
     /**
      * Get the name of this course
      *

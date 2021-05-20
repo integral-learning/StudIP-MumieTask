@@ -32,5 +32,6 @@
             'taskWrapper/index'
         )
     );
+    $template->set_attribute("mumieOrg", Config::get()->MUMIE_ORG);
     echo $template->render();
 ?>
