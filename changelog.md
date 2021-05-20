@@ -2,6 +2,10 @@
 
 All important changes to this plugin will be documented in this file.
 
+## [v1.3] - TODO
+### Changed
+- MUMIE Problems are now selected with a more advanced external problem browser
+
 ## [v1.2] - 2020-10-13
 ### Fixed
 - Fixed a JavaScript error that disabled MUMIE Task form because of French translation in course.json
