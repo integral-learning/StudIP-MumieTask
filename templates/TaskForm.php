@@ -370,7 +370,7 @@
         const problemSelectorController = (function() {
             const problemSelectorButton = document.getElementById('mumie_prb_selector_btn');
             let problemSelectorWindow;
-            const mumieOrg = `<?= mumieOrg; ?>`;
+            const mumieOrg = `<?= $mumieOrg; ?>`;
 
             /**
              * Send a message to the problem selector window.
