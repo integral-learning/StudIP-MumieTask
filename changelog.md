@@ -2,7 +2,7 @@
 
 All important changes to this plugin will be documented in this file.
 
-## [v1.3] - TODO
+## [v1.3] - 2021-05-20
 ### Changed
 - MUMIE Problems are now selected with a more advanced external problem browser
 
