@@ -14,7 +14,7 @@
                     <?= dgettext('MumieTaskPlugin', 'Name'); ?>
                 </span>
             </label>
-            <input id="mumie_name" required type="text" name="name" value="<?= $name?>">
+            <input id="mumie_name" required type="text" name="name" value="<?= htmlspecialchars($name)?>">
         </div>
         <div class="mumie_form_elem_wrapper">
             <label for="mumie_server">
@@ -492,7 +492,7 @@
             taskController.disable();
             problemSelectorController.disable();
         } else {
-            serverController.init(JSON.parse(`<?=json_encode($serverStructure);?>`));
+            serverController.init(JSON.parse(`<?= addslashes(json_encode($serverStructure));?>`));
             courseController.init(isEdit);
             taskController.init(isEdit);
             langController.init();
