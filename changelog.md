@@ -3,7 +3,7 @@
 All important changes to this plugin will be documented in this file.
 ## [V1.4] - 2021-06-30
 ### Fixed
-- Fixed an error where control characters in course-and-task response object were not properly escaped
+- Fixed an error where control characters in server structure object were not properly escaped when encoding to json.
 
 ## [v1.3] - 2021-05-20
 ### Changed
