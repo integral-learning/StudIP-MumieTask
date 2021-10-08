@@ -73,6 +73,7 @@
         <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value=<?= $missingServerConfig ? $server : ""?>>
         <input type="hidden" id="language" name="language" value=<?= $language ?? $_SESSION['_language'];?>>
         <input type="hidden" name="task_url" id="mumie_taskurl" value=<?= $task_url;?>>
+        <input type="hidden" name="is_graded" id="mumie_is_graded" value=<?= $is_graded;?>>
         <label for="display_task">
             <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
@@ -281,6 +282,7 @@
             const task_element = document.getElementById("mumie_taskurl");
             const display_task_element = document.getElementById("mumie_display_task");
             const nameElem = document.getElementById("mumie_name");
+            const is_graded_element = document.getElementById("mumie_is_graded");
 
             /**
              * Update the activity's name in the input field
@@ -360,10 +362,26 @@
                         .slice()
                         .find(task => getLocalizedLink(task.link) === selectedLink);
                 },
+                setIsGraded: function(isGraded) {
+                    if (isGraded === null) {
+                        is_graded_element.value = null;
+                    }
+                    is_graded_element.value = isGraded ? '1' : '0';
+                    // updateGradeEditability();
+                },
                 setSelection: function(newSelection) {
                     task_element.value = newSelection;
                     updateName();
                 },
+                getGradingType: function() {
+                    const isGraded = is_graded_element.value;
+                    if (isGraded === '1') {
+                        return 'graded';
+                    } else if (isGraded === '0') {
+                        return 'ungraded';
+                    }
+                    return 'all';
+                }
             };
         })();
 
@@ -417,9 +435,11 @@
                         return;
                     }
                     const importObj = JSON.parse(event.data);
+                    const isGraded = importObj.isGraded !== false;
                     try {
                         langController.setLanguage(importObj.language);
                         taskController.setSelection(importObj.link + '?lang=' + importObj.language);
+                        taskController.setIsGraded(isGraded);
                         sendSuccess();
                         window.focus();
                     } catch (error) {
@@ -434,6 +454,7 @@
                     problemSelectorButton.onclick = function (e) {
                         e.preventDefault();
                         const selectedTask = taskController.getSelectedTask();
+                        const gradingType = taskController.getGradingType();
                         problemSelectorWindow = window.open(
                             lmsSelectorUrl
                             + '/lms-problem-selector?'
@@ -445,6 +466,7 @@
                             + langController.getSelectedLanguage()
                             + (selectedTask ? "&problem=" + selectedTask.link : '')
                             + "&origin=" + encodeURIComponent(window.location.origin)
+                            + '&gradingType=' + gradingType
                             , '_blank'
                         );
                     };
