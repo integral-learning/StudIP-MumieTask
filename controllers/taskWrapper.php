@@ -72,6 +72,9 @@ class TaskWrapperController extends StudipController
     {
         PermissionService::requireTeacherPermission();
         $this->structuredServers = MumieServerInstance::getAllWithStructure();
+        if (empty($this->structuredServers)) {
+            PageLayout::postError(dgettext('MumieTaskPlugin', 'Es ist noch kein MUMIE-Server konfiguriert. Bitte wenden Sie sich an ihren Administrator.'));
+        }
         if (Request::isPost()) {
             $task = new MumieTask();
             $this->setTaskValues($task);
@@ -102,7 +105,6 @@ class TaskWrapperController extends StudipController
             $task->duedate = strtotime(Request::get('duedate'));
             $task->passing_grade = Request::get('passing_grade');
         }
-        return task;
     }
     /**
      * Delete a given MUMIE Task from the current course.
