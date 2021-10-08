@@ -116,13 +116,24 @@
     </fieldset>
 
     <fieldset class="conf-form-field collapsable collapsed">
+        <div class="mumie_form_elem_wrapper" id="mumie_ungraded_info" hidden?>>
+            <b>
+                <?= dgettext('MumieTaskPlugin', 'Die gewählte Aufgabe ist unbewertet. Daher sind die Bewertungseinstellungen deaktiviert') ?>
+            </b>
+        </div>
         <legend><?= dgettext('MumieTaskPlugin', 'Benotung'); ?></legend>
         <div class="mumie_form_elem_wrapper">
             <label for="mumie_passing_grade">
                 <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
             </label>
-            <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
-                value="<?= $passing_grade ?? 60;?>">
+            <input
+                    type="number"
+                    name="passing_grade"
+                    id="mumie_passing_grade"
+                    min="0"
+                    max="100"
+                    value="<?= $passing_grade ?? 60;?>"
+            >
             <?=
                 Icon::create(
                     'info',
@@ -137,8 +148,13 @@
             <label for="mumie_due_date">
                 <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
             </label>
-            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker
-                value="<?= $duedate == 0 ? null : date('d.m.Y H:i', $duedate);?>">
+            <input
+                    type="text"
+                    name="duedate"
+                    id="mumie_due_date"
+                    data-datetime-picker
+                    value="<?= $duedate == 0 ? null : date('d.m.Y H:i', $duedate);?>"
+            >
             <?=
                 Icon::create(
                     'info',
@@ -351,9 +367,17 @@
                     .concat(courseController.getSelectedCourse().name.map(n => n.value))
             }
 
+            function updateGradeEditability() {
+                const isUngraded = is_graded_element.value === '0';
+                document.getElementById('mumie_passing_grade').disabled = isUngraded;
+                document.getElementById('mumie_due_date').disabled = isUngraded;
+                document.getElementById('mumie_ungraded_info').hidden = !isUngraded;
+            }
+
             return {
                 init: function () {
                     updateName();
+                    updateGradeEditability();
                 },
                 getSelectedTask: function () {
                     const selectedLink = task_element.value
@@ -367,7 +391,7 @@
                         is_graded_element.value = null;
                     }
                     is_graded_element.value = isGraded ? '1' : '0';
-                    // updateGradeEditability();
+                    updateGradeEditability();
                 },
                 setSelection: function(newSelection) {
                     task_element.value = newSelection;
