@@ -173,9 +173,6 @@
             return {
                 init: function (structure) {
                     serverStructure = structure;
-                    serverDropDown.onchange = function () {
-                        langController.updateOptions();
-                    };
                 },
                 getSelectedServer: function () {
                     const selectedServerName = serverDropDown.options[serverDropDown.selectedIndex].text;
@@ -239,16 +236,6 @@
             const languageElement = document.getElementById("language");
 
             return {
-                init: function () {
-                    langController.updateOptions();
-                },
-                updateOptions: function () {
-                    const availableLanguages = courseController.getSelectedCourse()?.languages;
-                    const currentLang = langController.getSelectedLanguage();
-                    if (availableLanguages && !availableLanguages.includes(currentLang)) {
-                        langController.setLanguage(availableLanguages[0]);
-                    }
-                },
                 getSelectedLanguage: function () {
                     return languageElement.value;
                 },
@@ -507,14 +494,12 @@
 
         if (isEdit && !serverConfigExists()) {
             serverController.disable();
-            langController.disable();
             taskController.disable();
             problemSelectorController.disable();
         } else {
             serverController.init(JSON.parse(`<?= addslashes(json_encode($serverStructure));?>`));
             courseController.init();
             taskController.init(isEdit);
-            langController.init();
             problemSelectorController.init();
         }
     })();
