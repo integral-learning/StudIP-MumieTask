@@ -162,7 +162,6 @@
 
 <script>
     (function() {
-        const missingConfig = document.getElementsByName("mumie_missing_config")[0];
         // const lmsSelectorUrl = 'https://pool.mumie.net';
         const lmsSelectorUrl = 'http://localhost:7070';
 
@@ -491,7 +490,7 @@
             return document.getElementsByName("mumie_missing_config")[0].getAttribute("value") === "";
         }
 
-        var isEdit = document.getElementById("mumie_name").getAttribute('value');
+        const isEdit = document.getElementById("mumie_name").getAttribute('value');
 
         if (isEdit && !serverConfigExists()) {
             serverController.disable();
