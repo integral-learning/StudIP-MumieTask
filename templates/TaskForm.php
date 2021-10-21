@@ -162,8 +162,7 @@
 
 <script>
     (function() {
-        // const lmsSelectorUrl = 'https://pool.mumie.net';
-        const lmsSelectorUrl = 'http://localhost:7070';
+        const lmsSelectorUrl = 'https://pool.mumie.net';
 
         const serverController = (function() {
             let serverStructure;
