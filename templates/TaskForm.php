@@ -217,9 +217,7 @@
                 },
                 getSelectedCourse: function () {
                     const courses = serverController.getSelectedServer().courses;
-                    return courses.find(course => {
-                        return course.coursefile === coursefileElem.value;
-                    })
+                    return courses.find(course => course.coursefile === coursefileElem.value);
                 },
                 updateCourseName: function () {
                     updateCourseName();

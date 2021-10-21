@@ -93,6 +93,13 @@ class MumieProblem implements \JsonSerializable
         return $this->link;
     }
 
+    /**
+     * Remove language parameter from a given url.
+     *
+     * Language parameter is always the last one because it's added locally by StudIp.
+     * @param $url
+     * @return string
+     */
     public static function removeLangParamFromUrl($url)
     {
         if (strpos($url, '?lang') !== false) {
