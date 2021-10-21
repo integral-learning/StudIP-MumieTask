@@ -96,7 +96,7 @@ class TaskWrapperController extends StudipController
         $task->server = Request::get('server');
         $task->task_url = Request::get('task_url');
         $task->launch_container = Request::get('launch_container');
-        $task->mumie_course = Request::get('course');
+        $task->mumie_course = Request::get('coursefile');
         $task->language = Request::get('language');
         $task->mumie_coursefile = Request::get('coursefile');
         $task->course = \Context::get()->Seminar_id;
@@ -171,7 +171,7 @@ class TaskWrapperController extends StudipController
 
         $serverInstance = new MumieServerInstance($server);
         $serverInstance->loadStructure();
-        $course = $serverInstance->getCoursebyName($task->mumie_course);
+        $course = $serverInstance->getCourseByCoursefile($task->mumie_coursefile);
 
         if ($course == null) {
             $errors[] = dgettext('MumieTaskPlugin', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.');

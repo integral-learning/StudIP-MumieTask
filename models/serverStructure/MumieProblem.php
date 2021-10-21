@@ -93,9 +93,9 @@ class MumieProblem implements \JsonSerializable
         return $this->link;
     }
 
-    public static function removeParamsFromUrl($url)
+    public static function removeLangParamFromUrl($url)
     {
-        return substr($url, 0, strpos($url, '?'));
+        return substr($url, 0, strpos($url, '?lang'));
     }
 
     /**

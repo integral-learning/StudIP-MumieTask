@@ -233,6 +233,21 @@ class MumieServerInstance implements \JsonSerializable
     }
 
     /**
+     * Find a course in this server by course file path
+     *
+     * @param  string $coursefile
+     * @return MumieCourse
+     */
+    public function getCourseByCoursefile($coursefile)
+    {
+        foreach ($this->courses as $course) {
+            if ($course->getCoursefile() === $coursefile) {
+                return $course;
+            }
+        }
+    }
+
+    /**
      * Get the url this server uses for grade synchronization.
      *
      * @return string
