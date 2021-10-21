@@ -309,7 +309,8 @@
              * @returns {string}
              */
             function getLocalizedLink(link) {
-                return link + "?lang=" + langController.getSelectedLanguage();
+                const separator = link.includes('?') ? '&' : '?';
+                return link + separator + "lang=" + langController.getSelectedLanguage();
             }
 
             /**
@@ -353,7 +354,7 @@
                     updateGradeEditability();
                 },
                 setSelection: function(newSelection) {
-                    task_element.value = newSelection;
+                    task_element.value = getLocalizedLink(newSelection);
                     updateName();
                 },
                 getGradingType: function() {
@@ -364,7 +365,7 @@
                         return 'ungraded';
                     }
                     return 'all';
-                }
+                },
             };
         })();
 
@@ -422,7 +423,7 @@
                     try {
                         courseController.setCourse(importObj.path_to_coursefile);
                         langController.setLanguage(importObj.language);
-                        taskController.setSelection(importObj.link + '?lang=' + importObj.language);
+                        taskController.setSelection(importObj.link);
                         taskController.setIsGraded(isGraded);
                         sendSuccess();
                         window.focus();
