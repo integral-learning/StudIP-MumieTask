@@ -83,7 +83,7 @@ class TaskController extends StudipController
     public function gradeOverview_action()
     {
         if (!$this->task->is_graded) {
-            PageLayout::postError(dgettext("MumieTaskPlugin", "Für diese Aufgabe werden keine Noten erfasst. Bitte kehren Sie zur Übersichtseite zurück"));
+            PageLayout::postError(dgettext("MumieTaskPlugin", "Für diese Aufgabe werden keine Noten erfasst. Bitte kehren Sie zur Übersichtsseite zurück!"));
             return;
         }
         $this->addGradeInfoSidebar();
