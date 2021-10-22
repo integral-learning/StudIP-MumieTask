@@ -2,9 +2,9 @@
 
 All important changes to this plugin will be documented in this file.
 
-## [v1.5] - 2021-10-08
+## [v1.5] - 2021-10-22
 ### Added
-- Ungraded MUMIE Tasks are now supported in Stud.IP. That represents an ungraded link to a MUMIE article.
+- Ungraded MUMIE Tasks are now supported in Stud.IP. They represent ungraded links to MUMIE articles.
 - MUMIE servers with multiple courses are now supported
 
 ## [V1.4] - 2021-06-30
