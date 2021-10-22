@@ -45,6 +45,12 @@ class MumieCourse implements \JsonSerializable
     private $tags = array();
 
     /**
+     * A link to the course overview page
+     * @var string
+     */
+    private $link;
+
+    /**
      * Get the value of coursefile
      * @return string
      */
@@ -57,6 +63,7 @@ class MumieCourse implements \JsonSerializable
     {
         $this->name = $coursewithtasks->name;
         $this->coursefile = $coursewithtasks->pathToCourseFile;
+        $this->link = $coursewithtasks->link;
         $this->tasks = [];
         if ($coursewithtasks->tasks) {
             foreach ($coursewithtasks->tasks as $task) {
@@ -64,8 +71,29 @@ class MumieCourse implements \JsonSerializable
                 array_push($this->tasks, $taskobj);
             }
         }
+        $this->addCourseTask();
         $this->collectLanguages();
         $this->collectTags();
+    }
+
+    /**
+     * Add a Task that represents to the course's overview page.
+     */
+    private function addCourseTask() {
+        if(is_null($this->link)) {
+            return;
+        }
+        $task = new stdClass();
+        $task->link = $this->link;
+        $headline = array();
+        foreach ($this->name as $translation) {
+            $headlineInstance = new stdClass();
+            $headlineInstance->name = $translation->value;
+            $headlineInstance->language = $translation->language;
+            array_push($headline, $headlineInstance);
+        }
+        $task->headline = $headline;
+        array_push($this->tasks, new MumieProblem($task));
     }
 
     /**
@@ -128,7 +156,7 @@ class MumieCourse implements \JsonSerializable
     /**
      * Get all languages used in this course.
      *
-     * @return string
+     * @return string[]
      */
     public function getLanguages()
     {

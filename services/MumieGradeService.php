@@ -43,7 +43,7 @@ class MumieGradeService
      * @var mixed
      */
     private $courseId;
-    
+
     /**
      * __construct
      *
@@ -126,7 +126,7 @@ class MumieGradeService
 
         return $this->getValidGradeByUser($response, $task);
     }
-    
+
     /**
      * Get the unique identifier for a MUMIE task
      *
@@ -167,7 +167,7 @@ class MumieGradeService
             return 1;
         }
         foreach ($grades as $grade) {
-            if ($grade->timechanged < $oldest_timestamo) {
+            if ($grade->timechanged < $oldest_timestamp) {
                 $oldest_timestamp = $grade->timechanged;
             }
         }
@@ -182,7 +182,7 @@ class MumieGradeService
      * Get all users that can get marks in this course
      *
      * @param  string $courseId
-     * @return void
+     * @return stdClass[]
      */
     private function getAllUsers($courseId)
     {
@@ -210,7 +210,7 @@ class MumieGradeService
                 array_push($grades_by_user->{$this->getStudIPId($xapi_grade)}, $xapi_grade);
             }
         }
-        
+
         $valid_grade_by_user = array();
         foreach ($grades_by_user as $user_id => $xapi_grades) {
             $xapi_grades = array_filter($xapi_grades, function ($grade) use ($task) {
@@ -224,7 +224,7 @@ class MumieGradeService
 
         return array_filter($valid_grade_by_user);
     }
-    
+
     /**
      * Get the latest grade from a list of grades
      *
@@ -245,7 +245,7 @@ class MumieGradeService
         }
         return $latest_grade;
     }
-    
+
     /**
      * Load MUMIE grades into StudIP database.
      *
@@ -257,7 +257,7 @@ class MumieGradeService
             $this->updateGrades($task);
         }
     }
-    
+
     /**
      * Update grades for a given MUMIE Task
      *
@@ -266,6 +266,9 @@ class MumieGradeService
      */
     private function updateGrades($task)
     {
+        if (!$task->is_graded) {
+            return;
+        }
         $gradesByUser = $this->getXapiGradesByUser($task);
         foreach (array_keys($gradesByUser) as $userId) {
             $xapiGrade = $gradesByUser[$userId];

@@ -73,6 +73,7 @@
         <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value=<?= $missingServerConfig ? $server : ""?>>
         <input type="hidden" id="language" name="language" value=<?= $language ?? $_SESSION['_language'];?>>
         <input type="hidden" name="task_url" id="mumie_taskurl" value=<?= $task_url;?>>
+        <input type="hidden" name="is_graded" id="mumie_is_graded" value=<?= $is_graded;?>>
         <label for="display_task">
             <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
@@ -115,13 +116,24 @@
     </fieldset>
 
     <fieldset class="conf-form-field collapsable collapsed">
+        <div class="mumie_form_elem_wrapper" id="mumie_ungraded_info" hidden?>>
+            <b>
+                <?= dgettext('MumieTaskPlugin', 'Die gewählte Aufgabe ist unbewertet. Daher sind die Bewertungseinstellungen deaktiviert.') ?>
+            </b>
+        </div>
         <legend><?= dgettext('MumieTaskPlugin', 'Benotung'); ?></legend>
         <div class="mumie_form_elem_wrapper">
             <label for="mumie_passing_grade">
                 <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
             </label>
-            <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
-                value="<?= $passing_grade ?? 60;?>">
+            <input
+                    type="number"
+                    name="passing_grade"
+                    id="mumie_passing_grade"
+                    min="0"
+                    max="100"
+                    value="<?= $passing_grade ?? 60;?>"
+            >
             <?=
                 Icon::create(
                     'info',
@@ -136,8 +148,13 @@
             <label for="mumie_due_date">
                 <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
             </label>
-            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker
-                value="<?= $duedate == 0 ? null : date('d.m.Y H:i', $duedate);?>">
+            <input
+                    type="text"
+                    name="duedate"
+                    id="mumie_due_date"
+                    data-datetime-picker
+                    value="<?= $duedate == 0 ? null : date('d.m.Y H:i', $duedate);?>"
+            >
             <?=
                 Icon::create(
                     'info',
@@ -281,6 +298,7 @@
             const task_element = document.getElementById("mumie_taskurl");
             const display_task_element = document.getElementById("mumie_display_task");
             const nameElem = document.getElementById("mumie_name");
+            const is_graded_element = document.getElementById("mumie_is_graded");
 
             /**
              * Update the activity's name in the input field
@@ -349,9 +367,17 @@
                     .concat(courseController.getSelectedCourse().name.map(n => n.value))
             }
 
+            function updateGradeEditability() {
+                const isUngraded = is_graded_element.value === '0';
+                document.getElementById('mumie_passing_grade').disabled = isUngraded;
+                document.getElementById('mumie_due_date').disabled = isUngraded;
+                document.getElementById('mumie_ungraded_info').hidden = !isUngraded;
+            }
+
             return {
                 init: function () {
                     updateName();
+                    updateGradeEditability();
                 },
                 getSelectedTask: function () {
                     const selectedLink = task_element.value
@@ -360,10 +386,26 @@
                         .slice()
                         .find(task => getLocalizedLink(task.link) === selectedLink);
                 },
+                setIsGraded: function(isGraded) {
+                    if (isGraded === null) {
+                        is_graded_element.value = null;
+                    }
+                    is_graded_element.value = isGraded ? '1' : '0';
+                    updateGradeEditability();
+                },
                 setSelection: function(newSelection) {
                     task_element.value = newSelection;
                     updateName();
                 },
+                getGradingType: function() {
+                    const isGraded = is_graded_element.value;
+                    if (isGraded === '1') {
+                        return 'graded';
+                    } else if (isGraded === '0') {
+                        return 'ungraded';
+                    }
+                    return 'all';
+                }
             };
         })();
 
@@ -417,9 +459,11 @@
                         return;
                     }
                     const importObj = JSON.parse(event.data);
+                    const isGraded = importObj.isGraded !== false;
                     try {
                         langController.setLanguage(importObj.language);
                         taskController.setSelection(importObj.link + '?lang=' + importObj.language);
+                        taskController.setIsGraded(isGraded);
                         sendSuccess();
                         window.focus();
                     } catch (error) {
@@ -434,6 +478,7 @@
                     problemSelectorButton.onclick = function (e) {
                         e.preventDefault();
                         const selectedTask = taskController.getSelectedTask();
+                        const gradingType = taskController.getGradingType();
                         problemSelectorWindow = window.open(
                             lmsSelectorUrl
                             + '/lms-problem-selector?'
@@ -445,6 +490,7 @@
                             + langController.getSelectedLanguage()
                             + (selectedTask ? "&problem=" + selectedTask.link : '')
                             + "&origin=" + encodeURIComponent(window.location.origin)
+                            + '&gradingType=' + gradingType
                             , '_blank'
                         );
                     };
