@@ -21,7 +21,7 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/s
  */
 class MumieServerInstance implements \JsonSerializable
 {
-        
+
     /**
      * Object saved in the database
      *
@@ -65,7 +65,7 @@ class MumieServerInstance implements \JsonSerializable
      * @var string[]
      */
     private $languages = array();
-    
+
     /**
      * Constructor
      *
@@ -78,7 +78,7 @@ class MumieServerInstance implements \JsonSerializable
         $this->name = $server->name;
         $this->url_prefix = $server->url_prefix;
     }
-    
+
     /**
      * Construct a MumieServerInstance from a given URL
      *
@@ -106,7 +106,6 @@ class MumieServerInstance implements \JsonSerializable
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
-
         return json_decode($response);
     }
 
@@ -161,7 +160,7 @@ class MumieServerInstance implements \JsonSerializable
 
         return $vars;
     }
-    
+
     /**
      * Get all MUMIE servers from the database and load their structure
      *
@@ -175,7 +174,7 @@ class MumieServerInstance implements \JsonSerializable
             return $instance;
         }, MumieServer::getAll());
     }
-    
+
     /**
      * getUrlprefix
      *
@@ -185,7 +184,7 @@ class MumieServerInstance implements \JsonSerializable
     {
         return $this->url_prefix;
     }
-    
+
     /**
      * getName
      *
@@ -215,7 +214,7 @@ class MumieServerInstance implements \JsonSerializable
     {
         return $this->languages;
     }
-    
+
     /**
      * Find a course in this server by name
      *
@@ -232,7 +231,22 @@ class MumieServerInstance implements \JsonSerializable
             }
         }
     }
-    
+
+    /**
+     * Find a course in this server by course file path
+     *
+     * @param  string $coursefile
+     * @return MumieCourse
+     */
+    public function getCourseByCoursefile($coursefile)
+    {
+        foreach ($this->courses as $course) {
+            if ($course->getCoursefile() === $coursefile) {
+                return $course;
+            }
+        }
+    }
+
     /**
      * Get the url this server uses for grade synchronization.
      *

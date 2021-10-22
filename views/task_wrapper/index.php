@@ -45,7 +45,12 @@
             ?>
         </td>
         <td>
-            <?= $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red') ?>
+            <?php if($task['is_graded'] == 1): ?>
+                <?= $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red') ?>
+            <?php endif ?>
+            <?php if($task['is_graded'] == 0): ?>
+                -
+            <?php endif ?>
         </td>
         <?php endif ?>
     </tr>
