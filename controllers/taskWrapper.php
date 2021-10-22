@@ -197,7 +197,7 @@ class TaskWrapperController extends StudipController
         $existingTask = MumieTask::find(Request::option("task_id"));
         if (!is_null($existingTask)) {
             if ($existingTask->is_graded !== $task->is_graded) {
-                $errors[] =  dgettext('MumieTaskPlugin', 'Sie können bei einer bestehenden MUMIE Task nicht von bewerteten zu unbewerteten Aufgaben wechseln. Erstellen Sie stattdessen bitte eine neue MUMIE Task.');
+                $errors[] =  dgettext('MumieTaskPlugin', 'Sie können bei einer bestehenden MUMIE-Task nicht von bewerteten zu unbewerteten Aufgaben wechseln. Erstellen Sie stattdessen bitte eine neue MUMIE-Task.');
             }
         }
         return $errors;

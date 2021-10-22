@@ -118,7 +118,7 @@
     <fieldset class="conf-form-field collapsable collapsed">
         <div class="mumie_form_elem_wrapper" id="mumie_ungraded_info" hidden?>>
             <b>
-                <?= dgettext('MumieTaskPlugin', 'Die gewählte Aufgabe ist unbewertet. Daher sind die Bewertungseinstellungen deaktiviert') ?>
+                <?= dgettext('MumieTaskPlugin', 'Die gewählte Aufgabe ist unbewertet. Daher sind die Bewertungseinstellungen deaktiviert.') ?>
             </b>
         </div>
         <legend><?= dgettext('MumieTaskPlugin', 'Benotung'); ?></legend>
