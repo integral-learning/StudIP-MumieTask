@@ -43,7 +43,7 @@ class TaskController extends StudipController
         $this->task = MumieTask::find($task_id);
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
-    
+
     /**
      * Display a individual task
      *
@@ -51,7 +51,11 @@ class TaskController extends StudipController
      */
     public function index_action()
     {
-        $this->addSidebar();
+        if (!$this->task->is_graded) {
+            PageLayout::postInfo(dgettext("MumieTaskPlugin", "Hierfür werden keine Noten in Stud.IP erfasst!"));
+            return;
+        }
+        $this->addGradeInfoSidebar();
         if ($this->hasTeacherPermission) {
             $this->addTeacherNavigation();
             Navigation::activateItem('/course/mumietask/task');
@@ -59,7 +63,7 @@ class TaskController extends StudipController
         $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
         $gradeService->update();
     }
-    
+
     /**
      * Open the problem in MUMIE either in an iFrame or a new browser tab. The user is automatically logged in.
      *
@@ -70,7 +74,7 @@ class TaskController extends StudipController
         $this->mumieToken = SSOService::generateTokenForUser($GLOBALS['user']->id);
         $this->org = Config::get()->MUMIE_ORG;
     }
-    
+
     /**
      * Display all grades given for this task. This view is only available for teachers.
      *
@@ -78,7 +82,11 @@ class TaskController extends StudipController
      */
     public function gradeOverview_action()
     {
-        $this->addSidebar();
+        if (!$this->task->is_graded) {
+            PageLayout::postError(dgettext("MumieTaskPlugin", "Hierfür werden keine Noten erfasst. Bitte kehren Sie zur Übersichtsseite zurück!"));
+            return;
+        }
+        $this->addGradeInfoSidebar();
         if ($this->hasTeacherPermission) {
             $this->addTeacherNavigation();
             Navigation::activateItem('/course/mumietask/grades');
@@ -87,13 +95,13 @@ class TaskController extends StudipController
         $gradeService->update();
         $this->grades = MumieGrade::getAllGradesForTaskWithRealNames($this->task);
     }
-    
+
     /**
      * Display information about the task to the sidebar and add navigation for teachers
      *
      * @return void
      */
-    private function addSidebar()
+    private function addGradeInfoSidebar()
     {
         $widget = new SidebarWidget;
         $widget->title = dgettext("MumieTaskPlugin", 'Informationen');
@@ -122,17 +130,17 @@ class TaskController extends StudipController
             $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)->points;
             $gradeTemplate = $factory->open('grade.php');
             $gradeTemplate->set_attribute('points', $points);
-            
+
             $gradeInfo = $factory->open("taskInfo");
             $gradeInfo->set_attribute("header", dgettext("MumieTaskPlugin", 'Bewertung'));
             $gradeInfo->set_attribute("body", $gradeTemplate->render());
-                        
+
             $widget->addElement(
                 new WidgetElement(
                     $gradeInfo->render()
                 )
             );
-            
+
             $passed = $factory->open("taskInfo");
             $passed->set_attribute("header", dgettext("MumieTaskPlugin", 'Bestanden'));
             $passed->set_attribute("body", $points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red'));
@@ -154,7 +162,7 @@ class TaskController extends StudipController
         );
         Sidebar::get()->addWidget($widget);
     }
-    
+
     /**
      * Add a navigation widget for teachers
      *

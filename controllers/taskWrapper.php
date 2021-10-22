@@ -72,18 +72,12 @@ class TaskWrapperController extends StudipController
     {
         PermissionService::requireTeacherPermission();
         $this->structuredServers = MumieServerInstance::getAllWithStructure();
+        if (empty($this->structuredServers)) {
+            PageLayout::postError(dgettext('MumieTaskPlugin', 'Es ist noch kein MUMIE-Server konfiguriert. Bitte wenden Sie sich an ihren Administrator.'));
+        }
         if (Request::isPost()) {
             $task = new MumieTask();
-            $task->name = Request::get('name');
-            $task->server = Request::get('server');
-            $task->task_url = Request::get('task_url');
-            $task->launch_container = Request::get('launch_container');
-            $task->mumie_course = Request::get('course');
-            $task->language = Request::get('language');
-            $task->mumie_coursefile = Request::get('coursefile');
-            $task->course = \Context::get()->Seminar_id;
-            $task->duedate = strtotime(Request::get('duedate'));
-            $task->passing_grade = Request::get('passing_grade');
+            $this->setTaskValues($task);
 
             $errors = $this->getFormValidationErrors($task);
             if (count($errors)>0) {
@@ -97,6 +91,21 @@ class TaskWrapperController extends StudipController
         }
     }
 
+    private function setTaskValues($task) {
+        $task->name = Request::get('name');
+        $task->server = Request::get('server');
+        $task->task_url = Request::get('task_url');
+        $task->launch_container = Request::get('launch_container');
+        $task->mumie_course = Request::get('coursefile');
+        $task->language = Request::get('language');
+        $task->mumie_coursefile = Request::get('coursefile');
+        $task->course = \Context::get()->Seminar_id;
+        $task->is_graded = Request::get('is_graded');
+        if ($task->is_graded) {
+            $task->duedate = strtotime(Request::get('duedate'));
+            $task->passing_grade = Request::get('passing_grade');
+        }
+    }
     /**
      * Delete a given MUMIE Task from the current course.
      * The task_id is found in POST request
@@ -128,17 +137,7 @@ class TaskWrapperController extends StudipController
         $this->structuredServers = MumieServerInstance::getAllWithStructure();
         if (Request::isPost()) {
             $task = MumieTask::find(Request::option("task_id"));
-            $task->name = Request::get('name');
-            $task->server = Request::get('server');
-            $task->task_url = Request::get('task_url');
-            $task->launch_container = Request::get('launch_container');
-            $task->mumie_course = Request::get('course');
-            $task->language = Request::get('language');
-            $task->mumie_coursefile = Request::get('coursefile');
-            $task->course = \Context::get()->Seminar_id;
-            $task->duedate = strtotime(Request::get('duedate'));
-            $task->passing_grade = Request::get('passing_grade');
-
+            $this->setTaskValues($task);
             $errors = $this->getFormValidationErrors($task);
             if (count($errors)>0) {
                 PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
@@ -172,7 +171,7 @@ class TaskWrapperController extends StudipController
 
         $serverInstance = new MumieServerInstance($server);
         $serverInstance->loadStructure();
-        $course = $serverInstance->getCoursebyName($task->mumie_course);
+        $course = $serverInstance->getCourseByCoursefile($task->mumie_coursefile);
 
         if ($course == null) {
             $errors[] = dgettext('MumieTaskPlugin', 'Dieser Kurs konnte auf dem ausgewählten server nicht gefunden werden.');
@@ -193,6 +192,13 @@ class TaskWrapperController extends StudipController
         if (!in_array($task->language, $problem->getLanguages())) {
             $errors[] =  dgettext('MumieTaskPlugin', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
             return $errors;
+        }
+
+        $existingTask = MumieTask::find(Request::option("task_id"));
+        if (!is_null($existingTask)) {
+            if ($existingTask->is_graded !== $task->is_graded) {
+                $errors[] =  dgettext('MumieTaskPlugin', 'Sie können bei einer bestehenden MUMIE-Task nicht von bewerteten zu unbewerteten Aufgaben wechseln. Erstellen Sie stattdessen bitte eine neue MUMIE-Task.');
+            }
         }
         return $errors;
     }

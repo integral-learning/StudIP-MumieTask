@@ -48,17 +48,7 @@
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Kurs'); ?>
                 </span>
             </label>
-            <select id="mumie_course" name="course">
-                <?php
-                        $options = $collector->getCourseOptions();
-                        foreach (array_keys($options) as $key):
-                    ?>
-                <option value=<?= $key; ?> <?= $key == $mumie_course ? "selected = 'selected'" :"";?>>
-                    <?= $options[$key]; ?>
-                </option>
-
-                <?php endforeach ?>
-            </select>
+            <input type="text" id="mumie_course" name="course" disabled />
             <?=
                 Icon::create(
                     'info',
@@ -73,6 +63,7 @@
         <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value=<?= $missingServerConfig ? $server : ""?>>
         <input type="hidden" id="language" name="language" value=<?= $language ?? $_SESSION['_language'];?>>
         <input type="hidden" name="task_url" id="mumie_taskurl" value=<?= $task_url;?>>
+        <input type="hidden" name="is_graded" id="mumie_is_graded" value=<?= $is_graded;?>>
         <label for="display_task">
             <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
@@ -115,13 +106,24 @@
     </fieldset>
 
     <fieldset class="conf-form-field collapsable collapsed">
+        <div class="mumie_form_elem_wrapper" id="mumie_ungraded_info" hidden?>>
+            <b>
+                <?= dgettext('MumieTaskPlugin', 'Die gewählte Aufgabe ist unbewertet. Daher sind die Bewertungseinstellungen deaktiviert.') ?>
+            </b>
+        </div>
         <legend><?= dgettext('MumieTaskPlugin', 'Benotung'); ?></legend>
         <div class="mumie_form_elem_wrapper">
             <label for="mumie_passing_grade">
                 <?= dgettext('MumieTaskPlugin', 'Bestehensgrenze'); ?>
             </label>
-            <input type="number" name="passing_grade" id="mumie_passing_grade" min="0" max="100"
-                value="<?= $passing_grade ?? 60;?>">
+            <input
+                    type="number"
+                    name="passing_grade"
+                    id="mumie_passing_grade"
+                    min="0"
+                    max="100"
+                    value="<?= $passing_grade ?? 60;?>"
+            >
             <?=
                 Icon::create(
                     'info',
@@ -136,8 +138,13 @@
             <label for="mumie_due_date">
                 <?= dgettext('MumieTaskPlugin', 'Abgabefrist'); ?>
             </label>
-            <input type="text" name="duedate" id="mumie_due_date" data-datetime-picker
-                value="<?= $duedate == 0 ? null : date('d.m.Y H:i', $duedate);?>">
+            <input
+                    type="text"
+                    name="duedate"
+                    id="mumie_due_date"
+                    data-datetime-picker
+                    value="<?= $duedate == 0 ? null : date('d.m.Y H:i', $duedate);?>"
+            >
             <?=
                 Icon::create(
                     'info',
@@ -155,7 +162,6 @@
 
 <script>
     (function() {
-        const missingConfig = document.getElementsByName("mumie_missing_config")[0];
         const lmsSelectorUrl = 'https://pool.mumie.net';
 
         const serverController = (function() {
@@ -165,10 +171,6 @@
             return {
                 init: function (structure) {
                     serverStructure = structure;
-                    serverDropDown.onchange = function () {
-                        courseController.updateOptions();
-                        langController.updateOptions();
-                    };
                 },
                 getSelectedServer: function () {
                     const selectedServerName = serverDropDown.options[serverDropDown.selectedIndex].text;
@@ -185,67 +187,43 @@
         })();
 
         const courseController = (function() {
-            const courseDropDown = document.getElementById("mumie_course");
+            const courseNameElem = document.getElementById("mumie_course");
             const coursefileElem = document.getElementById("mumie_coursefile");
-
-            /**
-             * Add a new option the the 'MUMIE Course' drop down menu
-             * @param {Object} course
-             */
-            function addOptionForCourse(course) {
-                const optionCourse = document.createElement("option");
-                const selectedLanguage = langController.getSelectedLanguage();
-                let name;
-                // If the currently selected server is not available on the server, we need to select another one.
-                if (!course.languages.includes(selectedLanguage)) {
-                    name = course.name[0];
-                } else {
-                    name = course.name.find(n => n.language === selectedLanguage);
-                }
-                optionCourse.setAttribute("value", name.value);
-                optionCourse.text = name.value;
-                courseDropDown.append(optionCourse);
-            }
 
             /**
              * Update the hidden input field with the selected course's course file path
              */
-            function updateCoursefilePath() {
-                coursefileElem.value = courseController.getSelectedCourse().coursefile;
+            function updateCoursefilePath(coursefile) {
+                coursefileElem.value = coursefile;
+                updateCourseName();
+            }
+
+            /**
+             * Update displayed course name.
+             */
+            function updateCourseName() {
+                const selectedCourse = courseController.getSelectedCourse();
+                const selectedLanguage = langController.getSelectedLanguage();
+                if (!selectedCourse || !selectedLanguage) {
+                    return;
+                }
+                courseNameElem.value = selectedCourse.name
+                    .find(translation => translation.language === selectedLanguage)?.value;
             }
 
             return {
-                init: function (isEdit) {
-                    courseDropDown.onchange = function () {
-                        updateCoursefilePath();
-                        langController.updateOptions();
-                    };
-                    courseController.updateOptions(isEdit ? coursefileElem.value : false);
+                init: function () {
+                    updateCourseName();
                 },
                 getSelectedCourse: function () {
-                    const selectedCourseName = courseDropDown.options[courseDropDown.selectedIndex].text;
                     const courses = serverController.getSelectedServer().courses;
-
-                    return courses.find(course => {
-                        return course.name.some(name => name.value === selectedCourseName)
-                    })
+                    return courses.find(course => course.coursefile === coursefileElem.value);
                 },
-                disable: function () {
-                    courseDropDown.disabled = true;
-                    removeChildElements(courseDropDown);
+                updateCourseName: function () {
+                    updateCourseName();
                 },
-                updateOptions: function () {
-                    const selectedCourseFile = coursefileElem.value;
-                    removeChildElements(courseDropDown);
-                    courseDropDown.selectedIndex = 0;
-                    serverController.getSelectedServer().courses
-                        .forEach(course => {
-                            addOptionForCourse(course);
-                            if (course.path_to_course_file === selectedCourseFile) {
-                                courseDropDown.selectedIndex = courseDropDown.childElementCount - 1;
-                            }
-                        })
-                    updateCoursefilePath();
+                setCourse: function (courseFile) {
+                    updateCoursefilePath(courseFile);
                 }
             };
         })();
@@ -254,16 +232,6 @@
             const languageElement = document.getElementById("language");
 
             return {
-                init: function () {
-                    langController.updateOptions();
-                },
-                updateOptions: function () {
-                    const availableLanguages = courseController.getSelectedCourse().languages;
-                    const currentLang = langController.getSelectedLanguage();
-                    if (!availableLanguages.includes(currentLang)) {
-                        langController.setLanguage(availableLanguages[0]);
-                    }
-                },
                 getSelectedLanguage: function () {
                     return languageElement.value;
                 },
@@ -272,7 +240,7 @@
                         throw new Error("Selected language not available");
                     }
                     languageElement.value = lang;
-                    courseController.updateOptions();
+                    courseController.updateCourseName();
                 }
             };
         })();
@@ -281,6 +249,7 @@
             const task_element = document.getElementById("mumie_taskurl");
             const display_task_element = document.getElementById("mumie_display_task");
             const nameElem = document.getElementById("mumie_name");
+            const is_graded_element = document.getElementById("mumie_is_graded");
 
             /**
              * Update the activity's name in the input field
@@ -336,7 +305,8 @@
              * @returns {string}
              */
             function getLocalizedLink(link) {
-                return link + "?lang=" + langController.getSelectedLanguage();
+                const separator = link.includes('?') ? '&' : '?';
+                return link + separator + "lang=" + langController.getSelectedLanguage();
             }
 
             /**
@@ -349,20 +319,48 @@
                     .concat(courseController.getSelectedCourse().name.map(n => n.value))
             }
 
+            function updateGradeEditability() {
+                const isUngraded = is_graded_element.value === '0';
+                document.getElementById('mumie_passing_grade').disabled = isUngraded;
+                document.getElementById('mumie_due_date').disabled = isUngraded;
+                document.getElementById('mumie_ungraded_info').hidden = !isUngraded;
+            }
+
             return {
                 init: function () {
                     updateName();
+                    updateGradeEditability();
                 },
                 getSelectedTask: function () {
                     const selectedLink = task_element.value
-                    return courseController.getSelectedCourse()
+                    const selectedCourse = courseController.getSelectedCourse();
+                    if (!selectedCourse) {
+                        return null;
+                    }
+                    return selectedCourse
                         .tasks
                         .slice()
                         .find(task => getLocalizedLink(task.link) === selectedLink);
                 },
+                setIsGraded: function(isGraded) {
+                    if (isGraded === null) {
+                        is_graded_element.value = null;
+                    }
+                    is_graded_element.value = isGraded ? '1' : '0';
+                    updateGradeEditability();
+                },
                 setSelection: function(newSelection) {
-                    task_element.value = newSelection;
+                    task_element.value = getLocalizedLink(newSelection);
                     updateName();
+                },
+                getGradingType: function() {
+                    const isGraded = is_graded_element.value;
+                    if (isGraded === '1') {
+                        return 'graded';
+                    } else if (isGraded === '0') {
+                        return 'ungraded';
+                    }
+                    return 'all';
                 },
             };
         })();
@@ -417,9 +415,12 @@
                         return;
                     }
                     const importObj = JSON.parse(event.data);
+                    const isGraded = importObj.isGraded !== false;
                     try {
+                        courseController.setCourse(importObj.path_to_coursefile);
                         langController.setLanguage(importObj.language);
-                        taskController.setSelection(importObj.link + '?lang=' + importObj.language);
+                        taskController.setSelection(importObj.link);
+                        taskController.setIsGraded(isGraded);
                         sendSuccess();
                         window.focus();
                     } catch (error) {
@@ -434,6 +435,7 @@
                     problemSelectorButton.onclick = function (e) {
                         e.preventDefault();
                         const selectedTask = taskController.getSelectedTask();
+                        const gradingType = taskController.getGradingType();
                         problemSelectorWindow = window.open(
                             lmsSelectorUrl
                             + '/lms-problem-selector?'
@@ -445,6 +447,8 @@
                             + langController.getSelectedLanguage()
                             + (selectedTask ? "&problem=" + selectedTask.link : '')
                             + "&origin=" + encodeURIComponent(window.location.origin)
+                            + '&multiCourse=true'
+                            + '&gradingType=' + gradingType
                             , '_blank'
                         );
                     };
@@ -483,19 +487,16 @@
             return document.getElementsByName("mumie_missing_config")[0].getAttribute("value") === "";
         }
 
-        var isEdit = document.getElementById("mumie_name").getAttribute('value');
+        const isEdit = document.getElementById("mumie_name").getAttribute('value');
 
         if (isEdit && !serverConfigExists()) {
             serverController.disable();
-            courseController.disable();
-            langController.disable();
             taskController.disable();
             problemSelectorController.disable();
         } else {
             serverController.init(JSON.parse(`<?= addslashes(json_encode($serverStructure));?>`));
-            courseController.init(isEdit);
+            courseController.init();
             taskController.init(isEdit);
-            langController.init();
             problemSelectorController.init();
         }
     })();

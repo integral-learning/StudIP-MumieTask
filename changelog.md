@@ -1,6 +1,12 @@
 # MumieTask - Changelog
 
 All important changes to this plugin will be documented in this file.
+
+## [v1.5] - 2021-10-22
+### Added
+- Ungraded MUMIE Tasks are now supported in Stud.IP. They represent ungraded links to MUMIE articles.
+- MUMIE servers with multiple courses are now supported
+
 ## [V1.4] - 2021-06-30
 ### Fixed
 - Fixed an error where control characters in server structure object were not properly escaped when encoding to json.

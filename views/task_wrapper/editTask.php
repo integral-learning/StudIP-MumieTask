@@ -28,6 +28,7 @@ $template->set_attribute("launch_container", $task->launch_container);
 $template->set_attribute("language", $task->language);
 $template->set_attribute("duedate", $task->duedate);
 $template->set_attribute("passing_grade", $task->passing_grade);
+$template->set_attribute("is_graded", $task->is_graded);
 $template->set_attribute("missingServerConfig", is_null(MumieServer::getByUrl($task->server)));
 /* The PluginEngine must be used here.
    If it's called in the template MumieServer::find() will return an instance of stdClass and not MumieServer in the controller class. I don't know why
