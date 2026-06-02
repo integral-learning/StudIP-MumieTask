@@ -60,9 +60,9 @@ class AdminController extends StudipController
     {
         if (Request::isPost()) {
             $config = Config::get();
-            $config->store(MUMIE_SHARE_FIRSTNAME, Request::get('share_firstname'));
-            $config->store(MUMIE_SHARE_LASTNAME, Request::get('share_lastname'));
-            $config->store(MUMIE_SHARE_EMAIL, Request::get('share_email'));
+            $config->store("MUMIE_SHARE_FIRSTNAME", Request::get('share_firstname'));
+            $config->store("MUMIE_SHARE_LASTNAME", Request::get('share_lastname'));
+            $config->store("MUMIE_SHARE_EMAIL", Request::get('share_email'));
             PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');
@@ -143,8 +143,8 @@ class AdminController extends StudipController
     {
         if (Request::isPost()) {
             $config = Config::get();
-            $config->store(MUMIE_ORG, Request::get('mumie_org'));
-            $config->store(MUMIE_API_KEY, Request::get('mumie_api_key'));
+            $config->store("MUMIE_ORG", Request::get('mumie_org'));
+            $config->store("MUMIE_API_KEY", Request::get('mumie_api_key'));
             PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');
