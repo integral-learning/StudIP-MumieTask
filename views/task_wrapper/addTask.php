@@ -10,6 +10,16 @@
     $collector->collect();
     $template->set_attribute("serverStructure", $structuredServers);
     $template->set_attribute("collector", $collector);
+    $template->set_attribute("name", "");
+    $template->set_attribute("server", "");
+    $template->set_attribute("mumie_course", "");
+    $template->set_attribute("mumie_coursefile", "");
+    $template->set_attribute("task_url", "");
+    $template->set_attribute("launch_container", "");
+    $template->set_attribute("duedate", 0);
+    $template->set_attribute("passing_grade", null);
+    $template->set_attribute("is_graded", 0);
+    $template->set_attribute("missingServerConfig", false);
     $lang = getUserLanguage($GLOBALS['user']->id);
     $lang = substr($lang, 0, strpos($lang, "_"));
     $template->set_attribute("language", $lang);
