@@ -64,8 +64,6 @@ class SSOService
     /**
      * Verify a login attempt to a MUMIE server.
      *
-     * Include personal user data, if this option is enabled in the plugin settings.
-     *
      * @param  string $token
      * @param  string $hashedId
      * @return void
@@ -77,7 +75,7 @@ class SSOService
         $mumieToken = MumieSSOToken::findOneBySql("the_user = ? AND token = ?", array($hashedId, $token));
         $db = DBManager::get();
         $userRecord = $db->query(
-            'SELECT user_id, Vorname, Nachname, Email FROM auth_user_md5, mumie_id_hashes WHERE user_id = mumie_id_hashes.the_user AND mumie_id_hashes.hash = ' . $db->quote($hashedId)
+            'SELECT user_id FROM auth_user_md5, mumie_id_hashes WHERE user_id = mumie_id_hashes.the_user AND mumie_id_hashes.hash = ' . $db->quote($hashedId)
         )->fetchOne();
 
         if (!is_null($mumieToken) && $mumieToken->token == $token && $userRecord != null) {
@@ -87,16 +85,6 @@ class SSOService
             } else {
                 $response->status = "valid";
                 $response->userid = $hashedId;
-
-                if (Config::get()->MUMIE_SHARE_FIRSTNAME) {
-                    $response->firstname = $userRecord['Vorname'];
-                }
-                if (Config::get()->MUMIE_SHARE_LASTNAME) {
-                    $response->lastname = $userRecord['Nachname'];
-                }
-                if (Config::get()->MUMIE_SHARE_EMAIL) {
-                    $response->email = $userRecord['Email'];
-                }
             }
         } else {
             $response->status = "invalid";

@@ -2,6 +2,10 @@
 
 All important changes to this plugin will be documented in this file.
 
+## [v1.6] - 2026-07-21
+### Removed
+- Removed the admin option to share a user's first name, last name or e-mail address with MUMIE servers. No personal user data is sent for SSO anymore, only a pseudonymous user id.
+
 ## [v1.5] - 2021-10-22
 ### Added
 - Ungraded MUMIE Tasks are now supported in Stud.IP. They represent ungraded links to MUMIE articles.

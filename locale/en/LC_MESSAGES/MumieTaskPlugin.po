@@ -145,36 +145,15 @@ msgstr "MUMIE server configuration"
 msgid "Server hinzufügen"
 msgstr "Add server"
 
-#: views/admin/index.php:55
-msgid "Datenschutz"
-msgstr "Privacy"
-
-#: views/admin/index.php:59
-msgid ""
-"Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen."
-msgstr "Select which user data should be shared with MUMIE servers."
-
-#: views/admin/index.php:63 views/admin/index.php:115
+#: views/admin/index.php:115
 msgid "Einstellung"
 msgstr "Settings"
 
-#: views/admin/index.php:66 views/admin/index.php:118
+#: views/admin/index.php:118
 msgid "Wert"
 msgstr "Value"
 
-#: views/admin/index.php:72
-msgid "Vorname"
-msgstr "First name"
-
-#: views/admin/index.php:83
-msgid "Nachname"
-msgstr "Last name"
-
-#: views/admin/index.php:94
-msgid "E-Mail-Addresse"
-msgstr "E-Mail"
-
-#: views/admin/index.php:104 views/admin/index.php:144
+#: views/admin/index.php:144
 #: templates/ServerForm.php:51 templates/TaskForm.php:201
 msgid "Speichern"
 msgstr "Save"
