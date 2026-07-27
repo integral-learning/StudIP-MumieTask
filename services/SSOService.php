@@ -82,7 +82,7 @@ class SSOService
 
         if (!is_null($mumieToken) && $mumieToken->token == $token && $userRecord != null) {
             $current = time();
-            if (($current - $mumieToken->timecreated) >= (60*60)) {
+            if (($current - $mumieToken->timecreated) >= 60) {
                 $response->status = "invalid";
             } else {
                 $response->status = "valid";
