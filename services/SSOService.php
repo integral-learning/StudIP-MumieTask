@@ -71,7 +71,6 @@ class SSOService
     public static function verifyToken($token, $hashedId)
     {
         $response = new stdClass();
-        $studipUserId = HashingService::getUserIdFromHash($hashedId);
         $mumieToken = MumieSSOToken::findOneBySql("the_user = ? AND token = ?", array($hashedId, $token));
         $db = DBManager::get();
         $userRecord = $db->query(
