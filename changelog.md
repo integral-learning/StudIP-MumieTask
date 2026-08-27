@@ -2,6 +2,10 @@
 
 All important changes to this plugin will be documented in this file.
 
+## TODO
+### Changed
+- Tightened the SSO token verification window from 1 hour to 60 seconds, matching the other LMS plugin implementations
+
 ## [v1.5] - 2021-10-22
 ### Added
 - Ungraded MUMIE Tasks are now supported in Stud.IP. They represent ungraded links to MUMIE articles.
