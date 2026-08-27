@@ -13,7 +13,6 @@
  * @category    Stud.IP
  */
 
-require_once('app/controllers/plugin_controller.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieServerInstance.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieHash.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
