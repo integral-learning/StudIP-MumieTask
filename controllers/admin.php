@@ -13,7 +13,6 @@
  * @category    Stud.IP
  */
 
-require_once('app/controllers/plugin_controller.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/serverStructure/MumieServerInstance.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
 
@@ -127,8 +126,8 @@ class AdminController extends StudipController
     {
         if (Request::isPost()) {
             $config = Config::get();
-            $config->store(MUMIE_ORG, Request::get('mumie_org'));
-            $config->store(MUMIE_API_KEY, Request::get('mumie_api_key'));
+            $config->store("MUMIE_ORG", Request::get('mumie_org'));
+            $config->store("MUMIE_API_KEY", Request::get('mumie_api_key'));
             PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');
