@@ -187,7 +187,7 @@ class MumieGradeService
     private function getAllUsers($courseId)
     {
         $query = "Select user_id from seminar_user where seminar_id = ? AND status = 'autor'";
-        return DBManager::get()->fetchAll($query, array($courseId));
+        return DBManager::get()->fetchFirst($query, array($courseId));
     }
 
     /**
