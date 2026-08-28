@@ -4,14 +4,15 @@ All important changes to this plugin will be documented in this file.
 
 ## TODO
 ### Added
-- The MUMIE pool/LMS-problem-selector URL is now configurable in the admin settings (previously hardcoded to https://pool.mumie.net)
+- Admin-configurable MUMIE pool URL
 
 ### Changed
 - Tightened the SSO token verification window from 1 hour to 60 seconds, matching the other LMS plugin implementations
+- Grades are now only synced from the grade overview, not on every task or overview page visit
 
 ### Fixed
-- Grade sync for a whole course (e.g. opening the MUMIE-Task overview) hashed every user to the same broken value because `getAllUsers()` returned full DB rows instead of plain user ids
-- `MumieServerInstance::fromURL()` triggered an undefined-property warning because it built a server object without a `name` property
+- Broken grade sync for whole courses
+- PHP warnings on the task overview and grade overview pages
 
 ### Removed
 - Removed the admin option to share a user's first name, last name or e-mail address with MUMIE servers. No personal user data is sent for SSO anymore, only a pseudonymous user id.
