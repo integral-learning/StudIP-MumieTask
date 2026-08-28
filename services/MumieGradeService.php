@@ -201,13 +201,10 @@ class MumieGradeService
      */
     private function getValidGradeByUser($response, $task)
     {
-        $grades_by_user = new stdClass();
+        $grades_by_user = array();
         if ($response) {
             foreach ($response as $xapi_grade) {
-                if (!is_array($grades_by_user->{$this->getStudIPId($xapi_grade)})) {
-                    $grades_by_user->{$this->getStudIPId($xapi_grade)} = array();
-                }
-                array_push($grades_by_user->{$this->getStudIPId($xapi_grade)}, $xapi_grade);
+                $grades_by_user[$this->getStudIPId($xapi_grade)][] = $xapi_grade;
             }
         }
 
