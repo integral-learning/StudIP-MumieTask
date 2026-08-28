@@ -301,9 +301,7 @@ msgid "Geben Sie eine zum Bestehen der Aufgabe nötige Mindestpunktzahl an."
 msgstr ""
 
 #: templates/TaskForm.php:180
-msgid ""
-"Falls diese Option aktiviert ist, werden keine Noten, die nach dem gew�"
-"�hlten Datum erzielt wurden, mit StudIP synchronisiert."
+msgid "Falls diese Option aktiviert ist, werden keine Noten, die nach dem gewählten Datum erzielt wurden, mit StudIP synchronisiert."
 msgstr ""
 
 #: templates/TaskForm.php:186
