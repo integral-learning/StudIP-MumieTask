@@ -43,5 +43,6 @@
         )
     );
     $template->set_attribute("mumieOrg", Config::get()->MUMIE_ORG);
+    $template->set_attribute("mumiePoolUrl", Config::get()->MUMIE_POOL_URL);
     echo $template->render();
 ?>

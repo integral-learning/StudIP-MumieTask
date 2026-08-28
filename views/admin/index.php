@@ -83,6 +83,17 @@
                         value=<?= Config::get()->MUMIE_API_KEY;?>>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <label for="mumie_pool_url">
+                        <?= dgettext('MumieTaskPlugin', 'MUMIE-Pool-URL') . ':'; ?>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="mumie_pool_url" id="mumie_pool_url"
+                        value=<?= Config::get()->MUMIE_POOL_URL;?>>
+                </td>
+            </tr>
         </table>
         <div data-dialog-button>
             <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>

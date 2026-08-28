@@ -3,6 +3,9 @@
 All important changes to this plugin will be documented in this file.
 
 ## TODO
+### Added
+- The MUMIE pool/LMS-problem-selector URL is now configurable in the admin settings (previously hardcoded to https://pool.mumie.net)
+
 ### Changed
 - Tightened the SSO token verification window from 1 hour to 60 seconds, matching the other LMS plugin implementations
 

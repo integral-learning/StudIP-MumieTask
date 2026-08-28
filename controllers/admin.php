@@ -128,6 +128,7 @@ class AdminController extends StudipController
             $config = Config::get();
             $config->store("MUMIE_ORG", Request::get('mumie_org'));
             $config->store("MUMIE_API_KEY", Request::get('mumie_api_key'));
+            $config->store("MUMIE_POOL_URL", Request::get('mumie_pool_url'));
             PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');
