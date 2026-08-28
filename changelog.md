@@ -8,9 +8,10 @@ All important changes to this plugin will be documented in this file.
 
 ### Changed
 - Tightened the SSO token verification window from 1 hour to 60 seconds, matching the other LMS plugin implementations
-- Grades are now only synced from the grade overview, not on every task or overview page visit
+- The task overview no longer syncs grades for every user on every visit; opening an individual task still syncs only your own grade for that task, and the grade overview still syncs everyone
 
 ### Fixed
+- A MUMIE-Task page no longer loads a task belonging to a different course
 - Broken grade sync for whole courses
 - PHP warnings on the task overview, individual task and grade overview pages
 

@@ -40,6 +40,10 @@ class TaskController extends StudipController
         // There is a bug in navigation, where params are not properly encoded/decoded. That's why we need to check for two parameters.
         $task_id = is_null(Request::option("task_id")) || Request::option("task_id")  == "" ? Request::option("amp;task_id") : Request::option("task_id");
         $this->task = MumieTask::find($task_id);
+        if (is_null($this->task) || $this->task->course !== \Context::get()->Seminar_id) {
+            echo "forbidden";
+            exit;
+        }
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
 
@@ -59,6 +63,8 @@ class TaskController extends StudipController
             $this->addTeacherNavigation();
             Navigation::activateItem('/course/mumietask/task');
         }
+        $gradeService = new MumieGradeService(\Context::get()->Seminar_id, array($this->task), array($GLOBALS['user']->id));
+        $gradeService->update();
     }
 
     /**
