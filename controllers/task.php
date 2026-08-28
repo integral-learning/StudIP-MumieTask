@@ -124,7 +124,7 @@ class TaskController extends StudipController
         );
 
         if (!$this->hasTeacherPermission) {
-            $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)->points;
+            $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)?->points;
             $gradeTemplate = $factory->open('grade.php');
             $gradeTemplate->set_attribute('points', $points);
 
@@ -140,7 +140,7 @@ class TaskController extends StudipController
 
             $passed = $factory->open("taskInfo");
             $passed->set_attribute("header", dgettext("MumieTaskPlugin", 'Bestanden'));
-            $passed->set_attribute("body", $points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red'));
+            $passed->set_attribute("body", isset($points) ? ($points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red')) : '-');
             $widget->addElement(
                 new WidgetElement(
                     $passed->render()

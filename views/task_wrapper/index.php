@@ -37,7 +37,7 @@
         <?php else: ?>
         <td>
             <?php
-                $points = MumieGrade::getGradeForUser($task["task_id"], $GLOBALS['user']->id)->points;
+                $points = MumieGrade::getGradeForUser($task["task_id"], $GLOBALS['user']->id)?->points;
                 $factory = new Flexi_TemplateFactory(PluginEngine::getPlugin('MumieTaskPlugin')->getPluginPath() . '/templates');
                 $template = $factory->open('grade.php');
                 $template->set_attribute('points', $points);
@@ -45,10 +45,9 @@
             ?>
         </td>
         <td>
-            <?php if($task['is_graded'] == 1): ?>
+            <?php if($task['is_graded'] == 1 && isset($points)): ?>
                 <?= $points >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red') ?>
-            <?php endif ?>
-            <?php if($task['is_graded'] == 0): ?>
+            <?php else: ?>
                 -
             <?php endif ?>
         </td>

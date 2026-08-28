@@ -12,7 +12,7 @@ All important changes to this plugin will be documented in this file.
 
 ### Fixed
 - Broken grade sync for whole courses
-- PHP warnings on the task overview and grade overview pages
+- PHP warnings on the task overview, individual task and grade overview pages
 
 ### Removed
 - Removed the admin option to share a user's first name, last name or e-mail address with MUMIE servers. No personal user data is sent for SSO anymore, only a pseudonymous user id.
