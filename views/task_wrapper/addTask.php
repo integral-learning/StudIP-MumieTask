@@ -18,7 +18,7 @@
     $template->set_attribute("launch_container", "");
     $template->set_attribute("duedate", 0);
     $template->set_attribute("passing_grade", null);
-    $template->set_attribute("is_graded", 0);
+    $template->set_attribute("is_graded", null);
     $template->set_attribute("missingServerConfig", false);
     $lang = getUserLanguage($GLOBALS['user']->id);
     $lang = substr($lang, 0, strpos($lang, "_"));

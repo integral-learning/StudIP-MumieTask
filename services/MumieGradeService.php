@@ -266,6 +266,9 @@ class MumieGradeService
         if (!$task->is_graded) {
             return;
         }
+        if ($task->duedate && $task->duedate > time()) {
+            return;
+        }
         $gradesByUser = $this->getXapiGradesByUser($task);
         foreach (array_keys($gradesByUser) as $userId) {
             $xapiGrade = $gradesByUser[$userId];

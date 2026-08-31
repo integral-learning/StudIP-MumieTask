@@ -14,6 +14,8 @@ All important changes to this plugin will be documented in this file.
 - A MUMIE-Task page no longer loads a task belonging to a different course
 - Broken grade sync for whole courses
 - PHP warnings on the task overview, individual task and grade overview pages
+- The problem selector no longer defaults to "ungraded" for a new task, hiding graded problems until one was picked
+- Grades are no longer synced (and thus no longer visible to students) before a task's due date has passed
 
 ### Removed
 - Removed the admin option to share a user's first name, last name or e-mail address with MUMIE servers. No personal user data is sent for SSO anymore, only a pseudonymous user id.
