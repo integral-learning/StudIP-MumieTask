@@ -345,8 +345,9 @@
                 setIsGraded: function(isGraded) {
                     if (isGraded === null) {
                         is_graded_element.value = null;
+                    } else {
+                        is_graded_element.value = isGraded ? '1' : '0';
                     }
-                    is_graded_element.value = isGraded ? '1' : '0';
                     updateGradeEditability();
                 },
                 setSelection: function(newSelection) {

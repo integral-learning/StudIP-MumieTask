@@ -16,6 +16,7 @@ All important changes to this plugin will be documented in this file.
 - PHP warnings on the task overview, individual task and grade overview pages
 - The problem selector no longer defaults to "ungraded" for a new task, hiding graded problems until one was picked
 - Grades are no longer synced (and thus no longer visible to students) before a task's due date has passed
+- The grade overview no longer shows a misleading "failed" icon for students who haven't been graded yet
 
 ### Removed
 - Removed the admin option to share a user's first name, last name or e-mail address with MUMIE servers. No personal user data is sent for SSO anymore, only a pseudonymous user id.
