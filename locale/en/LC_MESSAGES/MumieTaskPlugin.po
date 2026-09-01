@@ -170,6 +170,23 @@ msgstr "MUMIE organization"
 msgid "API-KEY"
 msgstr "API key"
 
+#: views/admin/index.php:96
+msgid "Entwickler-Optionen"
+msgstr "Developer options"
+
+#: views/admin/index.php:100
+msgid ""
+"Diese Einstellung ist nur für Entwickler relevant und muss in der Regel "
+"nicht angepasst werden. Bitte geben Sie eine gültige URL ein. Standard: "
+"https://pool.mumie.net"
+msgstr ""
+"This setting is only relevant for developers and usually does not need to "
+"be changed. Please enter a valid URL. Default: https://pool.mumie.net"
+
+#: views/admin/index.php:113
+msgid "Problem-Selector-URL"
+msgstr "Problem selector URL"
+
 #: views/task/gradeOverview.php:5
 msgid "Nutzer"
 msgstr "User"

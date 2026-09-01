@@ -83,10 +83,28 @@
                         value=<?= Config::get()->MUMIE_API_KEY;?>>
                 </td>
             </tr>
+        </table>
+    </fieldset>
+    <fieldset class="conf-form-field collapsable">
+        <legend>
+            <?=dgettext("MumieTaskPlugin", "Entwickler-Optionen");?>
+        </legend>
+        <table class="default">
+            <caption>
+                <?=dgettext("MumieTaskPlugin", "Diese Einstellung ist nur für Entwickler relevant und muss in der Regel nicht angepasst werden. Bitte geben Sie eine gültige URL ein. Standard: https://pool.mumie.net"); ?>
+            </caption>
+            <tr>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Einstellung");?>
+                </th>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Wert");?>
+                </th>
+            </tr>
             <tr>
                 <td>
                     <label for="mumie_pool_url">
-                        <?= dgettext('MumieTaskPlugin', 'MUMIE-Pool-URL') . ':'; ?>
+                        <?= dgettext('MumieTaskPlugin', 'Problem-Selector-URL') . ':'; ?>
                     </label>
                 </td>
                 <td>
