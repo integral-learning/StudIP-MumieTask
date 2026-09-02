@@ -169,18 +169,15 @@ msgstr ""
 msgid "API-KEY"
 msgstr ""
 
-#: views/admin/index.php:96
+#: views/admin/index.php:90
 msgid "Entwickler-Optionen"
 msgstr ""
 
-#: views/admin/index.php:100
-msgid ""
-"Diese Einstellung ist nur für Entwickler relevant und muss in der Regel "
-"nicht angepasst werden. Bitte geben Sie eine gültige URL ein. Standard: "
-"https://pool.mumie.net"
+#: views/admin/index.php:111
+msgid "URL der Pool-Instanz, die zur Aufgabenauswahl genutzt wird. Standard: https://pool.mumie.net"
 msgstr ""
 
-#: views/admin/index.php:113
+#: views/admin/index.php:104
 msgid "Problem-Selector-URL"
 msgstr ""
 

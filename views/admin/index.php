@@ -90,9 +90,6 @@
             <?=dgettext("MumieTaskPlugin", "Entwickler-Optionen");?>
         </legend>
         <table class="default">
-            <caption>
-                <?=dgettext("MumieTaskPlugin", "Diese Einstellung ist nur für Entwickler relevant und muss in der Regel nicht angepasst werden. Bitte geben Sie eine gültige URL ein. Standard: https://pool.mumie.net"); ?>
-            </caption>
             <tr>
                 <th>
                     <?=dgettext("MumieTaskPlugin", "Einstellung");?>
@@ -110,6 +107,9 @@
                 <td>
                     <input type="text" name="mumie_pool_url" id="mumie_pool_url"
                         value=<?= Config::get()->MUMIE_POOL_URL;?>>
+                    <p class="mumie-hint">
+                        <?=dgettext("MumieTaskPlugin", "URL der Pool-Instanz, die zur Aufgabenauswahl genutzt wird. Standard: https://pool.mumie.net"); ?>
+                    </p>
                 </td>
             </tr>
         </table>
