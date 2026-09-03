@@ -187,7 +187,7 @@ class MumieGradeService
     private function getAllUsers($courseId)
     {
         $query = "Select user_id from seminar_user where seminar_id = ? AND status = 'autor'";
-        return DBManager::get()->fetchAll($query, array($courseId));
+        return DBManager::get()->fetchFirst($query, array($courseId));
     }
 
     /**
@@ -201,13 +201,10 @@ class MumieGradeService
      */
     private function getValidGradeByUser($response, $task)
     {
-        $grades_by_user = new stdClass();
+        $grades_by_user = array();
         if ($response) {
             foreach ($response as $xapi_grade) {
-                if (!is_array($grades_by_user->{$this->getStudIPId($xapi_grade)})) {
-                    $grades_by_user->{$this->getStudIPId($xapi_grade)} = array();
-                }
-                array_push($grades_by_user->{$this->getStudIPId($xapi_grade)}, $xapi_grade);
+                $grades_by_user[$this->getStudIPId($xapi_grade)][] = $xapi_grade;
             }
         }
 
@@ -267,6 +264,9 @@ class MumieGradeService
     private function updateGrades($task)
     {
         if (!$task->is_graded) {
+            return;
+        }
+        if ($task->duedate && $task->duedate > time()) {
             return;
         }
         $gradesByUser = $this->getXapiGradesByUser($task);

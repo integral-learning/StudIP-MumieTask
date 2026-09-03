@@ -49,62 +49,6 @@
         </div>
     </fieldset>
 </form>
-<form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/privacy'); ?>" method="post">
-    <fieldset class="conf-form-field collapsable">
-        <legend>
-            <?=dgettext("MumieTaskPlugin", "Datenschutz");?>
-        </legend>
-        <table class="default">
-            <caption>
-                <?=dgettext("MumieTaskPlugin", "Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen."); ?>
-            </caption>
-            <tr>
-                <th>
-                    <?=dgettext("MumieTaskPlugin", "Einstellung");?>
-                </th>
-                <th>
-                    <?=dgettext("MumieTaskPlugin", "Wert");?>
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    <label for="mumie_share_firstname">
-                        <?= dgettext('MumieTaskPlugin', 'Vorname'); ?>
-                    </label>
-                </td>
-                <td>
-                    <input type="checkbox" id="mumie_share_firstname" name="share_firstname"
-                        <?= Config::get()->MUMIE_SHARE_FIRSTNAME ? "checked" : "";?>>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="mumie_share_lastname">
-                        <?= dgettext('MumieTaskPlugin', 'Nachname'); ?>
-                    </label>
-                </td>
-                <td>
-                    <input type="checkbox" name="share_lastname" id="mumie_share_lastname"
-                        <?= Config::get()->MUMIE_SHARE_LASTNAME ? "checked" : "";?>>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="mumie_share_email">
-                        <?= dgettext('MumieTaskPlugin', 'E-Mail-Addresse'); ?>
-                    </label>
-                </td>
-                <td>
-                    <input type="checkbox" id="mumie_share_email" name="share_email"
-                        <?= Config::get()->MUMIE_SHARE_EMAIL ? "checked" : "";?>>
-                </td>
-            <tr>
-        </table>
-        <div data-dialog-button>
-            <?= \Studip\Button::create(dgettext('MumieTaskPlugin', 'Speichern')); ?>
-        </div>
-    </fieldset>
-</form>
 <form class="default" action="<?= PluginEngine::getLink("MumieTaskPlugin", array(), 'admin/authentication'); ?>"
     method="post">
     <fieldset class="conf-form-field collapsable">
@@ -137,6 +81,35 @@
                 <td>
                     <input type="text" name="mumie_api_key" id="mumie_api_key"
                         value=<?= Config::get()->MUMIE_API_KEY;?>>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="conf-form-field collapsable">
+        <legend>
+            <?=dgettext("MumieTaskPlugin", "Entwickler-Optionen");?>
+        </legend>
+        <table class="default">
+            <tr>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Einstellung");?>
+                </th>
+                <th>
+                    <?=dgettext("MumieTaskPlugin", "Wert");?>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <label for="mumie_pool_url">
+                        <?= dgettext('MumieTaskPlugin', 'Problem-Selector-URL') . ':'; ?>
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="mumie_pool_url" id="mumie_pool_url"
+                        value=<?= Config::get()->MUMIE_POOL_URL;?>>
+                    <p class="mumie-hint">
+                        <?=dgettext("MumieTaskPlugin", "URL der Pool-Instanz, die zur Aufgabenauswahl genutzt wird. Standard: https://pool.mumie.net"); ?>
+                    </p>
                 </td>
             </tr>
         </table>

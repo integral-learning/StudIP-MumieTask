@@ -65,3 +65,10 @@
 .mumie_form_elem_wrapper {
     margin-bottom: 10px;
 }
+
+.mumie-hint {
+    margin: 5px 0 0;
+    font-size: 0.85em;
+    font-weight: normal;
+    color: #868e96;
+}

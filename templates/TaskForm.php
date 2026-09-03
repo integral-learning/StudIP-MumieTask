@@ -162,7 +162,7 @@
 
 <script>
     (function() {
-        const lmsSelectorUrl = 'https://pool.mumie.net';
+        const lmsSelectorUrl = '<?= $mumiePoolUrl; ?>';
 
         const serverController = (function() {
             let serverStructure;
@@ -345,8 +345,9 @@
                 setIsGraded: function(isGraded) {
                     if (isGraded === null) {
                         is_graded_element.value = null;
+                    } else {
+                        is_graded_element.value = isGraded ? '1' : '0';
                     }
-                    is_graded_element.value = isGraded ? '1' : '0';
                     updateGradeEditability();
                 },
                 setSelection: function(newSelection) {

@@ -40,6 +40,10 @@ class TaskController extends StudipController
         // There is a bug in navigation, where params are not properly encoded/decoded. That's why we need to check for two parameters.
         $task_id = is_null(Request::option("task_id")) || Request::option("task_id")  == "" ? Request::option("amp;task_id") : Request::option("task_id");
         $this->task = MumieTask::find($task_id);
+        if (is_null($this->task) || $this->task->course !== \Context::get()->Seminar_id) {
+            echo "forbidden";
+            exit;
+        }
         PageLayout::setTitle(dgettext("MumieTaskPlugin", "MUMIE-Task") . ": " .$this->task->name);
     }
 
@@ -126,7 +130,7 @@ class TaskController extends StudipController
         );
 
         if (!$this->hasTeacherPermission) {
-            $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)->points;
+            $points = MumieGrade::getGradeForUser($this->task["task_id"], $GLOBALS['user']->id)?->points;
             $gradeTemplate = $factory->open('grade.php');
             $gradeTemplate->set_attribute('points', $points);
 
@@ -142,7 +146,7 @@ class TaskController extends StudipController
 
             $passed = $factory->open("taskInfo");
             $passed->set_attribute("header", dgettext("MumieTaskPlugin", 'Bestanden'));
-            $passed->set_attribute("body", $points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red'));
+            $passed->set_attribute("body", isset($points) ? ($points >= $this->task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red')) : '-');
             $widget->addElement(
                 new WidgetElement(
                     $passed->render()

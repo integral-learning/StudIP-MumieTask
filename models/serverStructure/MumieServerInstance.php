@@ -89,6 +89,7 @@ class MumieServerInstance implements \JsonSerializable
     {
         $server = new stdClass;
         $server->url_prefix = $url;
+        $server->name = null;
         return new MumieServerInstance($server);
     }
 
