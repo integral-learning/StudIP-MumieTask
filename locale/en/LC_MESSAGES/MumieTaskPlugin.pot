@@ -144,36 +144,15 @@ msgstr ""
 msgid "Server hinzuf√ºgen"
 msgstr ""
 
-#: views/admin/index.php:55
-msgid "Datenschutz"
-msgstr ""
-
-#: views/admin/index.php:59
-msgid ""
-"Legen Sie fest, welche Nutzerdaten an MUMIE-Server geschickt werden sollen."
-msgstr ""
-
-#: views/admin/index.php:63 views/admin/index.php:115
+#: views/admin/index.php:115
 msgid "Einstellung"
 msgstr ""
 
-#: views/admin/index.php:66 views/admin/index.php:118
+#: views/admin/index.php:118
 msgid "Wert"
 msgstr ""
 
-#: views/admin/index.php:72
-msgid "Vorname"
-msgstr ""
-
-#: views/admin/index.php:83
-msgid "Nachname"
-msgstr ""
-
-#: views/admin/index.php:94
-msgid "E-Mail-Addresse"
-msgstr ""
-
-#: views/admin/index.php:104 views/admin/index.php:144
+#: views/admin/index.php:144
 #: templates/ServerForm.php:51 templates/TaskForm.php:187
 msgid "Speichern"
 msgstr ""
@@ -188,6 +167,18 @@ msgstr ""
 
 #: views/admin/index.php:134
 msgid "API-KEY"
+msgstr ""
+
+#: views/admin/index.php:90
+msgid "Entwickler-Optionen"
+msgstr ""
+
+#: views/admin/index.php:111
+msgid "URL der Pool-Instanz, die zur Aufgabenauswahl genutzt wird. Standard: https://pool.mumie.net"
+msgstr ""
+
+#: views/admin/index.php:104
+msgid "Problem-Selector-URL"
 msgstr ""
 
 #: views/task/gradeOverview.php:5
@@ -322,9 +313,7 @@ msgid "Geben Sie eine zum Bestehen der Aufgabe n√∂tige Mindestpunktzahl an."
 msgstr ""
 
 #: templates/TaskForm.php:180
-msgid ""
-"Falls diese Option aktiviert ist, werden keine Noten, die nach dem gew√"
-"§hlten Datum erzielt wurden, mit StudIP synchronisiert."
+msgid "Falls diese Option aktiviert ist, werden keine Noten, die nach dem gew√§hlten Datum erzielt wurden, mit StudIP synchronisiert."
 msgstr ""
 
 #: templates/TaskForm.php:186

@@ -18,7 +18,6 @@ require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/M
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/SSOService.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/models/MumieSSOToken.php');
 require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/PermissionService.php');
-require_once('public/plugins_packages/integral-learning/MumieTaskPlugin/services/MumieGradeService.php');
 
 /**
  * TaskWrapperController is used to add, edit, delete MUMIE tasks and display all tasks of the current course in a list view.
@@ -58,8 +57,6 @@ class TaskWrapperController extends StudipController
 
             Sidebar::Get()->addWidget($actions);
         }
-        $gradeService = new MumieGradeService(\Context::get()->Seminar_id);
-        $gradeService->update();
     }
 
     /**

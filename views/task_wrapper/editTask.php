@@ -36,6 +36,7 @@ $template->set_attribute("missingServerConfig", is_null(MumieServer::getByUrl($t
 $template->set_attribute('action', PluginEngine::getLink('MumieTaskPlugin', array('task_id' => $task["task_id"]), 'taskWrapper/editTask'));
 $template->set_attribute('cancelLink', PluginEngine::getLink('MumieTaskPlugin', array(), 'taskWrapper/index'));
 $template->set_attribute("mumieOrg", Config::get()->MUMIE_ORG);
+$template->set_attribute("mumiePoolUrl", Config::get()->MUMIE_POOL_URL);
 echo $template->render();
 
 ?>

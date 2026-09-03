@@ -52,23 +52,6 @@ class AdminController extends StudipController
     }
     
     /**
-     * This function is used to save changes in the privacy settings.
-     *
-     * @return void
-     */
-    public function privacy_action()
-    {
-        if (Request::isPost()) {
-            $config = Config::get();
-            $config->store("MUMIE_SHARE_FIRSTNAME", Request::get('share_firstname'));
-            $config->store("MUMIE_SHARE_LASTNAME", Request::get('share_lastname'));
-            $config->store("MUMIE_SHARE_EMAIL", Request::get('share_email'));
-            PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
-        }
-        $this->redirect('admin/index');
-    }
-        
-    /**
      * Display a form for creation of MUMIE server or save it (If called by a post request).
      *
      * @return void
@@ -145,6 +128,7 @@ class AdminController extends StudipController
             $config = Config::get();
             $config->store("MUMIE_ORG", Request::get('mumie_org'));
             $config->store("MUMIE_API_KEY", Request::get('mumie_api_key'));
+            $config->store("MUMIE_POOL_URL", Request::get('mumie_pool_url'));
             PageLayout::postSuccess(dgettext('MumieTaskPlugin', 'Änderungen gespeichert') . '!');
         }
         $this->redirect('admin/index');

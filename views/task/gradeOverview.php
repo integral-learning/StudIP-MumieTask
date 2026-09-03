@@ -25,7 +25,7 @@
             ?>
             </td>
             <td>
-                <?= $grade["points"] >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red') ?>
+                <?= isset($grade["points"]) ? ($grade["points"] >= $task["passing_grade"] ? Icon::create('check-circle', 'status-green') : Icon::create('decline', 'status-red')) : '-' ?>
 
             </td>
         </tr>
