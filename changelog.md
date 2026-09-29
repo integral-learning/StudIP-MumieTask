@@ -4,8 +4,8 @@ All important changes to this plugin will be documented in this file.
 
 ## [Unreleased]
 ### Added
-- Teachers are now logged in to the problem selector via SSO, if the selected MUMIE server is the one configured as problem selector
-- Customized problems from the problem selector can now be added as MUMIE Tasks
+- Teachers are now automatically logged in to the pool when opening the problem selector, so they can use their personal bookmarks and customizations (paid feature)
+- Customizations can now be added as MUMIE Tasks
 
 ### Fixed
 - The task form no longer crashes if no MUMIE server is configured
