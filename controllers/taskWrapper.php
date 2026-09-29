@@ -204,13 +204,14 @@ class TaskWrapperController extends StudipController
             return $errors;
         }
 
-        $problem = $course->getTaskByLink($task->task_url);
-        if ($problem == null) {
+        if (empty($task->task_url)) {
             $errors[] = dgettext('MumieTaskPlugin', 'Das gewählte MUMIE-Problem konnte nicht gefunden werden.');
             return $errors;
         }
 
-        if (!in_array($task->language, $problem->getLanguages())) {
+        // Problems that are not part of the server structure (e.g. customizations) are accepted, like in Moodle and ILIAS.
+        $problem = $course->getTaskByLink($task->task_url);
+        if ($problem != null && !in_array($task->language, $problem->getLanguages())) {
             $errors[] =  dgettext('MumieTaskPlugin', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
             return $errors;
         }

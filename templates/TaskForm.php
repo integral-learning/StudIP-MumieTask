@@ -244,7 +244,8 @@
                     return languageElement.value;
                 },
                 setLanguage: function (lang) {
-                    if (!courseController.getSelectedCourse().languages.includes(lang)) {
+                    const selectedCourse = courseController.getSelectedCourse();
+                    if (selectedCourse && !selectedCourse.languages.includes(lang)) {
                         throw new Error("Selected language not available");
                     }
                     languageElement.value = lang;
@@ -258,16 +259,19 @@
             const display_task_element = document.getElementById("mumie_display_task");
             const nameElem = document.getElementById("mumie_name");
             const is_graded_element = document.getElementById("mumie_is_graded");
+            // Names sent by the problem selector for problems that are not part of the server structure (e.g. customizations)
+            const selectorNames = [];
+            let selectorName = null;
 
             /**
              * Update the activity's name in the input field
              */
             function updateName() {
-                const newHeadline = getHeadline(taskController.getSelectedTask());
-                if (!isCustomName()) {
+                const newHeadline = getHeadline(taskController.getSelectedTask()) ?? selectorName;
+                if (newHeadline && !isCustomName()) {
                     nameElem.value = newHeadline;
                 }
-                display_task_element.value = newHeadline;
+                display_task_element.value = newHeadline ?? nameElem.value;
             }
 
             /**
@@ -322,9 +326,11 @@
              * @returns {Object} Array containing all headlines
              */
             function getAllHeadlines() {
+                const selectedCourse = courseController.getSelectedCourse();
                 return getAllTasks().flatMap(task => task.headline)
                     .map(headline => headline.name)
-                    .concat(courseController.getSelectedCourse().name.map(n => n.value))
+                    .concat(selectedCourse ? selectedCourse.name.map(n => n.value) : [])
+                    .concat(selectorNames);
             }
 
             function updateGradeEditability() {
@@ -358,9 +364,13 @@
                     }
                     updateGradeEditability();
                 },
-                setSelection: function(newSelection) {
+                setSelection: function(newSelection, name = null) {
                     task_element.value = getLocalizedLink(newSelection);
+                    selectorName = name;
                     updateName();
+                    if (name) {
+                        selectorNames.push(name);
+                    }
                 },
                 getGradingType: function() {
                     const isGraded = is_graded_element.value;
@@ -389,7 +399,7 @@
                 if (!problemSelectorWindow) {
                     return;
                 }
-                problemSelectorWindow.postMessage(JSON.stringify(response), lmsSelectorUrl);
+                problemSelectorWindow.postMessage(JSON.stringify(response), getOrigin(lmsSelectorUrl));
             }
 
             /**
@@ -420,7 +430,7 @@
             function addMessageListener() {
                 window.addEventListener('message', (event) => {
                     event.preventDefault();
-                    if (event.origin !== lmsSelectorUrl) {
+                    if (event.origin !== getOrigin(lmsSelectorUrl)) {
                         return;
                     }
                     const importObj = JSON.parse(event.data);
@@ -428,7 +438,7 @@
                     try {
                         courseController.setCourse(importObj.path_to_coursefile);
                         langController.setLanguage(importObj.language);
-                        taskController.setSelection(importObj.link);
+                        taskController.setSelection(importObj.link, importObj.name);
                         taskController.setIsGraded(isGraded);
                         sendSuccess();
                         window.focus();
@@ -482,11 +492,8 @@
              * @returns {boolean} Whether SSO should be used for the Problem Selector or not
              */
             function shouldUseSSO(problemSelectorUrl, selectedServerUrl) {
-                try {
-                    return new URL(problemSelectorUrl).origin === new URL(selectedServerUrl).origin;
-                } catch (e) {
-                    return false;
-                }
+                const problemSelectorOrigin = getOrigin(problemSelectorUrl);
+                return problemSelectorOrigin !== null && problemSelectorOrigin === getOrigin(selectedServerUrl);
             }
 
             return {
@@ -514,6 +521,19 @@
                 }
             };
         })();
+
+        /**
+         * Get the origin of a URL, e.g. to compare it with the origin of a postMessage event
+         * @param {string} url
+         * @returns {string|null}
+         */
+        function getOrigin(url) {
+            try {
+                return new URL(url).origin;
+            } catch (e) {
+                return null;
+            }
+        }
 
         /**
          * Remove all child elements of a given html element
