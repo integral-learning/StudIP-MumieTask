@@ -557,7 +557,6 @@
 
         if (isEdit && !serverConfigExists()) {
             serverController.disable();
-            taskController.disable();
             problemSelectorController.disable();
         } else {
             serverController.init(JSON.parse(`<?= addslashes(json_encode($serverStructure));?>`));
