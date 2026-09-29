@@ -44,11 +44,13 @@ class MumieHash extends SimpleORMap
     /**
      * Find a saved MumieHash by userId
      *
+     * Lecturer hashes used for SSO to the problem selector are ignored.
+     *
      * @param  string $userId
      * @return MumieHash
      */
     public static function findByUser($userId)
     {
-        return MumieHash::findOneBySQL("the_user = ?", array($userId));
+        return MumieHash::findOneBySQL("the_user = ? AND hash NOT LIKE ?", array($userId, '%@lecturer@'));
     }
 }

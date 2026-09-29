@@ -2,6 +2,10 @@
 
 All important changes to this plugin will be documented in this file.
 
+## [Unreleased]
+### Added
+- Teachers are now logged in to the problem selector via SSO, if the selected MUMIE server is the one configured as problem selector
+
 ## [v1.6] - 2026-09-03
 ### Added
 - Admin-configurable MUMIE pool URL

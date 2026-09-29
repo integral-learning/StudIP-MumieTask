@@ -19,6 +19,12 @@
 class HashingService
 {
     /**
+     * The MUMIE server assigns the "Lecturing" role instead of the "Studying"
+     * default only if the SSO user id ends with this exact literal suffix.
+     */
+    const LECTURER_SUFFIX = '@lecturer@';
+
+    /**
      * Get a MumieHash for a user. If no MumieHash is found in the database, create one.
      *
      * @param  string $userId
@@ -36,6 +42,25 @@ class HashingService
         return $hash;
     }
     
+    /**
+     * Get the MumieHash with the lecturer suffix for a user. If it's not found in the database, create one.
+     *
+     * @param  string $userId
+     * @return MumieHash
+     */
+    public static function getLecturerHash($userId)
+    {
+        $lecturerHash = self::getHashedUserId($userId) . self::LECTURER_SUFFIX;
+        if ($hash = MumieHash::findByHash($lecturerHash)) {
+        } else {
+            $hash = new MumieHash();
+            $hash->the_user = $userId;
+            $hash->hash = $lecturerHash;
+            $hash->store();
+        }
+        return $hash;
+    }
+
     /**
      * Salt a given userId, hash it and then return the result
      *

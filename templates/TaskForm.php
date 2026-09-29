@@ -163,6 +163,7 @@
 <script>
     (function() {
         const lmsSelectorUrl = '<?= $mumiePoolUrl; ?>';
+        const problemSelectorSsoUrl = <?= json_encode($problemSelectorSsoUrl); ?>;
 
         const serverController = (function() {
             let serverStructure;
@@ -431,27 +432,61 @@
                 }, false);
             }
 
+            /**
+             * Builds the URL to the Problem Selector
+             * @returns {string} URL to the Problem Selector
+             */
+            function buildURL() {
+                const selectedTask = taskController.getSelectedTask();
+                const gradingType = taskController.getGradingType();
+                const selectedServer = serverController.getSelectedServer().url_prefix;
+
+                if (shouldUseSSO(lmsSelectorUrl, selectedServer)) {
+                    return problemSelectorSsoUrl
+                        + (problemSelectorSsoUrl.includes('?') ? '&' : '?')
+                        + 'serverUrl=' + encodeURIComponent(selectedServer)
+                        + '&problemLang=' + langController.getSelectedLanguage()
+                        + '&origin=' + encodeURIComponent(window.location.origin)
+                        + '&gradingType=' + gradingType
+                        + (selectedTask ? '&selection=' + encodeURIComponent(selectedTask.link) : '');
+                }
+
+                return lmsSelectorUrl
+                    + '/lms-problem-selector?'
+                    + 'org='
+                    + mumieOrg
+                    + '&serverUrl='
+                    + encodeURIComponent(selectedServer)
+                    + "&problemLang="
+                    + langController.getSelectedLanguage()
+                    + (selectedTask ? "&problem=" + selectedTask.link : '')
+                    + "&origin=" + encodeURIComponent(window.location.origin)
+                    + '&multiCourse=true'
+                    + '&gradingType=' + gradingType;
+            }
+
+            /**
+             * Determines whether the Single Sign-On (SSO) should be used when opening the Problem Selector.
+             * SSO is only supposed to be used when the Problem Selector URL has the same origin as the
+             * selected MUMIE server, since StudIP has no account on other MUMIE servers.
+             *
+             * @param {string} problemSelectorUrl - The URL of the problem selector.
+             * @param {string} selectedServerUrl - The URL of the selected MUMIE server.
+             * @returns {boolean} Whether SSO should be used for the Problem Selector or not
+             */
+            function shouldUseSSO(problemSelectorUrl, selectedServerUrl) {
+                try {
+                    return new URL(problemSelectorUrl).origin === new URL(selectedServerUrl).origin;
+                } catch (e) {
+                    return false;
+                }
+            }
+
             return {
                 init: function () {
                     problemSelectorButton.onclick = function (e) {
                         e.preventDefault();
-                        const selectedTask = taskController.getSelectedTask();
-                        const gradingType = taskController.getGradingType();
-                        problemSelectorWindow = window.open(
-                            lmsSelectorUrl
-                            + '/lms-problem-selector?'
-                            + 'org='
-                            + mumieOrg
-                            + '&serverUrl='
-                            + encodeURIComponent(serverController.getSelectedServer().url_prefix)
-                            + "&problemLang="
-                            + langController.getSelectedLanguage()
-                            + (selectedTask ? "&problem=" + selectedTask.link : '')
-                            + "&origin=" + encodeURIComponent(window.location.origin)
-                            + '&multiCourse=true'
-                            + '&gradingType=' + gradingType
-                            , '_blank'
-                        );
+                        problemSelectorWindow = window.open(buildURL(), '_blank');
                     };
 
                     window.onclose = function () {

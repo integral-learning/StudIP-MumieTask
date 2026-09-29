@@ -87,6 +87,31 @@ class TaskWrapperController extends StudipController
         }
     }
 
+    /**
+     * Open the problem selector and log the teacher in via SSO.
+     *
+     * This is only called for the configured problem selector's own origin - other MUMIE servers
+     * are opened without SSO, since StudIP has no account there.
+     *
+     * @return void
+     */
+    public function problemSelector_action()
+    {
+        // Logs the user in as a lecturer, so this needs teacher permission.
+        PermissionService::requireTeacherPermission();
+        $this->set_layout(null);
+        $this->ssoToken = SSOService::generateProblemSelectorTokenForUser($GLOBALS['user']->id);
+        $this->ssoUrl = rtrim(Config::get()->MUMIE_POOL_URL, '/') . '/api/sso/problem-selector';
+        $this->org = Config::get()->MUMIE_ORG;
+        $lang = getUserLanguage($GLOBALS['user']->id);
+        $this->uiLang = substr($lang, 0, strpos($lang, "_"));
+        $this->serverUrl = Request::get('serverUrl');
+        $this->gradingType = Request::option('gradingType');
+        $this->problemLang = Request::option('problemLang');
+        $this->origin = Request::get('origin');
+        $this->selection = Request::get('selection');
+    }
+
     private function setTaskValues($task) {
         $task->name = Request::get('name');
         $task->server = Request::get('server');
