@@ -9,6 +9,7 @@ All important changes to this plugin will be documented in this file.
 
 ### Fixed
 - The task form no longer crashes if no MUMIE server is configured
+- The problem selector button is now disabled when editing a task whose MUMIE server is no longer configured
 
 ## [v1.6] - 2026-09-03
 ### Added
