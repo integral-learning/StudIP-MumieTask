@@ -174,6 +174,9 @@
                     serverStructure = structure;
                 },
                 getSelectedServer: function () {
+                    if (serverDropDown.selectedIndex < 0) {
+                        return undefined;
+                    }
                     const selectedServerName = serverDropDown.options[serverDropDown.selectedIndex].text;
                     return serverStructure.find(server => server.name === selectedServerName);
                 },
@@ -217,7 +220,11 @@
                     updateCourseName();
                 },
                 getSelectedCourse: function () {
-                    const courses = serverController.getSelectedServer().courses;
+                    const selectedServer = serverController.getSelectedServer();
+                    if (!selectedServer) {
+                        return undefined;
+                    }
+                    const courses = selectedServer.courses;
                     return courses.find(course => course.coursefile === coursefileElem.value);
                 },
                 updateCourseName: function () {
@@ -486,6 +493,9 @@
                 init: function () {
                     problemSelectorButton.onclick = function (e) {
                         e.preventDefault();
+                        if (!serverController.getSelectedServer()) {
+                            return;
+                        }
                         problemSelectorWindow = window.open(buildURL(), '_blank');
                     };
 
