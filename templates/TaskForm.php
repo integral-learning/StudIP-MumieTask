@@ -59,11 +59,11 @@
                 )->asImg();
             ?>
         </div>
-        <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
-        <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value=<?= $missingServerConfig ? $server : ""?>>
-        <input type="hidden" id="language" name="language" value=<?= $language ?? $_SESSION['_language'];?>>
-        <input type="hidden" name="task_url" id="mumie_taskurl" value=<?= $task_url;?>>
-        <input type="hidden" name="is_graded" id="mumie_is_graded" value=<?= $is_graded;?>>
+        <input type="hidden" id="mumie_coursefile" name="coursefile" value="<?= htmlReady($mumie_coursefile); ?>">
+        <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value="<?= htmlReady($missingServerConfig ? $server : ""); ?>">
+        <input type="hidden" id="language" name="language" value="<?= htmlReady($language ?? $_SESSION['_language']); ?>">
+        <input type="hidden" name="task_url" id="mumie_taskurl" value="<?= htmlReady($task_url); ?>">
+        <input type="hidden" name="is_graded" id="mumie_is_graded" value="<?= htmlReady($is_graded); ?>">
         <label for="display_task">
             <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
