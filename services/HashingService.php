@@ -18,10 +18,6 @@
  */
 class HashingService
 {
-    /**
-     * The MUMIE server assigns the "Lecturing" role instead of the "Studying"
-     * default only if the SSO user id ends with this exact literal suffix.
-     */
     const LECTURER_SUFFIX = '@lecturer@';
 
     /**
