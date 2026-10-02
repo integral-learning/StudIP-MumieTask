@@ -2,7 +2,7 @@
 
 All important changes to this plugin will be documented in this file.
 
-## [Unreleased]
+## [v1.7] - 2026-10-02
 ### Added
 - Teachers are now automatically logged in to the pool when opening the problem selector, so they can use their personal bookmarks and customizations (paid feature)
 - Customizations can now be added as MUMIE Tasks
