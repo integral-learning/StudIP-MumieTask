@@ -32,16 +32,9 @@ class HashingService
      */
     public static function getHash($userId)
     {
-        if ($hash = MumieHash::findByUser($userId)) {
-        } else {
-            $hash = new MumieHash();
-            $hash->the_user = $userId;
-            $hash->hash = self::getHashedUserId($userId);
-            $hash->store();
-        }
-        return $hash;
+        return self::findOrCreate($userId, self::getHashedUserId($userId));
     }
-    
+
     /**
      * Get the MumieHash with the lecturer suffix for a user. If it's not found in the database, create one.
      *
@@ -50,14 +43,27 @@ class HashingService
      */
     public static function getLecturerHash($userId)
     {
-        $lecturerHash = self::getHashedUserId($userId) . self::LECTURER_SUFFIX;
-        if ($hash = MumieHash::findByHash($lecturerHash)) {
-        } else {
-            $hash = new MumieHash();
-            $hash->the_user = $userId;
-            $hash->hash = $lecturerHash;
-            $hash->store();
+        return self::findOrCreate($userId, self::getHashedUserId($userId) . self::LECTURER_SUFFIX);
+    }
+
+    /**
+     * Find the MumieHash for a user and hash value. If none is found, create one.
+     *
+     * Looking up by hash value as well keeps this correct after the API key was changed.
+     *
+     * @param  string $userId
+     * @param  string $hashValue
+     * @return MumieHash
+     */
+    private static function findOrCreate($userId, $hashValue)
+    {
+        if ($hash = MumieHash::findOneBySQL("the_user = ? AND hash = ?", [$userId, $hashValue])) {
+            return $hash;
         }
+        $hash = new MumieHash();
+        $hash->the_user = $userId;
+        $hash->hash = $hashValue;
+        $hash->store();
         return $hash;
     }
 
