@@ -127,22 +127,6 @@ class MumieCourse implements \JsonSerializable
     }
 
     /**
-     * Find a Task in the course structure by a given link
-     *
-     * @param  string $link
-     * @return MumieTask
-     */
-    public function getTaskByLink($link)
-    {
-        $link = MumieProblem::removeLangParamFromUrl($link);
-        foreach ($this->tasks as $task) {
-            if ($task->getLink() == $link) {
-                return $task;
-            }
-        }
-    }
-
-    /**
      * Necessary to encode this object as json.
      * @return mixed
      */

@@ -23,25 +23,25 @@ class TaskOptionCollector
      *
      * @var array
      */
-    private $serverOptions;
+    private $serverOptions = array();
     /**
      * All available course options.
      *
      * @var array
      */
-    private $courseOptions;
+    private $courseOptions = array();
     /**
      * All available task options.
      *
      * @var array
      */
-    private $taskOptions;
+    private $taskOptions = array();
     /**
      * All available language options.
      *
      * @var array
      */
-    private $langOptions;
+    private $langOptions = array();
     /**
      * The list of MUMIE servers we want to get options for
      *

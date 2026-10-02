@@ -37,6 +37,10 @@ $template->set_attribute('action', PluginEngine::getLink('MumieTaskPlugin', arra
 $template->set_attribute('cancelLink', PluginEngine::getLink('MumieTaskPlugin', array(), 'taskWrapper/index'));
 $template->set_attribute("mumieOrg", Config::get()->MUMIE_ORG);
 $template->set_attribute("mumiePoolUrl", Config::get()->MUMIE_POOL_URL);
+$template->set_attribute(
+    'problemSelectorSsoUrl',
+    PluginEngine::getURL('MumieTaskPlugin', array(), 'taskWrapper/problemSelector')
+);
 echo $template->render();
 
 ?>
