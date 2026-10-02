@@ -2,6 +2,15 @@
 
 All important changes to this plugin will be documented in this file.
 
+## [v1.7] - 2026-10-02
+### Added
+- Teachers are now automatically logged in to the pool when opening the problem selector, so they can use their personal bookmarks and customizations (paid feature)
+- Customizations can now be added as MUMIE Tasks
+
+### Fixed
+- The task form no longer crashes if no MUMIE server is configured
+- The problem selector button is now disabled when editing a task whose MUMIE server is no longer configured
+
 ## [v1.6] - 2026-09-03
 ### Added
 - Admin-configurable MUMIE pool URL

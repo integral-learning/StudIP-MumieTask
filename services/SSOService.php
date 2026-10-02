@@ -29,7 +29,28 @@ class SSOService
      */
     public static function generateTokenForUser($userId)
     {
-        $hashedUserID = HashingService::getHash($userId)->hash;
+        return self::generateTokenForHash(HashingService::getHash($userId)->hash);
+    }
+
+    /**
+     * Generate a SSO-Token object for a given StudIP user, who is logged in as lecturer to the problem selector.
+     *
+     * @param  string $userId
+     * @return MumieSSOToken
+     */
+    public static function generateProblemSelectorTokenForUser($userId)
+    {
+        return self::generateTokenForHash(HashingService::getLecturerHash($userId)->hash);
+    }
+
+    /**
+     * Generate a SSO-Token object for a given hashed user id.
+     *
+     * @param  string $hashedUserID
+     * @return MumieSSOToken
+     */
+    private static function generateTokenForHash($hashedUserID)
+    {
         if ($ssoToken = MumieSSOToken::findByUser($hashedUserID)) {
         } else {
             $ssoToken = new MumieSSOToken();

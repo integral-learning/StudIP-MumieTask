@@ -59,11 +59,11 @@
                 )->asImg();
             ?>
         </div>
-        <input type="hidden" id="mumie_coursefile" name="coursefile" value=<?= $mumie_coursefile;?>>
-        <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value=<?= $missingServerConfig ? $server : ""?>>
-        <input type="hidden" id="language" name="language" value=<?= $language ?? $_SESSION['_language'];?>>
-        <input type="hidden" name="task_url" id="mumie_taskurl" value=<?= $task_url;?>>
-        <input type="hidden" name="is_graded" id="mumie_is_graded" value=<?= $is_graded;?>>
+        <input type="hidden" id="mumie_coursefile" name="coursefile" value="<?= htmlReady($mumie_coursefile); ?>">
+        <input type="hidden" id="mumie_missing_config" name="mumie_missing_config" value="<?= htmlReady($missingServerConfig ? $server : ""); ?>">
+        <input type="hidden" id="language" name="language" value="<?= htmlReady($language ?? $_SESSION['_language']); ?>">
+        <input type="hidden" name="task_url" id="mumie_taskurl" value="<?= htmlReady($task_url); ?>">
+        <input type="hidden" name="is_graded" id="mumie_is_graded" value="<?= htmlReady($is_graded); ?>">
         <label for="display_task">
             <span class="required">
                     <?= dgettext('MumieTaskPlugin', 'MUMIE-Aufgabe'); ?>
@@ -163,6 +163,7 @@
 <script>
     (function() {
         const lmsSelectorUrl = '<?= $mumiePoolUrl; ?>';
+        const problemSelectorSsoUrl = <?= json_encode($problemSelectorSsoUrl); ?>;
 
         const serverController = (function() {
             let serverStructure;
@@ -173,6 +174,9 @@
                     serverStructure = structure;
                 },
                 getSelectedServer: function () {
+                    if (serverDropDown.selectedIndex < 0) {
+                        return undefined;
+                    }
                     const selectedServerName = serverDropDown.options[serverDropDown.selectedIndex].text;
                     return serverStructure.find(server => server.name === selectedServerName);
                 },
@@ -216,7 +220,11 @@
                     updateCourseName();
                 },
                 getSelectedCourse: function () {
-                    const courses = serverController.getSelectedServer().courses;
+                    const selectedServer = serverController.getSelectedServer();
+                    if (!selectedServer) {
+                        return undefined;
+                    }
+                    const courses = selectedServer.courses;
                     return courses.find(course => course.coursefile === coursefileElem.value);
                 },
                 updateCourseName: function () {
@@ -236,7 +244,8 @@
                     return languageElement.value;
                 },
                 setLanguage: function (lang) {
-                    if (!courseController.getSelectedCourse().languages.includes(lang)) {
+                    const selectedCourse = courseController.getSelectedCourse();
+                    if (selectedCourse && !selectedCourse.languages.includes(lang)) {
                         throw new Error("Selected language not available");
                     }
                     languageElement.value = lang;
@@ -250,16 +259,19 @@
             const display_task_element = document.getElementById("mumie_display_task");
             const nameElem = document.getElementById("mumie_name");
             const is_graded_element = document.getElementById("mumie_is_graded");
+            // Names sent by the problem selector for problems that are not part of the server structure (e.g. customizations)
+            const autoFilledNames = [];
+            let currentSelectorName = null;
 
             /**
              * Update the activity's name in the input field
              */
             function updateName() {
-                const newHeadline = getHeadline(taskController.getSelectedTask());
-                if (!isCustomName()) {
+                const newHeadline = getHeadline(taskController.getSelectedTask()) ?? currentSelectorName;
+                if (newHeadline && !isCustomName()) {
                     nameElem.value = newHeadline;
                 }
-                display_task_element.value = newHeadline;
+                display_task_element.value = newHeadline ?? nameElem.value;
             }
 
             /**
@@ -314,9 +326,11 @@
              * @returns {Object} Array containing all headlines
              */
             function getAllHeadlines() {
+                const selectedCourse = courseController.getSelectedCourse();
                 return getAllTasks().flatMap(task => task.headline)
                     .map(headline => headline.name)
-                    .concat(courseController.getSelectedCourse().name.map(n => n.value))
+                    .concat(selectedCourse ? selectedCourse.name.map(n => n.value) : [])
+                    .concat(autoFilledNames);
             }
 
             function updateGradeEditability() {
@@ -350,9 +364,13 @@
                     }
                     updateGradeEditability();
                 },
-                setSelection: function(newSelection) {
+                setSelection: function(newSelection, name = null) {
                     task_element.value = getLocalizedLink(newSelection);
+                    currentSelectorName = name;
                     updateName();
+                    if (name) {
+                        autoFilledNames.push(name);
+                    }
                 },
                 getGradingType: function() {
                     const isGraded = is_graded_element.value;
@@ -381,7 +399,7 @@
                 if (!problemSelectorWindow) {
                     return;
                 }
-                problemSelectorWindow.postMessage(JSON.stringify(response), lmsSelectorUrl);
+                problemSelectorWindow.postMessage(JSON.stringify(response), getOrigin(lmsSelectorUrl));
             }
 
             /**
@@ -412,7 +430,7 @@
             function addMessageListener() {
                 window.addEventListener('message', (event) => {
                     event.preventDefault();
-                    if (event.origin !== lmsSelectorUrl) {
+                    if (event.origin !== getOrigin(lmsSelectorUrl)) {
                         return;
                     }
                     const importObj = JSON.parse(event.data);
@@ -420,7 +438,7 @@
                     try {
                         courseController.setCourse(importObj.path_to_coursefile);
                         langController.setLanguage(importObj.language);
-                        taskController.setSelection(importObj.link);
+                        taskController.setSelection(importObj.link, importObj.name);
                         taskController.setIsGraded(isGraded);
                         sendSuccess();
                         window.focus();
@@ -431,27 +449,61 @@
                 }, false);
             }
 
+            /**
+             * Builds the URL to the Problem Selector
+             * @returns {string} URL to the Problem Selector
+             */
+            function buildURL() {
+                const selectedTask = taskController.getSelectedTask();
+                const gradingType = taskController.getGradingType();
+                const selectedServer = serverController.getSelectedServer().url_prefix;
+
+                if (shouldUseSSO(lmsSelectorUrl, selectedServer)) {
+                    return problemSelectorSsoUrl
+                        + (problemSelectorSsoUrl.includes('?') ? '&' : '?')
+                        + 'serverUrl=' + encodeURIComponent(selectedServer)
+                        + '&problemLang=' + langController.getSelectedLanguage()
+                        + '&origin=' + encodeURIComponent(window.location.origin)
+                        + '&gradingType=' + gradingType
+                        + (selectedTask ? '&selection=' + encodeURIComponent(selectedTask.link) : '');
+                }
+
+                return lmsSelectorUrl
+                    + '/lms-problem-selector?'
+                    + 'org='
+                    + mumieOrg
+                    + '&serverUrl='
+                    + encodeURIComponent(selectedServer)
+                    + "&problemLang="
+                    + langController.getSelectedLanguage()
+                    + (selectedTask ? "&problem=" + selectedTask.link : '')
+                    + "&origin=" + encodeURIComponent(window.location.origin)
+                    + '&multiCourse=true'
+                    + '&gradingType=' + gradingType;
+            }
+
+            /**
+             * Determines whether the Single Sign-On (SSO) should be used when opening the Problem Selector.
+             * SSO is only supposed to be used when the Problem Selector URL has the same origin as the
+             * selected MUMIE server, since StudIP has no account on other MUMIE servers.
+             *
+             * @param {string} problemSelectorUrl - The URL of the problem selector.
+             * @param {string} selectedServerUrl - The URL of the selected MUMIE server.
+             * @returns {boolean} Whether SSO should be used for the Problem Selector or not
+             */
+            function shouldUseSSO(problemSelectorUrl, selectedServerUrl) {
+                const problemSelectorOrigin = getOrigin(problemSelectorUrl);
+                return problemSelectorOrigin !== null && problemSelectorOrigin === getOrigin(selectedServerUrl);
+            }
+
             return {
                 init: function () {
                     problemSelectorButton.onclick = function (e) {
                         e.preventDefault();
-                        const selectedTask = taskController.getSelectedTask();
-                        const gradingType = taskController.getGradingType();
-                        problemSelectorWindow = window.open(
-                            lmsSelectorUrl
-                            + '/lms-problem-selector?'
-                            + 'org='
-                            + mumieOrg
-                            + '&serverUrl='
-                            + encodeURIComponent(serverController.getSelectedServer().url_prefix)
-                            + "&problemLang="
-                            + langController.getSelectedLanguage()
-                            + (selectedTask ? "&problem=" + selectedTask.link : '')
-                            + "&origin=" + encodeURIComponent(window.location.origin)
-                            + '&multiCourse=true'
-                            + '&gradingType=' + gradingType
-                            , '_blank'
-                        );
+                        if (!serverController.getSelectedServer()) {
+                            return;
+                        }
+                        problemSelectorWindow = window.open(buildURL(), '_blank');
                     };
 
                     window.onclose = function () {
@@ -469,6 +521,19 @@
                 }
             };
         })();
+
+        /**
+         * Get the origin of a URL, e.g. to compare it with the origin of a postMessage event
+         * @param {string} url
+         * @returns {string|null}
+         */
+        function getOrigin(url) {
+            try {
+                return new URL(url).origin;
+            } catch (e) {
+                return null;
+            }
+        }
 
         /**
          * Remove all child elements of a given html element
@@ -492,7 +557,6 @@
 
         if (isEdit && !serverConfigExists()) {
             serverController.disable();
-            taskController.disable();
             problemSelectorController.disable();
         } else {
             serverController.init(JSON.parse(`<?= addslashes(json_encode($serverStructure));?>`));
