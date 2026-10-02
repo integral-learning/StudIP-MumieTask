@@ -260,14 +260,14 @@
             const nameElem = document.getElementById("mumie_name");
             const is_graded_element = document.getElementById("mumie_is_graded");
             // Names sent by the problem selector for problems that are not part of the server structure (e.g. customizations)
-            const selectorNames = [];
-            let selectorName = null;
+            const autoFilledNames = [];
+            let currentSelectorName = null;
 
             /**
              * Update the activity's name in the input field
              */
             function updateName() {
-                const newHeadline = getHeadline(taskController.getSelectedTask()) ?? selectorName;
+                const newHeadline = getHeadline(taskController.getSelectedTask()) ?? currentSelectorName;
                 if (newHeadline && !isCustomName()) {
                     nameElem.value = newHeadline;
                 }
@@ -330,7 +330,7 @@
                 return getAllTasks().flatMap(task => task.headline)
                     .map(headline => headline.name)
                     .concat(selectedCourse ? selectedCourse.name.map(n => n.value) : [])
-                    .concat(selectorNames);
+                    .concat(autoFilledNames);
             }
 
             function updateGradeEditability() {
@@ -366,10 +366,10 @@
                 },
                 setSelection: function(newSelection, name = null) {
                     task_element.value = getLocalizedLink(newSelection);
-                    selectorName = name;
+                    currentSelectorName = name;
                     updateName();
                     if (name) {
-                        selectorNames.push(name);
+                        autoFilledNames.push(name);
                     }
                 },
                 getGradingType: function() {
