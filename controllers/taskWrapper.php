@@ -208,13 +208,6 @@ class TaskWrapperController extends StudipController
             return $errors;
         }
 
-        // Problems that are not part of the server structure (e.g. customizations) are accepted, like in Moodle and ILIAS.
-        $problem = $course->getTaskByLink($task->task_url);
-        if ($problem != null && !in_array($task->language, $problem->getLanguages())) {
-            $errors[] =  dgettext('MumieTaskPlugin', 'Es gibt keine Übersetzung in die gewünschte Sprache für das ausgewählte Problem.');
-            return $errors;
-        }
-
         $existingTask = MumieTask::find(Request::option("task_id"));
         if (!is_null($existingTask)) {
             if ($existingTask->is_graded !== $task->is_graded) {
