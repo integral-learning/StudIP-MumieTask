@@ -97,7 +97,6 @@ class TaskWrapperController extends StudipController
      */
     public function problemSelector_action()
     {
-        // Logs the user in as a lecturer, so this needs teacher permission.
         PermissionService::requireTeacherPermission();
         $this->set_layout(null);
         $this->ssoToken = SSOService::generateProblemSelectorTokenForUser($GLOBALS['user']->id);
